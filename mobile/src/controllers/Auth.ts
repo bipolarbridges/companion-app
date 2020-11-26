@@ -135,7 +135,7 @@ export class AuthController extends AuthControllerBase implements IAuthControlle
         }
     }
 
-    // < ----------- NEW CODE ------------
+    // < ----------- NEW CODE ------------>
 
     //< ******************************____________________**********************________________________************************___________________
     //< ******************************____________________**********************________________________************************___________________
@@ -152,16 +152,21 @@ export class AuthController extends AuthControllerBase implements IAuthControlle
     }
 // <--------- Google signin agaoin
     protected async doGoogleSignIn() {
-        GoogleSignin.configure({
-            scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
-            webClientId: '702170362360-s3jqiaa6o3plafigsmpugbroijh2ctph.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
-            offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
-            // hostedDomain: '', // specifies a hosted domain restriction
-            // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
-            forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
-            // accountName: '', // [Android] specifies an account name on the device that should be used
-            // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
-          });
+
+
+        // Uncomment this while using the native react native login
+
+
+        // GoogleSignin.configure({
+        //     scopes: ['https://www.googleapis.com/auth/drive.readonly'], // what API you want to access on behalf of the user, default is email and profile
+        //     webClientId: '702170362360-s3jqiaa6o3plafigsmpugbroijh2ctph.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+        //     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+        //     // hostedDomain: '', // specifies a hosted domain restriction
+        //     // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
+        //     forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
+        //     // accountName: '', // [Android] specifies an account name on the device that should be used
+        //     // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
+        //   });
 
         let result: { idToken: string, accessToken: string };
         if (UseNativeGoogle) {
@@ -178,11 +183,8 @@ export class AuthController extends AuthControllerBase implements IAuthControlle
             logger.log('Sign in with Google, client id = ', Env.Google.ExpoClientIdIOS, Env.Google.ExpoClientIdAndroid);
             logger.log('ENV GOOGLE = ', Env.Google);
             logger.log('ENV = ', Env);
-            // logger.log('CHECK CHECK', ExpoConstants.appOwnership);
-            // const value = getGooglefitData();702170362360-s3jqiaa6o3plafigsmpugbroijh2ctph.apps.googleusercontent.com
-            // logger.log('IN AUTH', value);
-
-            //< -----------------ACTUAL LOGIN ----------------- ------------- ---------------------- - ---------------------- - --------------- - ----- >/
+            //< ----------------- Native sign-in ----------------- ------------- ---------------------- - ---------------------- - --------------- - ----- >/
+            // Uncomment THIS to run native log in
 
             // const signIn = async () => {
             //     logger.log("IN SIGNIN ASYNC")
@@ -207,33 +209,32 @@ export class AuthController extends AuthControllerBase implements IAuthControlle
             //     }
             //   };
 
-              const res = await GoogleSignin.getTokens();
+            //   const res = await signIn();
 
-
-
-            // const res = await GoogleExpo.logInAsync({
-            //     // iosClientId: Env.Google.ExpoClientIdIOS,
-            //     androidClientId: Env.Google.ExpoClientIdAndroid,
-            //     clientId: '702170362360-fhf36qta6mqegj5a027oiiinsb9cdnc6.apps.googleusercontent.com',
-            //     // webClientId: Env.Google.ExpoClientIdAndroid,
-            // } as GoogleExpo.GoogleLogInConfig);
+//< ----------------- EXPO SIGN IN----------------- ------------- ---------------------- - --
+            const res = await GoogleExpo.logInAsync({
+                iosClientId: Env.Google.ExpoClientIdIOS,
+                androidClientId: Env.Google.ExpoClientIdAndroid,
+                clientId: '', //< ---- Added this to solve client ID error
+            } as GoogleExpo.GoogleLogInConfig);
 
             // logger.log('RESULT FROM LOGINASYNCH',res)
 
-            // if (res.type === 'success') {
-            //     result = {
-            //         idToken: res.idToken,
-            //         accessToken: res.accessToken,
-            //     };
-            // }
-
-            logger.log('user_info', res)
-            if (res) {
+            if (res.type === 'success') {
                 result = {
                     idToken: res.idToken,
-                    accessToken: res.serverAuthCode,
+                    accessToken: res.accessToken,
                 };
             }
+            // Uncomment THIS to get res from native sign in
+
+            // logger.log('user_info', res)
+            // if (res) {
+            //     result = {
+            //         idToken: res.idToken,
+            //         accessToken: res.serverAuthCode,
+            //     };
+            // }
         }
 
         if (!result) {
