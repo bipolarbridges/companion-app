@@ -12,7 +12,7 @@ import logger from 'common/logger';
 
 const DeviceId = ExpoConstants.installationId;
 
-export const Info: DeviceInfo = {
+const Info: DeviceInfo = {
     platform: Platform.OS,
     platformVersion: ExpoConstants.appOwnership === AppOwnership.Standalone
         ? Platform.Version
