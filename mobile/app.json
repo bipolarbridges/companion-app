@@ -44,7 +44,7 @@
     ],
     "googleServicesFile": "./configs/app/GoogleService-Info.plist",
     "infoPlist": {
-      "NSMicrophoneUsageDescription": "...",
+      "NSMicrophoneUsageDescription": "Enable Bipolar Bridges to record your response to this check-in prompt.",
       "NSPhotoLibraryUsageDescription": "..."
     }
   },
