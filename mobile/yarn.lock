@@ -2189,10 +2189,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
-"@react-native-firebase/app@^8.4.3":
-  version "8.4.7"
-  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-8.4.7.tgz#7393ba7af36bd815bd5af7c64a20b0dd8a7e3341"
-  integrity sha512-jN788Q17aMOHc49wKc74RC3iZNhFoS+yTZhMBHFVyytf64uK3ofYAk3hjvukkylUTKF0Ni/L+04M0IDv8kStKg==
+"@react-native-firebase/app@^10.5.0":
+  version "10.5.0"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/app/-/app-10.5.0.tgz#aa46cd3a62d2117914a6f81ffea0d1b3b9ef15c6"
+  integrity sha512-pEINud4A90RlwfTcE51m/5cOEGI4jiSi5Q4jsQ5UGGlsYqtbOw4Ja7b17x19o2OViJEQVjScpq4pH2bq9vie7Q==
   dependencies:
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"

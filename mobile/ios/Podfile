@@ -33,5 +33,6 @@ target 'CompanionKit-tvOS' do
     # Pods for testing
   end
 end
+
 pod 'GoogleSignIn'
 # pod 'Firebase/Auth'

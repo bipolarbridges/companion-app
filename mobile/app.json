@@ -40,7 +40,7 @@
       }
     },
     "associatedDomains": [
-      "applinks:bipolarbridges.page.link" 
+      "applinks:bipolarbridges.page.link"
     ],
     "googleServicesFile": "./configs/app/GoogleService-Info.plist",
     "infoPlist": {
