@@ -87,11 +87,11 @@ export class WelcomeView extends ViewState {
                     </View>
                     <View style={{ width: '100%' }}>
                         <Button
-                             style={styles.button}
-                             onPress={this.googleSignIn}
+                            style={styles.button}
+                            onPress={this.googleSignIn}
                         >
-                             <Image style={styles.gIcon} source={googleIcon} />
-                             <Text style={this.textStyles.btnTitle}>sign in with google</Text>
+                            <Image style={styles.gIcon} source={googleIcon} />
+                            <Text style={this.textStyles.btnTitle}>sign in with google</Text>
                         </Button>
                         { Platform.OS === 'ios' && Features.Mobile.SignIn.Apple && this.enableAppleButton ? (
                             <AppleAuthentication.AppleAuthenticationButton

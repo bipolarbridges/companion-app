@@ -19,6 +19,7 @@ export const FeatureSettings: Record<Environments, FeaturesSettingsType> = {
             Goals: true,
             SendSmsOnTriggerPhrases: true,
             PicturesCheckInsEnabled: false,
+            UseMagicLink: false,
         };
     },
     get staging() { return FeatureSettings.production; },
@@ -28,7 +29,8 @@ export const EmailSettings: Record<Environments, EmailSettingsType> = {
     get production() {
         return {
             projectName: 'Companion kit',
-            sendgridTemplateId: 'd-5554ed3a2e7940c39daf251b4625895c',
+            sendgridTemplateId: '',
+            sendgridVerificationCodeTemplateId: 'd-3a7712597bf0456f9c4ad9bed59e148d',
             fromAddress: 'rowdl22@students.cs.ubc.ca',
             adminEmail: 'rowdl22@students.cs.ubc.ca',
         };
@@ -37,7 +39,8 @@ export const EmailSettings: Record<Environments, EmailSettingsType> = {
         return {
             ...EmailSettings.production,
             projectName: 'Companion kit [Staging]',
-            sendgridTemplateId: 'd-5554ed3a2e7940c39daf251b4625895c',
+            sendgridTemplateId: '',
+            sendgridVerificationCodeTemplateId: 'd-3a7712597bf0456f9c4ad9bed59e148d',
         };
     },
 };
