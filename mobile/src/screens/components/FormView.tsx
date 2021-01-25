@@ -81,8 +81,13 @@ export default function FormView(props: FormViewProps) {
         Animated.timing(opacity, {
             toValue: +isFinalScreen,
             duration: 750,
+            useNativeDriver: true,
         }).start();
     }, [isFinalScreen]);
+
+    // React.useEffect(() => {
+    //     const data = googlefit();
+    // }, [])
 
     let content: React.ReactNode = null;
 

@@ -26,7 +26,7 @@ export interface IAuthController extends IAuthControllerBase {
     signInWithApple(): Promise<boolean>;
 }
 
-const UseNativeGoogle = ExpoConstants.appOwnership === AppOwnership.Standalone;
+const UseNativeGoogle = AppOwnership.Standalone;
 
 export class AuthController extends AuthControllerBase implements IAuthController {
 

@@ -11,14 +11,14 @@
 /** @type {Record<Environments, FirebaseConfig>} */
 const FirebaseConfigs = {
     production: {
-        apiKey: "...",
-        authDomain: "...",
-        databaseURL: "...",
-        projectId: "...",
-        storageBucket: "...",
-        messagingSenderId: "...",
-        appId: "...",
-        measurementId: "..."
+        apiKey: "AIzaSyD2Rc2XvXdhHRymGhNZEeBThi08gVqeB3A",
+        authDomain: "bipolarbridges.firebaseapp.com",
+        databaseURL: "https://bipolarbridges.firebaseio.com",
+        projectId: "bipolarbridges",
+        storageBucket: "bipolarbridges.appspot.com",
+        messagingSenderId: "548887643205",
+        appId: "1:548887643205:web:aa3a0db61601e6aa4d0f2c",
+        measurementId: "G-6ZL6BPS92R"
     },
     get staging() { return FirebaseConfigs.production },
     get development() { return FirebaseConfigs.staging; },
@@ -28,12 +28,12 @@ const FirebaseConfigs = {
 const FirebasePlatformOverrides = {
     production: {
         ios: {
-            appId: '...',
-            apiKey: '...',
+            appId: '1:548887643205:ios:c796e690f13185934d0f2c',
+            apiKey: 'AIzaSyA1wFAJxVr1ZXQg3benTmDDuKibt4rfA54',
         },
         android: {
-            appId: '...',
-            apiKey: '...',
+            appId: '1:548887643205:android:e4dfc71c41cabeed4d0f2c',
+            apiKey: 'AIzaSyAfeoXkcrfi-T672QN3amioRxOeX9XQEaA',
         },
     },
     get staging() { return FirebasePlatformOverrides.production; },
@@ -44,8 +44,8 @@ const FirebasePlatformOverrides = {
 const GoogleConfigs = {
     production: {
         ClientIdNative: '',
-        ExpoClientIdAndroid: '...', // android app id
-        ExpoClientIdIOS: '...' // ios app id,
+        ExpoClientIdAndroid: '548887643205-ta2fe61uevnp00grh1qma57r4e8sooi7.apps.googleusercontent.com', // android app id
+        ExpoClientIdIOS: '548887643205-426s6fr7gntjehjti3tnu3qtsffrbc67.apps.googleusercontent.com' // ios app id,
     },
     get staging() { return GoogleConfigs.production; },
     get development() { return GoogleConfigs.staging; },
@@ -114,8 +114,8 @@ const includeConfigs = [
 const BuildConfigs = {
     production: {
         hostname: {
-            dashboard: '...', // url for dashboard
-            web: '...', // url for website
+            dashboard: 'https://bipolarbridges.web.app/', // url for dashboard
+            web: 'https://bipolarbridges.web.app/', // url for website
         },
         mobile: {
             releaseChannel: '...', // expo release channel
