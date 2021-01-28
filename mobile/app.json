@@ -36,7 +36,7 @@
     "config": {
       "usesNonExemptEncryption": false,
       "googleSignIn": {
-        "reservedClientId": "com.googleusercontent.apps.548887643205-426s6fr7gntjehjti3tnu3qtsffrbc67"
+        "reservedClientId": "..."
       }
     },
     "associatedDomains": [
@@ -44,15 +44,15 @@
     ],
     "googleServicesFile": "./configs/app/GoogleService-Info.plist",
     "infoPlist": {
-      "NSMicrophoneUsageDescription": "Enable Bipolar Bridges to record your response to this check-in prompt.",
+      "NSMicrophoneUsageDescription": "Enable this app to record your response to this check-in prompt.",
       "NSPhotoLibraryUsageDescription": "..."
     }
   },
   "android": {
     "config": {
       "googleSignIn": {
-        "apiKey": "AIzaSyAfeoXkcrfi-T672QN3amioRxOeX9XQEaA",
-        "certificateHash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+        "apiKey": "...",
+        "certificateHash": "..."
       }
     },
     "package": "com.maslo.companionkit",

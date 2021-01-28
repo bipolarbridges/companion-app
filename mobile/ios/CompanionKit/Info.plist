@@ -29,7 +29,7 @@
 			<string>Bundle ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.548887643205-426s6fr7gntjehjti3tnu3qtsffrbc67</string>
+				<string>com.maslo.companionkit</string>
 			</array>
 		</dict>
 		<dict>
@@ -37,7 +37,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>REVERSED_CLIENT_ID_HERE!!</string>
+				<string>com.googleusercontent.apps.548887643205-426s6fr7gntjehjti3tnu3qtsffrbc67</string>
 			</array>
 		</dict>
 	</array>
@@ -61,7 +61,7 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
- 	<string>Enable Bipolar Bridges to record your response to this check-in prompt.</string>
+	<string>Enable Bipolar Bridges to record your response to this check-in prompt.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
