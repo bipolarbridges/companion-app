@@ -1,8 +1,10 @@
-# Maslo Companion Kit
+# Bipolar Bridges Companion Kit
 
-The setup section below is the required steps to set up a local instance of this project. The subsequent section outlines how to run the applications and deploy new functionality to the firebase server after the project has been set up.
+This is a fork of [HeyMaslo/companion-kit](https://github.com/HeyMaslo/companion-kit) that is extended to include features specifically for the Bipolar Bridges project.
 
 ## Setup
+
+The steps below are required to set up a local instance of this project. The subsequent section outlines how to run the applications and deploy new functionality to the firebase server after the project has been set up.
 
 ### 1. Install Requirements
 
@@ -72,7 +74,7 @@ Navigate back to the root directory and run:
 
 ### Run Mobile Apps Locally
 
-* **IOS**: To run project locally run `yarn ios` from the `./mobile` directory
+* **iOS**: To run project locally run `yarn ios` from the `./mobile` directory
 * **Android**: To run project locally the first time, open the android directory in android studio, sync with gradle and run the app. In subsequent runs, run `yarn android` from the `./mobile` directory
 
 ### Deploy Cloud Functionality
