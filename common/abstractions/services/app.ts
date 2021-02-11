@@ -29,7 +29,7 @@ export const EmailSettings: Record<Environments, EmailSettingsType> = {
     get production() {
         return {
             projectName: 'Companion kit',
-            sendgridTemplateId: '',
+            sendgridTemplateId: 'd-5554ed3a2e7940c39daf251b4625895c',
             sendgridVerificationCodeTemplateId: 'd-3a7712597bf0456f9c4ad9bed59e148d',
             fromAddress: 'Companion kit Team <your email>',
             adminEmail: '<your email>',
@@ -39,7 +39,7 @@ export const EmailSettings: Record<Environments, EmailSettingsType> = {
         return {
             ...EmailSettings.production,
             projectName: 'Companion kit [Staging]',
-            sendgridTemplateId: '',
+            sendgridTemplateId: 'd-5554ed3a2e7940c39daf251b4625895c',
             sendgridVerificationCodeTemplateId: 'd-3a7712597bf0456f9c4ad9bed59e148d',
         };
     },
