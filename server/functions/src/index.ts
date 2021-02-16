@@ -7,7 +7,11 @@ import * as clients from './clients';
 import * as coaches from './coaches';
 import * as ai from './ai';
 import * as billing from './billing';
-import { ScheduledFunctionCrontab, ExportFunctionCrontab, ImportFunctionCrontab } from './cron';
+import {
+    ScheduledFunctionCrontab,
+    ExportFunctionCrontab,
+    BQExportFunctionCrontab,
+    ImportFunctionCrontab } from './cron';
 
 import { StatsCallFunctions } from './adminStats';
 
@@ -31,6 +35,7 @@ if (ScheduledFunctionCrontab) {
 
 if (ExportFunctionCrontab) {
     exp.events.export = ExportFunctionCrontab;
+    exp.events.bqExport = BQExportFunctionCrontab;
     exp.events.import = ImportFunctionCrontab;
 }
 

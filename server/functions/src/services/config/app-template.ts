@@ -15,6 +15,7 @@ export const FeatureSettings: Record<Environments, FeaturesSettingsType> = {
             ScheduleEvents: true,
             MobileStandalone: false,
             ExportToBQ: true,
+            ExportToDataServices: true,
             TimeTrackingEnabled: true,
             Goals: true,
             SendSmsOnTriggerPhrases: true,

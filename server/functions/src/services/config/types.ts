@@ -12,6 +12,7 @@ export type FeaturesSettingsType = {
     ScheduleEvents: boolean,
     MobileStandalone: boolean,
     ExportToBQ: boolean,
+    ExportToDataServices: boolean,
     TimeTrackingEnabled: boolean,
     Goals?: boolean,
     SendSmsOnTriggerPhrases?: boolean;
