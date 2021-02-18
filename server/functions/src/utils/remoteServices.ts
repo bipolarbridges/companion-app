@@ -19,6 +19,31 @@ export async function logNewAccount(clientID, coachID) {
             console.log(`Done!`)
         })
         .catch((e) => {
-            console.log(`Error reaching service: ${e}`);
+            console.log(`Error calling service: ${e}`);
+        });
+}
+
+export async function logMeasurement(clientID, coachID, type, value, date) {
+    await ax.post("/measurement",
+        { 
+            clientID, 
+            coachID,
+            data: {
+                date,
+                dataType: type,
+                value,
+            }
+        }, 
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": API_KEY
+            }
+        })
+        .then((r) => {
+            console.log(`Done!`)
+        })
+        .catch((e) => {
+            console.log(`Error calling service: ${e}`);
         });
 }
