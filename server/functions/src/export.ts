@@ -20,11 +20,25 @@ fns.newAccount = FeatureSettings.ExportToDataServices
 fns.measurement = FeatureSettings.ExportToDataServices
 && functions.firestore.document('/records/{recordId}')
       .onCreate(async(snap, context) => {
-          const { clientId, coachId, mentalHealth, date } = snap.data();
-          console.log(`New measurement record for client[${clientId}], coach[${coachId}]`);
-          await logMeasurement(clientId, coachId, 'mentalHealth', mentalHealth, date);
-          // TODO generalize to more record values
+          const data = snap.data();
+          const quantFields = [
+            'mentalHealth',
+            'mindfulness',
+          ];
           // Q: should we mash into a single call?
+          await Promise.all(quantFields.map(
+              key => {
+                  const typeId = `maslo-fb-${key}`; // TODO: figure out universal ids
+                  const val = data[key];
+                  if (val) {
+                    return logMeasurement(data.clientUid, data.coachUid, typeId, val, data.date);
+                  } else if (val == null) {
+                    // value not recorded. Simply skip in this case
+                    return Promise.resolve();
+                  } else {
+                    return Promise.reject(`Key ${key} is not valid for record`);
+                  }
+              }));
       });
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;
