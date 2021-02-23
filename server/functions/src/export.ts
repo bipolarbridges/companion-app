@@ -1,6 +1,8 @@
 import { FeatureSettings } from './services/config';
 import * as functions from 'firebase-functions';
 import { logNewAccount, logMeasurement } from './utils/remoteServices';
+import { SentimentAnalysis, SentimentValue } from '../../../common/models/Sentiment';
+import { EnergyValue, RecordData } from '../../../common/models/RecordData';
 
 const fns: any = {};
 
@@ -33,22 +35,46 @@ const prefix = (id: string): string => `maslo-${id}`;
 const extract: Extractions = {
     // mappings for complex data types
     'mindfulness': 
-        (d: any): RecordExport[] => [
-            { typeId: prefix('mindfulness'), value: +d }
+        (d: number): RecordExport[] => [
+            { typeId: prefix('mindfulness'), value: d }
         ],
     'mentalHealth': 
-        (d: any): RecordExport[] => [
+        (d: number): RecordExport[] => [
             { typeId: prefix('mentalHealth'), value: +d }
         ],
-}
+    'sentiment':
+        (s: SentimentAnalysis) => [
+            { 
+                typeId: prefix('sentiment-doc-score'),
+                value: s.documentSentiment.score
+            },
+            { 
+                typeId: prefix('sentiment-doc-mag'),
+                value: s.documentSentiment.magnitude
+            },
+        ],
+    'energyLevel':
+        (e: EnergyValue) => {
+            let data = [
+                { typeId: prefix('energyLevel-original'), value: e.original}
+            ];
+            if (e.normalized) {
+                data.push({
+                    typeId: prefix('energyLevel-normalized'),
+                    value: e.normalized
+                });
+            }
+            return data
+        }
+};
 
 fns.measurement = FeatureSettings.ExportToDataServices
 && functions.firestore.document('/records/{recordId}')
       .onCreate(async(snap, context) => {
-          const data = snap.data();
+          const data: RecordData = snap.data() as RecordData;
           const makeRequest = (ex: RecordExport) => logMeasurement(
                 data.clientUid, data.coachUid, ex.typeId, ex.value, data.date);
-                
+
           // Q: should we mash into a single call?
           await Promise.all(Object.entries(extract).reduce((ps, [key, ext]) => {
             const val = data[key];
