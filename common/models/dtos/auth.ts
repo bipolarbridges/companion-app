@@ -78,11 +78,11 @@ export type AuthRequest = (MagicLinkRequest & { type: AuthActionTypes.MagicLinkS
     | (CheckInviteRequest & { type: AuthActionTypes.CheckInvite })
     | (ForceLoginRequest & { type: AuthActionTypes.ForceLogin })
     | (MagicLinkRequest & { type: AuthActionTypes.GenerateMagicLink })
-    | (SendVerificationCodeEmailRequest & { type: AuthActionTypes.SendVerificationCodeEmail }
+    | (SendVerificationCodeEmailRequest & { type: AuthActionTypes.SendVerificationCodeEmail })
     | (ResetPasswordRequest & { type: AuthActionTypes.ResetPassword })
     | (GenerateTokenRequest & { type: AuthActionTypes.GenerateToken })
     | (HasAccountRequest & { type: AuthActionTypes.HasAccount })
-    | (ValidateCodeRequest & { type: AuthActionTypes.ValidateCode }))
+    | (ValidateCodeRequest & { type: AuthActionTypes.ValidateCode })
     ;
 
 export type AuthResponse = BaseResponse | { token: string } | { magicLink: string } | 'noInvitation';
