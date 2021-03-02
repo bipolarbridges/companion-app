@@ -12,7 +12,7 @@ export enum AuthActionTypes {
     ResetPassword = 'resetPassword',
     GenerateToken = 'generateToken',
     HasAccount = 'hasAccount',
-    ValidateToken = 'validateToken'
+    ValidateToken = 'validateToken',
 }
 
 export type BaseResponse = {
@@ -75,7 +75,7 @@ export type HasAccountRequest = {
 
 export type ValidateTokenRequest = {
     email: string,
-    token: string
+    token: string,
 };
 
 export type AuthRequest = (MagicLinkRequest & { type: AuthActionTypes.MagicLinkSignIn })

@@ -113,17 +113,17 @@ async function generateToken(data: { email: string }): Promise<{ result: boolean
 
 async function validateToken(data: { email: string, token: string}): Promise<{ result: boolean }> {
     if (!data.email || !data.token) {
-        throw new Error("Missing email or token");
+        throw new Error('Missing email or token');
     }
     try {
         const token = await admin.auth().verifyIdToken(data.token);
         let result = false;
-        if (token.email && token.email == data.email) {
+        if (token.email && token.email === data.email) {
             result = true;
         }
         return { result };
     } catch (e) {
-        throw new Error("Token could not be decoded");
+        throw new Error('Token could not be decoded');
     }
 }
 
