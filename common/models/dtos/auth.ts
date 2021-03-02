@@ -12,6 +12,7 @@ export enum AuthActionTypes {
     ResetPassword = 'resetPassword',
     GenerateToken = 'generateToken',
     HasAccount = 'hasAccount',
+    ValidateToken = 'validateToken'
 }
 
 export type BaseResponse = {
@@ -72,6 +73,11 @@ export type HasAccountRequest = {
     email: string,
 };
 
+export type ValidateTokenRequest = {
+    email: string,
+    token: string
+};
+
 export type AuthRequest = (MagicLinkRequest & { type: AuthActionTypes.MagicLinkSignIn })
     | (CheckRoleRequest & { type: AuthActionTypes.CheckRole })
     | { type: AuthActionTypes.SendLinkToDesktop }
@@ -83,6 +89,7 @@ export type AuthRequest = (MagicLinkRequest & { type: AuthActionTypes.MagicLinkS
     | (GenerateTokenRequest & { type: AuthActionTypes.GenerateToken })
     | (HasAccountRequest & { type: AuthActionTypes.HasAccount })
     | (ValidateCodeRequest & { type: AuthActionTypes.ValidateCode })
+    | (ValidateTokenRequest & { type: AuthActionTypes.ValidateToken })
     ;
 
 export type AuthResponse = BaseResponse | { token: string } | { magicLink: string } | 'noInvitation';
