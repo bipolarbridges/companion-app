@@ -115,16 +115,17 @@ async function validateToken(data: { email: string, token: string}): Promise<{ r
     if (!data.email || !data.token) {
         throw new Error('Missing email or token');
     }
+    let result = false;
     try {
         const token = await admin.auth().verifyIdToken(data.token);
-        let result = false;
         if (token.email && token.email === data.email) {
             result = true;
         }
-        return { result };
     } catch (e) {
-        throw new Error('Token could not be decoded');
+        console.log('Error decoding token: ', e);
+        result = false;
     }
+    return { result };
 }
 
 async function resetPassword(data: { email: string, newPassword: string }): Promise<{ result: boolean }> {
