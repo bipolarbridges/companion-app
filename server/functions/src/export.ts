@@ -19,8 +19,10 @@ fns.newAccount = FeatureSettings.ExportToDataServices
             const client = context.params.clientId;
             const coach = acct.coachId;
             console.log(`New account for client[${client}], coach[${coach}]`);
-            await logNewAccount(client, coach);
-            return null;
+            return logNewAccount(client, coach)
+                .then((res: RemoteCallResult) => {
+                    return { error: res.error };
+                });
         });
 
 type RecordExport = {
@@ -77,7 +79,14 @@ fns.measurement = FeatureSettings.ExportToDataServices
         .onCreate(async (snap, context): Promise<ExportResult> => {
             const data: RecordData = snap.data() as RecordData;
             const makeRequest = async (ex: RecordExport) =>
-                logMeasurement(data.clientUid, data.coachUid, ex.typeId, ex.value, data.date);
+                logMeasurement(data.clientUid, data.coachUid, ex.typeId, ex.value, data.date)
+                .then((res: RemoteCallResult) => {
+                    if (res.error) {
+                        return Promise.reject(res.error);
+                    } else {
+                        return Promise.resolve();
+                    }
+                });
             // Q: should we mash into a single call?
             return Promise.all(Object.entries(extract).reduce((ps, [key, ext]) => {
                 const val = data[key];
@@ -85,11 +94,11 @@ fns.measurement = FeatureSettings.ExportToDataServices
                     return ps.concat(ext(val).map(e => makeRequest(e)));
                 } else if (val == null) {
                     // value not recorded. Simply skip in this case
-                    return ps.concat([Promise.resolve({ error: null })]);
+                    return ps.concat([Promise.resolve()]);
                 } else {
                     return ps.concat([Promise.reject(`Key ${key} is not valid for record`)]);
                 }
-            }, ([] as Promise<RemoteCallResult>[])))
+            }, ([] as Promise<void>[])))
             .then(() => {
                 return { error: null };
             })

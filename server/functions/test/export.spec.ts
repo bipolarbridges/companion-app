@@ -25,9 +25,10 @@ describe("Export Functions", () => {
         const snap = await test.firestore.makeDocumentSnapshot(
             { coachId },
             `/clients/${clientId}/accounts/${acctId}`);
-        await(handle(snap, {
+        const result = await(handle(snap, {
             params: { clientId, acctId }
         }));
+        expect(result.error).to.be.null;
       });
     it("Should export new record data", async () => {
         const clientId = 'client0@email.com';
@@ -84,6 +85,7 @@ describe("Export Functions", () => {
                 }
             },
             `/records/${recordId}`);
-        await(handle(snap));
+        const result = await(handle(snap));
+        expect(result.error).to.be.null;
       });
 });
