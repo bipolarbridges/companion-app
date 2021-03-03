@@ -4,6 +4,7 @@ import {
     AuthProviders,
     AuthResult,
     AuthErrors,
+    GetTokenResult,
 } from 'common/abstractions/controlllers/IAuthController';
 import { observable } from 'mobx';
 import Firebase from 'common/services/firebase';
@@ -519,6 +520,17 @@ export default abstract class AuthControllerBase implements IAuthController {
                 }
             }
             throw err;
+        }
+    }
+
+    async getAuthToken(): Promise<GetTokenResult> {
+        const authUser = Firebase.Instance.auth.currentUser;
+        if (!authUser) {
+            return { result: false, error: AuthErrors.InvalidAuthState, original: null };
+        } else {
+            const usr: firebase.User = Firebase.Instance.auth.currentUser;
+            const token = await usr.getIdToken(false);
+            return { result: true, token };
         }
     }
 
