@@ -1,49 +1,61 @@
 import Axios from 'axios';
 
 const ax = Axios.create({
-	baseURL: "http://127.0.0.1:8888" // TODO
+    baseURL: 'http://127.0.0.1:8888', // TODO
 });
 
-const API_KEY = "apikey1"
+const API_KEY = 'apikey1';
 
-export async function logNewAccount(clientID, coachID) {
-    await ax.post("/account",
-        { clientID, coachID }, 
+export type RemoteCallResult = {
+    error?: string,
+};
+
+export async function
+logNewAccount(clientID, coachID)
+: Promise<RemoteCallResult> {
+    return ax.post('/account',
+        { clientID, coachID },
         {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": API_KEY
-            }
+                'Content-Type': 'application/json',
+                'Authorization': API_KEY,
+            },
         })
         .then((r) => {
-            console.log(`Done!`)
+            return { error: null };
         })
         .catch((e) => {
-            console.log(`Error calling service: ${e}`);
+            return {
+                error: `Error calling service: ${e}`,
+            };
         });
 }
 
-export async function logMeasurement(clientID, coachID, type, value, date) {
-    await ax.post("/measurement",
-        { 
-            clientID, 
+export async function
+logMeasurement(clientID, coachID, type, value, date)
+: Promise<RemoteCallResult> {
+    return ax.post('/measurement',
+        {
+            clientID,
             coachID,
             data: {
                 date,
                 dataType: type,
                 value,
-            }
-        }, 
+            },
+        },
         {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": API_KEY
-            }
+                'Content-Type': 'application/json',
+                'Authorization': API_KEY,
+            },
         })
         .then((r) => {
-            console.log(`Done!`)
+            return { error: null };
         })
         .catch((e) => {
-            console.log(`Error calling service: ${e}`);
+            return {
+                error: `Error calling service: ${e}`,
+            };
         });
 }
