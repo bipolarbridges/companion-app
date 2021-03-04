@@ -2,6 +2,10 @@ export type RemoteCallResult = {
     error?: string,
 };
 
+export interface IBackendClient {
+    post (path: string, data: any, opts: any): any;
+}
+
 export interface IBackendController {
 
     logNewAccount

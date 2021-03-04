@@ -1,8 +1,11 @@
 import { FeatureSettings } from './services/config';
 import * as functions from 'firebase-functions';
-import { logNewAccount, logMeasurement, RemoteCallResult } from './utils/remoteServices';
 import { SentimentAnalysis, SentimentValue } from '../../../common/models/Sentiment';
 import { EnergyValue, RecordData } from '../../../common/models/RecordData';
+import { FunctionBackendController } from '../src/services/backend';
+import {
+    RemoteCallResult,
+} from '../../../common/abstractions/controlllers/IBackendController';
 
 const fns: any = {};
 
@@ -15,11 +18,12 @@ type ExportResult = {
 fns.newAccount = FeatureSettings.ExportToDataServices
     && functions.firestore.document('/clients/{clientId}/accounts/{acctId}')
         .onCreate(async (snap, context) => {
+            const backend = new FunctionBackendController();
             const acct = snap.data();
             const client = context.params.clientId;
             const coach = acct.coachId;
             console.log(`New account for client[${client}], coach[${coach}]`);
-            return logNewAccount(client, coach)
+            return backend.logNewAccount(client, coach)
                 .then((res: RemoteCallResult) => {
                     return { error: res.error };
                 });
@@ -78,8 +82,9 @@ fns.measurement = FeatureSettings.ExportToDataServices
     && functions.firestore.document('/records/{recordId}')
         .onCreate(async (snap, context): Promise<ExportResult> => {
             const data: RecordData = snap.data() as RecordData;
+            const backend = new FunctionBackendController();
             const makeRequest = async (ex: RecordExport) =>
-                logMeasurement(data.clientUid, data.coachUid, ex.typeId, ex.value, data.date)
+                backend.logMeasurement(data.clientUid, data.coachUid, ex.typeId, ex.value, data.date)
                 .then((res: RemoteCallResult) => {
                     if (res.error) {
                         return Promise.reject(res.error);
