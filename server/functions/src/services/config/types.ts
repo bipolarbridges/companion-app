@@ -40,3 +40,9 @@ export type ClientsSettingsType = {
         android: string,
     },
 };
+
+export type BackendSettingsType = {
+    prot: string,
+    addr: string,
+    port: number,
+};

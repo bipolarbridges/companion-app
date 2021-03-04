@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import { IBackendClient } from 'common/abstractions/controlllers/IBackendController';
 import BackendControllerBase from '../../../../common/controllers/BackendController';
+import { BackendSettings as config } from './config';
 
 const API_KEY = 'apikey1';
 
@@ -11,7 +12,7 @@ export class FunctionBackendController extends BackendControllerBase {
     constructor() {
         super();
         this.ax = Axios.create({
-            baseURL: 'http://127.0.0.1:8888', // TODO
+            baseURL: `${config.prot}://${config.addr}:${config.port}`,
         });
     }
 
