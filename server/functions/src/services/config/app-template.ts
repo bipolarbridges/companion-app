@@ -79,6 +79,7 @@ export const BackendSettings: Record<Environments, BackendSettingsType> = {
             prot: '${BACKEND_API_PROTOCOL}',
             addr: '${BACKEND_API_ADDRESS}',
             port: parseInt('${BACKEND_API_PORT}', 10),
+            auth: '${BACKEND_API_KEY}',
         };
     },
     get staging() { return BackendSettings.production; },

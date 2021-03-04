@@ -45,4 +45,5 @@ export type BackendSettingsType = {
     prot: string,
     addr: string,
     port: number,
+    auth: string,
 };

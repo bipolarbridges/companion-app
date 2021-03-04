@@ -3,8 +3,6 @@ import { IBackendClient } from 'common/abstractions/controlllers/IBackendControl
 import BackendControllerBase from '../../../../common/controllers/BackendController';
 import { BackendSettings as config } from './config';
 
-const API_KEY = 'apikey1';
-
 export class FunctionBackendController extends BackendControllerBase {
 
     private ax: any;
@@ -23,7 +21,7 @@ export class FunctionBackendController extends BackendControllerBase {
     }
 
     protected get Authorization(): string {
-        return API_KEY;
+        return config.auth;
     }
 
 }
