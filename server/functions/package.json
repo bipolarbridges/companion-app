@@ -22,7 +22,7 @@
     "deploy:hosting:web:stage": "firebase deploy -P staging --only hosting:web-staging",
     "deploy:hosting:web:prod": "firebase deploy -P production --only hosting:web-prod",
     "logs": "firebase functions:log",
-    "test": "firebase emulators:exec 'jest test'"
+    "test": "firebase emulators:exec -P staging 'jest test'"
   },
   "main": "lib/server/functions/src/index.js",
   "engines": {
