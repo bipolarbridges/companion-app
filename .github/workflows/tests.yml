@@ -22,14 +22,14 @@ jobs:
       - name: Start DB service
         working-directory: data-services
         run: docker-compose up -d db
-	  - name: Await DB
+      - name: Await DB
         working-directory: data-services
-		run: sleep 15
-	  - name: Load test data
+        run: sleep 15
+      - name: Load test data
         working-directory: data-services
-		run: docker-compose run --rm db_shell execute test_data
+        run: docker-compose run --rm db_shell execute test_data
 	  - name: Start API service
-		run: docker-compose up -d api
+        run: docker-compose up -d api
       - name: Build project
         working-directory: companion-app/server/functions
         run: docker-compose build server
