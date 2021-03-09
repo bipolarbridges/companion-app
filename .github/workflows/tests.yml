@@ -19,9 +19,15 @@ jobs:
       - name: Create environment file
         working-directory: companion-app
         run: cp test.env .docker.env
-      - name: Start API service
+      - name: Start DB service
         working-directory: data-services
-        run: yarn start:test
+        run: docker-compose up -d db
+	  - name: Await DB
+        working-directory: data-services
+		run: sleep 15
+	  - name: Load test data
+        working-directory: data-services
+		run: docker-compose run --rm db_shell execute test_data
       - name: Build project
         working-directory: companion-app/server/functions
         run: docker-compose build server
