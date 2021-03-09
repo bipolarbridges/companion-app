@@ -28,7 +28,7 @@ jobs:
       - name: Load test data
         working-directory: data-services
         run: docker-compose run --rm db_shell execute test_data
-	  - name: Start API service
+      - name: Start API service
         run: docker-compose up -d api
       - name: Build project
         working-directory: companion-app/server/functions
