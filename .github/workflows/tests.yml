@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: bipolarbridges/data-services
-          ref: f77b56b308d66039b96368706bf52edac4f7256e
+          ref: 4959b3acef1994befb10aa769c35f1142b0198fb
           path: data-services
       - name: Create shared network
         run: docker network create bb_default
@@ -21,7 +21,7 @@ jobs:
         run: cp test.env .docker.env
       - name: Start API service
         working-directory: data-services
-        run: yarn start
+        run: yarn start:test
       - name: Build project
         working-directory: companion-app/server/functions
         run: docker-compose build server
