@@ -1,4 +1,5 @@
 {
+
     "firestore": {
       "rules": "firestore.rules",
       "indexes": "firestore.indexes.json"
@@ -68,13 +69,22 @@
       "rules": "storage.rules"
     },
     "emulators": {
-      "firestore": {
-        "port": 5555
-      },
-	  "ui": {
-  		"enabled": true,
-  		"host": "${FB_EMULATOR_UI_ADDR}",
-  		"port": ${FB_EMULATOR_UI_PORT}
-	  }
-    }
+    	"ui": {
+      		"enabled": true,
+      		"host": "${FB_EMULATOR_UI_ADDR}",
+      		"port": ${FB_EMULATOR_UI_PORT}
+    	},
+    	"firestore": {
+      		"port": 5555
+    	},
+    	"functions": {
+      		"port": 5001
+    	},
+    	"hosting": {
+      		"port": 5000
+    	},
+    	"auth": {
+      		"port": 9099
+    	}
+  }
 }
