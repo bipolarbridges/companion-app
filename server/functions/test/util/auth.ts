@@ -1,8 +1,6 @@
 const axios = require('axios');
 
 const FB_HEADERS = {
-    "Content-Type": "application/json",
-
     // this is hard-coded to match secret specification for emulator. See
     // https://github.com/firebase/firebase-tools/issues/1363#issuecomment-498364771)
     "Authorization": "Bearer owner"
@@ -22,13 +20,18 @@ async function assertResult(rout: Promise<any>, result: boolean = true): Promise
     return rout.then((res: any) => {
         return result;
     }).catch((err: any) => {
+        console.log(err);
         return !result;
     });
 }
 
 export async function createNewEmailUser(email: string, password: string): Promise<boolean> {
     // Create user
-    return assertResult(authEndpoint.post('/accounts:signUp', { email, password }));
+    return assertResult(authEndpoint.post('/accounts:signUp', { email, password }, {
+        headers: {
+            "Content-Type": "application/json",
+        }
+    }));
     // // Sanity-check: confirm that same user cannot be created again
     // return assertResult(authEndpoint.post('/accounts:signUp', { email, password }), false);
 }
