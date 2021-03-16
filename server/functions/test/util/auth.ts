@@ -1,4 +1,9 @@
+import { FirebaseConfig } from "../../../../common/services/firebase";
+
 const axios = require('axios');
+const { env } = require('../../../../env');
+
+const fbConfig: FirebaseConfig = env.production;
 
 const FB_HEADERS = {
     // this is hard-coded to match secret specification for emulator. See
@@ -12,7 +17,7 @@ const authEndpoint = axios.create({
 });
 
 const adminEndpoint = axios.create({
-    baseURL: "http://localhost:9099/emulator/v1/projects/bipolarbridges",
+    baseURL: `http://localhost:9099/emulator/v1/projects/${fbConfig.projectId}`,
     headers: FB_HEADERS
 });
 
