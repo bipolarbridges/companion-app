@@ -3,7 +3,7 @@ import { FirebaseConfig } from "../../../../common/services/firebase";
 const axios = require('axios');
 const { env } = require('../../../../env');
 
-const fbConfig: FirebaseConfig = env.production;
+const fbConfig: FirebaseConfig = env.production.firebase.config;
 
 const FB_HEADERS = {
     // this is hard-coded to match secret specification for emulator. See
