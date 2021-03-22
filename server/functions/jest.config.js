@@ -13,7 +13,13 @@ module.exports = {
 	},
 	modulePaths: [
 		'<rootDir>/node_modules',
-		'<rootDir/../../dashboard/node_modules>'
+		'<rootDir/../../dashboard/node_modules>',
+        'src',
+        'node_modules',
+        '../..'
 		// add additional modules if needed
 	],
+    'testPathIgnorePatterns': [
+        '/util/*',
+    ]
 };
