@@ -2,41 +2,21 @@ import mockProcess from './mocks/client/process';
 process = mockProcess;
 
 import * as admin from 'firebase-admin';
-import AuthControllerBase from '../../../common/controllers/AuthController';
 import { initializeAsync, initializeAsync as initializeFirebaseAsync } from '../../../common/services/firebase';
 import { fail } from 'assert';
 const { expect } = require("chai");
 import { createNewEmailUser, clearAllUsers } from './util/auth';
 import clientConfig from './mocks/client/config';
-import StorageMock from './mocks/client/storage';
-import { GetTokenResult } from '../../../common/abstractions/controlllers/IAuthController';
+import { GetTokenResult, IAuthController } from '../../../common/abstractions/controlllers/IAuthController';
+import { ClientAuthController } from './mocks/client/controllers';
 
+// Initialize testing server
 const test = require("firebase-functions-test")({
     projectId: 'bipolarbridges',
   });
+admin.initializeApp();
 
-initializeAsync(clientConfig);
-
-class ClientAuthController extends AuthControllerBase {
-
-    get targetRole(): any {
-        throw new Error('Method not implemented.');
-    }
-    get locationUrl(): string {
-        throw new Error('Method not implemented.');
-    }
-    protected get Storage(): any {
-        return StorageMock;
-    }
-    signInWithEmailLink(email: string, reason: any): Promise<void> {
-        throw new Error('Method not implemented.');
-    }
-    protected googleSignOut(): Promise<void> {
-        throw new Error('Method not implemented.');
-    }
-
-}
-
+// Some functions for loading, removing tests data
 async function setUpUsers() {
     console.log("Creating users...");
     const result = await createNewEmailUser('user0@test.com', 'secret0');
@@ -44,7 +24,6 @@ async function setUpUsers() {
         fail();
     }
 }
-
 async function clearUsers() {
     console.log("Deleting users...");
     const result = await clearAllUsers();
@@ -53,29 +32,27 @@ async function clearUsers() {
     }
 }
 
-admin.initializeApp();
-
-type ProcessEnv = 'production' | 'staging' | 'development';
-
-const environment = {
-    APP_ENV: 'production' as ProcessEnv
-};
-
-describe("Auth Functions", () => {
+// Tests
+let auth: IAuthController = null;
+describe("Authentication", () => {
+    beforeAll(async () => {
+        // Initialize testing client
+        await initializeAsync(clientConfig);
+    });
     beforeEach(async () => {
         await setUpUsers();
-    })
+        auth = new ClientAuthController();
+    });
     afterEach(async () => {
         test.cleanup();
         await clearUsers();
     });
     it("Should not generate an id token if client is not signed in", async () => {
-        const getTokenResult = await new ClientAuthController().getAuthToken();
+        const getTokenResult = await auth.getAuthToken();
         expect(getTokenResult.result).to.be.false;
         expect(getTokenResult.token).to.be.undefined;
     });
     it("Should generate an id token for a logged in user", async () => {
-        const auth = new ClientAuthController();
         await auth.signInWithEmailPassword('user0@test.com', 'secret0');
         const getTokenResult: GetTokenResult = await auth.getAuthToken();
         expect(getTokenResult.result).to.be.true;
