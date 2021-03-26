@@ -7,6 +7,7 @@ import {
     GetTokenResult,
 } from 'common/abstractions/controlllers/IAuthController';
 import { observable } from 'mobx';
+import firebase from 'firebase';
 import Firebase from 'common/services/firebase';
 import { createLogger } from 'common/logger';
 import { UserRoles } from 'common/models';
