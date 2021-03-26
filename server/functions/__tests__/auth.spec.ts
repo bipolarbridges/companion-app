@@ -1,15 +1,5 @@
-process.env.APP_ENV = 'staging';
-process.firebaseForPlatform = {
-    android: {
-        apiKey: '...'
-    },
-    ios: {
-
-    }
-}
-// TODO: these configs and the mock used below leave
-// a lot to be desired - should figure out why configs don't
-// load in process
+import mockProcess from './mocks/client/process';
+process = mockProcess;
 
 import * as admin from 'firebase-admin';
 import AuthControllerBase from '../../../common/controllers/AuthController';
@@ -17,14 +7,14 @@ import { initializeAsync, initializeAsync as initializeFirebaseAsync } from '../
 import { fail } from 'assert';
 const { expect } = require("chai");
 import { createNewEmailUser, clearAllUsers } from './util/auth';
-//import Env from '../../../dashboard/app/constants/env';
-import clientConfig from './mocks/firebase/client/config';
+import clientConfig from './mocks/client/config';
+import StorageMock from './mocks/client/storage';
+import { GetTokenResult } from '../../../common/abstractions/controlllers/IAuthController';
 
 const test = require("firebase-functions-test")({
     projectId: 'bipolarbridges',
   });
 
-//admin.initializeApp();
 initializeAsync(clientConfig);
 
 class ClientAuthController extends AuthControllerBase {
@@ -36,7 +26,7 @@ class ClientAuthController extends AuthControllerBase {
         throw new Error('Method not implemented.');
     }
     protected get Storage(): any {
-        throw new Error('Method not implemented.');
+        return StorageMock;
     }
     signInWithEmailLink(email: string, reason: any): Promise<void> {
         throw new Error('Method not implemented.');
@@ -83,5 +73,16 @@ describe("Auth Functions", () => {
         const getTokenResult = await new ClientAuthController().getAuthToken();
         expect(getTokenResult.result).to.be.false;
         expect(getTokenResult.token).to.be.undefined;
+    });
+    it("Should generate an id token for a logged in user", async () => {
+        const auth = new ClientAuthController();
+        await auth.signInWithEmailPassword('user0@test.com', 'secret0');
+        const getTokenResult: GetTokenResult = await auth.getAuthToken();
+        expect(getTokenResult.result).to.be.true;
+        if (getTokenResult.token) {
+            console.log(`Token: ${getTokenResult.token}`);
+        } else {
+            fail();
+        }
     });
 });
