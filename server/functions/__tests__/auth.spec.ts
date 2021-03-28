@@ -44,7 +44,8 @@ describe("Authentication", () => {
         auth = new ClientAuthController();
     });
     afterEach(async () => {
-        test.cleanup();
+        auth = null;
+        await test.cleanup();
         await clearUsers();
     });
     it("Should not generate an id token if client is not signed in", async () => {
