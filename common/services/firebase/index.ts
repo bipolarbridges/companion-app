@@ -1,6 +1,6 @@
 import { createLazy } from 'common/utils/lazy.light';
 import firebase from 'firebase/app';
-import "firebase/auth";
+import 'firebase/auth';
 
 import { FirebaseApp } from './firebase.lib';
 import { createLogger } from 'common/logger';
