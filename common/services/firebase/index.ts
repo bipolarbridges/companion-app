@@ -100,7 +100,6 @@ export async function initializeAsync(settings: FirebaseSettings) {
     logger.log('Settings:', Settings);
 
     // Initialize Firebase
-    console.log(firebaseConfig);
     instance = library.initializeApp(firebaseConfig);
     if (firebaseConfig.apiKey === process.firebaseForPlatform.android.apiKey) {
         firebase.firestore().settings({ experimentalForceLongPolling: true });
