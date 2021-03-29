@@ -68,11 +68,11 @@
     "storage": {
       "rules": "storage.rules"
     },
-    "emulators": {
+	"emulators": {
     	"ui": {
       		"enabled": true,
       		"host": "${FB_EMULATOR_UI_ADDR}",
-      		"port": ${FB_EMULATOR_UI_PORT}
+      		"port": "${FB_EMULATOR_UI_PORT}"
     	},
     	"firestore": {
       		"port": 5555
@@ -86,5 +86,5 @@
     	"auth": {
       		"port": 9099
     	}
-  }
+  	}
 }
