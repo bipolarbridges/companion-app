@@ -12,7 +12,7 @@ const FB_HEADERS = {
 };
 
 const authEndpoint = axios.create({
-	baseURL: 'http://localhost:9099/identitytoolkit.googleapis.com/v1',
+    baseURL: 'http://localhost:9099/identitytoolkit.googleapis.com/v1',
     headers: FB_HEADERS,
 });
 
