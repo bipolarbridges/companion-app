@@ -111,7 +111,7 @@ async function generateToken(data: { email: string }): Promise<{ result: boolean
     return { result: true, token };
 }
 
-async function validateToken(data: { email: string, token: string}): Promise<{ result: boolean }> {
+export async function validateToken(data: { email: string, token: string}): Promise<{ result: boolean }> {
     if (!data.email || !data.token) {
         throw new Error('Missing email or token');
     }

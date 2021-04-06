@@ -1,7 +1,7 @@
 process.env.APP_ENV = 'staging';
-process['firebaseForPlatform'] = {
+process.firebaseForPlatform = {
     android: {},
-    ios: {}
+    ios: {},
 };
 
 export default process;

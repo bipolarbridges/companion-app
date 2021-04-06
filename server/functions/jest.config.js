@@ -2,13 +2,14 @@ module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
 	roots: [
-		'<rootDir>'
+		'<rootDir>',
 	],
    	testMatch: [
-        '<rootDir>/__tests__/*.spec.ts'
+        '<rootDir>/__tests__/*.spec.ts',
     ],
 	moduleNameMapper: {
-		'^common/(.*)': '<rootDir>/../../common/$1'
+		'^common/(.*)': '<rootDir>/../../common/$1',
+		'^server/(.*)': '<rootDir>/src/$1',
 		// add mappings if needed
 	},
 	moduleDirectories: [
