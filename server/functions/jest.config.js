@@ -1,16 +1,19 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    'moduleNameMapper': {
-        //'^common/(.*)': '../common/$1'
-    },
-    'modulePaths': [
-        'src',
-        'node_modules',
-        '../..'
+	roots: [
+		'<rootDir>'
+	],
+   	testMatch: [
+        '<rootDir>/__tests__/*.spec.ts'
     ],
-    'testPathIgnorePatterns': [
-        '/util/*',
-        '/mocks/*'
-    ]
+	moduleNameMapper: {
+		'^common/(.*)': '<rootDir>/../../common/$1'
+		// add mappings if needed
+	},
+	modulePaths: [
+		'<rootDir>/node_modules',
+		'<rootDir/../../dashboard/node_modules>'
+		// add additional modules if needed
+	],
 };
