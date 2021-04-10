@@ -1,6 +1,5 @@
-import { reaction, transaction, observable, computed, toJS } from 'mobx';
-import AppController from 'src/controllers';
-import { Domains, QUESTIONS_COUNT, DOMAIN_QUESTION_COUNT, Domain_Importance, DOMAIN_COUNT } from "../constants/QoLSurvey";
+import {observable} from 'mobx';
+import { Domains,Domain_Importance, DOMAIN_COUNT, Strategies } from "../constants/QoLSurvey";
 import { createLogger } from 'common/logger';
 
 export const logger = createLogger('[QOLModel]');
@@ -21,6 +20,7 @@ export default class ChooseDomainViewModel {
     public domainCount: number = DOMAIN_COUNT;
 
 
+
     constructor() {
 
         this._mainDomain = 1;
@@ -34,10 +34,12 @@ export default class ChooseDomainViewModel {
     // @computed
     get SelectedDomain (): any {return this._selectedDomains};
 
+    get getStrategies (): any {return Strategies};
+
     public getDomainDisplay () : string[] {
-        return [Domains[this._leftDomain % DOMAIN_COUNT], 
-        Domains[this._mainDomain % DOMAIN_COUNT], 
-        Domains[this._rightDomain % DOMAIN_COUNT],
+        return [Domains[this._leftDomain], 
+        Domains[this._mainDomain], 
+        Domains[this._rightDomain],
         Domain_Importance[this._mainDomain]];
     }
 

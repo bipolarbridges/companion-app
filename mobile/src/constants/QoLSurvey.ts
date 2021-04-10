@@ -13,6 +13,25 @@ export const Domains = [
     "IDENTITY",
 ]
 
+export const Strategies = [
+   {strat:"Consectetur adipiscing elit", domains:["PHYSICAL"]},
+   {strat:"Eiusmod tempor incididunt ut", domains:["MOOD", "COGNITION"]},
+   {strat:"Aliquip ex ea commodo consequat", domains:["LEISURE", "PHYSICAL"]},
+   {strat:"Excepteur sint occaecat cupidatat", domains:["HOME", "SELF_ESTEEM"]},
+   {strat:"culpa qui officia deserunt mollit", domains:["IDENTITY", "INDEPENDENCE"]},
+   {strat:"Vulputate mi sit amet mauris commodo",domains:["MONEY", "RELATIONSHIPS"]},
+   {strat:"Viverra nam libero justo ", domains:["IDENTITY"]},
+   {start:"Integer feugiat scelerisque varius morbi", domains:["SLEEP"]},
+   {start:"Consectetur adipiscing elit", domains:["SLEEP", "MONEY"]},
+   {strat:"Eiusmod tempor incididunt ut", domains:["SPIRITUAL"]},
+   {strat:"Aliquip ex ea commodo consequat", domains:["MOOD", "SLEEP", "IDENTITY"]},
+   {strat:"Excepteur sint occaecat cupidatat", domains: ["SELF_ESTEEM", "INDEPENDENCE"]},
+   {start:"Consectetur adipiscing elit", domains:["LEISURE", "MONEY"]},
+   {strat:"Eiusmod tempor incididunt ut", domains:["SPIRITUAL", "PHYSICAL"]},
+   {strat:"Aliquip ex ea commodo consequat", domains:["MOOD", "SLEEP", "COGNITION"]},
+   {strat:"Excepteur sint occaecat cupidatat", domains: ["SELF_ESTEEM", "INDEPENDENCE"]},
+]
+
 export const Domain_Importance =  [
     "PHYSICAL = Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
     "SLEEP = Sleeeeepz Sleeeeepz Sleeeeepz Sleeeeepz incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud ",
@@ -91,6 +110,8 @@ export const SurveyQuestions  = [
     "Had a clear idea of what I want and don’t want",
     "Had control over my life",
 ];
+
+
 
 export const QUESTIONS_COUNT = SurveyQuestions.length; // 48
 export const DOMAIN_COUNT = Domains.length; // 12

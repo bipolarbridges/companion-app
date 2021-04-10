@@ -41,6 +41,9 @@ import {SelectDomainView} from './views/lifeDomains/selectDomain';
 import {ThreeDomainView} from './views/lifeDomains/threeDomains';
 import {ChooseDomainEndView} from './views/lifeDomains/chooseDomainEnd';
 
+
+import {ChooseStrategiesView} from './views/strategies/chooseStrategies';
+
 import { qolEndView } from './views/qol/endQOL';
 import { qolQuestion } from './views/qol/qolQuestion';
 
@@ -406,6 +409,13 @@ export const MasloScenario: GlobalScenario<States> = {
         view: ChooseDomainEndView,
         exit: [
             { target: States.Choose_Domain, trigger: [Triggers.Cancel] },
+            { target: States.Choose_Strategies, trigger: [Triggers.Submit] },
+        ]
+    },
+    [States.Choose_Strategies]: {
+        view: ChooseStrategiesView,
+        exit: [
+            { target: States.Choose_end, trigger: [Triggers.Cancel] },
             // { target: States.qol_Physical, trigger: [Triggers.Submit] },
         ]
     },
