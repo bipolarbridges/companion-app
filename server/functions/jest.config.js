@@ -21,5 +21,6 @@ module.exports = {
 	],
     'testPathIgnorePatterns': [
         '/util/*',
+        '/mocks/*'
     ]
 };
