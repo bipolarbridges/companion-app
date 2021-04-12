@@ -51,7 +51,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "libphonenumber-js": "^1.7.55",
     "long": "^4.0.0",
-    "mobx": "^6.1.8",
+    "mobx": "^6.2.0",
     "module-alias": "^2.2.2",
     "stripe": "^7.14.0",
     "twilio": "^3.47.0",
@@ -72,7 +72,7 @@
     "ts-node": "^8.10.2",
     "tsconfig-paths": "^3.9.0",
     "tslint": "^6.1.2",
-    "ttypescript": "^1.5.10",
+    "ttypescript": "^1.5.12",
     "typescript": "^3.9.7"
   },
   "private": true

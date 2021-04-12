@@ -1,6 +1,6 @@
 export default {
-    functionsEmulatorUrl: 'http://localhost:5001',
-    firestoreEmulatorUrl: 'http://localhost:5555',
+    functionsEmulatorUrl: 'localhost:5001',
+    firestoreEmulatorUrl: 'localhost:5555',
     authenticationEmulatorUrl: 'http://localhost:9099',
     config: {
         apiKey: '...',
