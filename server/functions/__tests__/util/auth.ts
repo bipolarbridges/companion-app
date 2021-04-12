@@ -1,24 +1,24 @@
-import { FirebaseConfig } from "../../../../common/services/firebase";
+import { FirebaseConfig } from '../../../../common/services/firebase';
 
-const axios = require('axios');
-const { env } = require('../../../../env');
+import axios from 'axios';
+import { env } from '../../../../env';
 
 const fbConfig: FirebaseConfig = env.production.firebase.config;
 
 const FB_HEADERS = {
     // this is hard-coded to match secret specification for emulator. See
     // https://github.com/firebase/firebase-tools/issues/1363#issuecomment-498364771)
-    "Authorization": "Bearer owner"
+    'Authorization': 'Bearer owner',
 };
 
 const authEndpoint = axios.create({
-	baseURL: "http://localhost:9099/identitytoolkit.googleapis.com/v1",
-    headers: FB_HEADERS
+    baseURL: 'http://localhost:9099/identitytoolkit.googleapis.com/v1',
+    headers: FB_HEADERS,
 });
 
 const adminEndpoint = axios.create({
     baseURL: `http://localhost:9099/emulator/v1/projects/${fbConfig.projectId}`,
-    headers: FB_HEADERS
+    headers: FB_HEADERS,
 });
 
 async function assertResult(rout: Promise<any>, result: boolean = true): Promise<boolean> {
@@ -34,8 +34,8 @@ export async function createNewEmailUser(email: string, password: string): Promi
     // Create user
     return assertResult(authEndpoint.post('/accounts:signUp', { email, password }, {
         headers: {
-            "Content-Type": "application/json",
-        }
+            'Content-Type': 'application/json',
+        },
     }));
     // // Sanity-check: confirm that same user cannot be created again
     // return assertResult(authEndpoint.post('/accounts:signUp', { email, password }), false);
