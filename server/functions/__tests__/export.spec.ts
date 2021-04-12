@@ -1,19 +1,13 @@
 import * as admin from 'firebase-admin';
 import { ExportFunctions } from '../src/export';
-import { fail } from 'assert';
-const { expect } = require("chai");
+import { init } from './util/firebase';
+import { assert } from 'chai';
 
-const test = require("firebase-functions-test")({
-    projectId: 'bipolarbridges',
-  });
+const test = init('example-test');
 
-admin.initializeApp();
-
-describe("Export Functions", () => {
-    afterEach(() => {
-        test.cleanup();
-    });
-    it("Should export new accounts", async () => {
+describe('Export Functions', () => {
+    afterEach(test.cleanup);
+    it('Should export new accounts', async () => {
         const clientId = 'client0';
         const handle = test.wrap(ExportFunctions.newAccount);
         await admin.firestore()
@@ -26,11 +20,11 @@ describe("Export Functions", () => {
             { coachId },
             `/clients/${clientId}/accounts/${acctId}`);
         const result = await(handle(snap, {
-            params: { clientId, acctId }
+            params: { clientId, acctId },
         }));
-        expect(result.error).to.be.null;
+        assert.isNull(result.error);
       });
-    it("Should export new record data", async () => {
+    it('Should export new record data', async () => {
         const clientId = 'client0@email.com';
         const handle = test.wrap(ExportFunctions.measurement);
         await admin.firestore()
@@ -59,11 +53,11 @@ describe("Export Functions", () => {
                         score: 5,
                         magnitude: 0.9,
                     },
-                    language: "english",
+                    language: 'english',
                     sentences: [
                         {
                             text: {
-                                content: "Aenean lacinia bibendum nulla sed consectetur.",
+                                content: 'Aenean lacinia bibendum nulla sed consectetur.',
                                 beginOffset: 0,
                             },
                             sentiment: {
@@ -73,19 +67,19 @@ describe("Export Functions", () => {
                         },
                         {
                             text: {
-                                content: "Maecenas sed diam eget risus varius blandit sit amet non magna.",
+                                content: 'Maecenas sed diam eget risus varius blandit sit amet non magna.',
                                 beginOffset: 0,
                             },
                             sentiment: {
                                 score: 4,
                                 magnitude: 0.8,
                             },
-                        }
+                        },
                     ],
-                }
+                },
             },
             `/records/${recordId}`);
         const result = await(handle(snap));
-        expect(result.error).to.be.null;
+        assert.isNull(result.error);
       });
 });
