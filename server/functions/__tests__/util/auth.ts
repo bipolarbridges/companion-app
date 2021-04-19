@@ -1,6 +1,6 @@
 import { FirebaseConfig } from '../../../../common/services/firebase';
 
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { env } from '../../../../env';
 
 const fbConfig: FirebaseConfig = env.production.firebase.config;
@@ -30,13 +30,20 @@ async function assertResult(rout: Promise<any>, result: boolean = true): Promise
     });
 }
 
-export async function createNewEmailUser(user: { email: string, password: string }): Promise<boolean> {
+export async function createNewEmailUser(user: { email: string, password: string }): Promise<string> {
     // Create user
-    return assertResult(authEndpoint.post('/accounts:signUp', user, {
+    return authEndpoint.post('/accounts:signUp', user, {
         headers: {
             'Content-Type': 'application/json',
         },
-    }));
+    })
+    .then((res: AxiosResponse) => {
+        return res.data['localId']; // this is the id of the new user
+    })
+    .catch((err: any) => {
+        console.log(err);
+        throw new Error("error sending sign up request");
+    });
     // // Sanity-check: confirm that same user cannot be created again
     // return assertResult(authEndpoint.post('/accounts:signUp', { email, password }), false);
 }
