@@ -38,11 +38,11 @@ export async function createNewEmailUser(user: { email: string, password: string
         },
     })
     .then((res: AxiosResponse) => {
-        return res.data['localId']; // this is the id of the new user
+        return res.data.localId; // this is the id of the new user
     })
     .catch((err: any) => {
         console.log(err);
-        throw new Error("error sending sign up request");
+        throw new Error('error sending sign up request');
     });
     // // Sanity-check: confirm that same user cannot be created again
     // return assertResult(authEndpoint.post('/accounts:signUp', { email, password }), false);

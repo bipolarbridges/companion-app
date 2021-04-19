@@ -27,7 +27,7 @@ export async function create() {
         try {
             const id: string = await createNewEmailUser(u.user);
             if (!id) {
-                throw new Error("nil id");
+                throw new Error('nil id');
             } else {
                 u.id = id;
                 resolve();
