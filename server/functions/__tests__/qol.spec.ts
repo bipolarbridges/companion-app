@@ -10,6 +10,12 @@ import clientConfig from './mocks/client/config';
 
 import { createDomain, createQuestion, getDomains, getQuestions } from 'server/qol';
 import { QoLActionTypes } from 'common/models/dtos/qol';
+import { IBackendController } from 'common/abstractions/controlllers/IBackendController';
+import * as userData from './mocks/data/users';
+import { ClientAuthController } from './mocks/client/controllers';
+import { IAuthController } from 'common/abstractions/controlllers/IAuthController';
+import BackendControllerBase from 'common/controllers/BackendController';
+import { PartialQol } from 'common/models/QoL';
 
 const test = firebase.init('qol-test');
 
@@ -18,7 +24,7 @@ async function fbCleanup() {
     await test.cleanup();
 }
 
-describe('QoL', () => {
+describe('QoL API', () => {
     beforeAll(async () => {
         // Initialize testing client
         await initializeAsync(clientConfig);
@@ -98,6 +104,28 @@ describe('QoL', () => {
                 type: QoLActionTypes.GetQuestions,
             });
             assert.lengthOf(getResult.results, 1);
+        });
+    });
+});
+
+let auth: IAuthController = null;
+let backend: IBackendController = null; // this is the component under test
+describe('QoL Helpers', () => {
+    beforeAll(async () => {
+        await initializeAsync(clientConfig);
+    });
+    describe("Partial State Sync", () => {
+        afterEach(fbCleanup);
+        beforeEach(async () => {
+            await userData.create();
+            auth = new ClientAuthController();
+            backend = new BackendControllerBase();
+            const u = userData.getUser();
+            await auth.signInWithEmailPassword(u.email, u.password);
+        });
+        it("Should properly indicate when no state exists", async () => {
+            const result: PartialQol = await backend.getPartialQol();
+            assert.isNull(result);
         });
     });
 });
