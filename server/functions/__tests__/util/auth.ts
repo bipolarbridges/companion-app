@@ -30,9 +30,9 @@ async function assertResult(rout: Promise<any>, result: boolean = true): Promise
     });
 }
 
-export async function createNewEmailUser(email: string, password: string): Promise<boolean> {
+export async function createNewEmailUser(user: { email: string, password: string }): Promise<boolean> {
     // Create user
-    return assertResult(authEndpoint.post('/accounts:signUp', { email, password }, {
+    return assertResult(authEndpoint.post('/accounts:signUp', user, {
         headers: {
             'Content-Type': 'application/json',
         },
