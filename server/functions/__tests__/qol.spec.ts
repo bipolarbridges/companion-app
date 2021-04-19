@@ -108,6 +108,21 @@ describe('QoL API', () => {
     });
 });
 
+const qolData = { 
+    "physical": 10,
+    "sleep": 7,
+    "mood": 10,
+    "cognition": 7,
+    "leisure": 10,
+    "relationships": 10,
+    "spiritual": 8,
+    "money": 8,
+    "home": 10,
+    "self-esteem": 8,
+    "independence": 10,
+    "identity": 10,
+};
+
 let auth: IAuthController = null;
 let backend: IBackendController = null; // this is the component under test
 describe('QoL Helpers', () => {
@@ -115,7 +130,10 @@ describe('QoL Helpers', () => {
         await initializeAsync(clientConfig);
     });
     describe("Partial State Sync", () => {
-        afterEach(fbCleanup);
+        afterEach(async () => {
+            await fbCleanup();
+            await userData.clear();
+        });
         beforeEach(async () => {
             await userData.create();
             auth = new ClientAuthController();
@@ -126,6 +144,12 @@ describe('QoL Helpers', () => {
         it("Should properly indicate when no state exists", async () => {
             const result: PartialQol = await backend.getPartialQol();
             assert.isNull(result);
+        });
+        it("Should set partial state", async () => {
+            const sendResult: boolean = await backend.sendPartialQol(null, qolData, 0, 0);
+            assert.isTrue(sendResult);
+            const getResult: PartialQol = await backend.getPartialQol();
+            assert.equal(getResult.scores, qolData);
         });
     });
 });
