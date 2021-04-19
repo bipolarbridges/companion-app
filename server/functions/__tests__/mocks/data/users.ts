@@ -6,8 +6,8 @@ import { createNewEmailUser, clearAllUsers } from '../../util/auth';
 
 export type User = {
     email:      string,
-    password:   string
-}
+    password:   string,
+};
 
 const database: User[] = [
 
@@ -21,7 +21,7 @@ export async function create() {
     await Promise.all(database.map((u): Promise<void> => new Promise(async (resolve, reject) => {
         const result = await createNewEmailUser(u);
         if (!result) {
-            reject("error creating user database");
+            reject('error creating user database');
         } else {
             resolve();
         }
@@ -32,13 +32,13 @@ export async function clear() {
     console.log('Deleting users...');
     const result = await clearAllUsers();
     if (!result) {
-        throw new Error("error clearing user database");
+        throw new Error('error clearing user database');
     }
 }
 
 export function getUser(idx: number = 0): User {
     if (idx >= database.length) {
-        throw new Error("user database index is invalid")
+        throw new Error('user database index is invalid');
     } else {
         return database[idx];
     }
