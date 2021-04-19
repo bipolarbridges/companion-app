@@ -14,7 +14,7 @@ import { IBackendController } from 'common/abstractions/controlllers/IBackendCon
 import * as userData from './mocks/data/users';
 import { ClientAuthController } from './mocks/client/controllers';
 import { IAuthController } from 'common/abstractions/controlllers/IAuthController';
-import BackendControllerBase from 'common/controllers/BackendController';
+import BackendController from 'common/controllers/BackendController';
 import { PartialQol } from 'common/models/QoL';
 
 const test = firebase.init('qol-test');
@@ -140,7 +140,16 @@ const qolData = [
 ];
 
 let auth: IAuthController = null;
-let backend: IBackendController = null; // this is the component under test
+let backend: BackendController = null; // this is the component under test
+
+async function setUser(idx: number): Promise<userData.User> {
+    await auth.signOut(); // we are using indexed users
+    const u = userData.getUser(idx);
+    await auth.signInWithEmailPassword(u.email, u.password);
+    backend.setUser(userData.getId(idx));
+    return u;
+}
+
 describe('QoL Helpers', () => {
     beforeAll(async () => {
         await initializeAsync(clientConfig);
@@ -153,7 +162,7 @@ describe('QoL Helpers', () => {
         beforeEach(async () => {
             await userData.create();
             auth = new ClientAuthController();
-            backend = new BackendControllerBase();
+            backend = new BackendController();
             const u = userData.getUser();
             await auth.signInWithEmailPassword(u.email, u.password);
         });
@@ -178,22 +187,17 @@ describe('QoL Helpers', () => {
             assert.notEqual(qolData[0], qolData[1]);
 
             // first user, and send
-            await auth.signOut(); // we are using indexed users
-            const u0 = userData.getUser(0);
-            await auth.signInWithEmailPassword(u0.email, u0.password);
+            await setUser(0);
             await backend.sendPartialQol(null, qolData[0], 0, 0);
 
             // second user, send, get
-            await auth.signOut();
-            const u1 = userData.getUser(1);
-            await auth.signInWithEmailPassword(u1.email, u1.password);
+            await setUser(1);
             await backend.sendPartialQol(null, qolData[1], 0, 0);
             let getResult: PartialQol = await backend.getPartialQol();
             assert.equal(getResult.scores, qolData[1]);
 
             // first user, get
-            await auth.signOut();
-            await auth.signInWithEmailPassword(u0.email, u0.password);
+            await setUser(0);
             getResult = await backend.getPartialQol();
             assert.equal(getResult.scores, qolData[0]);
         });
