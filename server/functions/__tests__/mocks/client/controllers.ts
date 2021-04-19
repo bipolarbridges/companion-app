@@ -18,6 +18,8 @@ export class ClientAuthController extends AuthControllerBase {
     protected googleSignOut(): Promise<void> {
         throw new Error('Method not implemented.');
     }
-    protected async servicesSignOut() {};
+    protected async servicesSignOut() {
+        return;
+    }
 
 }
