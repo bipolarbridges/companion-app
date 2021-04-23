@@ -14,22 +14,22 @@ export const Domains = [
 ]
 
 export const Strategies = [
-   {strat:"Consectetur adipiscing elit", domains:["PHYSICAL"]},
-   {strat:"Eiusmod tempor incididunt ut", domains:["MOOD", "COGNITION"]},
-   {strat:"Aliquip ex ea commodo consequat", domains:["LEISURE", "PHYSICAL"]},
-   {strat:"Excepteur sint occaecat cupidatat", domains:["HOME", "SELF_ESTEEM"]},
-   {strat:"culpa qui officia deserunt mollit", domains:["IDENTITY", "INDEPENDENCE"]},
-   {strat:"Vulputate mi sit amet mauris commodo",domains:["MONEY", "RELATIONSHIPS"]},
-   {strat:"Viverra nam libero justo ", domains:["IDENTITY"]},
-   {start:"Integer feugiat scelerisque varius morbi", domains:["SLEEP"]},
-   {start:"Consectetur adipiscing elit", domains:["SLEEP", "MONEY"]},
-   {strat:"Eiusmod tempor incididunt ut", domains:["SPIRITUAL"]},
-   {strat:"Aliquip ex ea commodo consequat", domains:["MOOD", "SLEEP", "IDENTITY"]},
-   {strat:"Excepteur sint occaecat cupidatat", domains: ["SELF_ESTEEM", "INDEPENDENCE"]},
-   {start:"Consectetur adipiscing elit", domains:["LEISURE", "MONEY"]},
-   {strat:"Eiusmod tempor incididunt ut", domains:["SPIRITUAL", "PHYSICAL"]},
-   {strat:"Aliquip ex ea commodo consequat", domains:["MOOD", "SLEEP", "COGNITION"]},
-   {strat:"Excepteur sint occaecat cupidatat", domains: ["SELF_ESTEEM", "INDEPENDENCE"]},
+   {strat:"Consectetur adipiscing elit", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor1", domains:["PHYSICAL"]},
+   {strat:"Eiusmod tempor incididunt ut", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor2",domains:["MOOD", "COGNITION"]},
+   {strat:"Aliquip ex ea commodo consequat", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor3",domains:["LEISURE", "PHYSICAL"]},
+   {strat:"Excepteur sint occaecat cupidatat", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor4",domains:["HOME", "SELF_ESTEEM"]},
+   {strat:"culpa qui officia deserunt mollit", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor5",domains:["IDENTITY", "INDEPENDENCE"]},
+   {strat:"Vulputate mi sit amet mauris commodo",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor6",domains:["MONEY", "RELATIONSHIPS", "SPIRITUALITY"]},
+   {strat:"Viverra nam libero justo ", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor7",domains:["IDENTITY"]},
+   {strat:"Integer feugiat scelerisque",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor8", domains:["SLEEP"]},
+   {strat:"Consectetur adipiscing elit12",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor9", domains:["SLEEP", "MONEY"]},
+   {strat:"Eiusmod tempor incididunt 3",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor10", domains:["SPIRITUAL"]},
+   {strat:"Aliquip ex ea commodo consequat12",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor11", domains:["MOOD", "SLEEP", "IDENTITY"]},
+   {strat:"Excepteur sint occaecat cupidatat12",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor12", domains: ["SELF_ESTEEM", "INDEPENDENCE", "MONEY"]},
+   {strat:"Consectetur adipiscing elit1",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor143", domains:["LEISURE", "MONEY"]},
+   {strat:"Eiusmod tempor incididunt ut1",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor14", domains:["SPIRITUAL", "PHYSICAL"]},
+   {strat:"Aliquip ex ea commodo consequat1",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor15", domains:["MOOD", "SLEEP", "COGNITION"]},
+   {strat:"Excepteur sint occaecat cupidatat1",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor16", domains: ["SELF_ESTEEM", "INDEPENDENCE"]},
 ]
 
 export const Domain_Importance =  [

@@ -86,20 +86,6 @@ export class ChooseDomainView extends ViewState {
         this.trigger(ScenarioTriggers.Cancel);
     }
 
-    onClose = (): void | Promise<void> => this.runLongOperation(async () => {
-        this.showModal({
-            title: `Do you really want to stop? Your progress will not be saved.`,
-            primaryButton: {
-                text: 'yes, stop',
-                action: this.cancel,
-            },
-            secondaryButton: {
-                text: 'no, go back',
-                action: this.hideModal,
-            }
-        });
-    })
-
     onDetails = () => {
         this.trigger(ScenarioTriggers.Submit);
     }
@@ -120,7 +106,7 @@ export class ChooseDomainView extends ViewState {
         let { xTabOne, xTabTwo, active, translateX, translateXTabTwo, translateXTabOne, translateY, xDomain } = this.state
         const [lDomain, domain, rDomain, importance] = this.viewModel.getDomainDisplay();
         const domainLength = this.viewModel.domainCount;
-        const domainsChosen = this.viewModel.SelectedDomain;
+        const domainsChosen = this.viewModel.selectedDomain;
         // let mainDomain, leftDomain, rightDomain = 0;
         // TODO: put styles in style sheet and abstract common styles
         // TODO: see if there are styles in basestyles that work

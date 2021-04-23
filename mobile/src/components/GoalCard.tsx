@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import Colors from 'src/constants/colors';
 import Images from 'src/constants/images';
 import TextStyles from 'src/styles/TextStyles';
-
+// need dat
 export type GoalCardProps = {
     title: string
     checked: boolean;

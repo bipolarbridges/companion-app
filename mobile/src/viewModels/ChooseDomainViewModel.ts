@@ -32,7 +32,7 @@ export default class ChooseDomainViewModel {
     }
 
     // @computed
-    get SelectedDomain (): any {return this._selectedDomains};
+    get selectedDomain (): any {return this._selectedDomains};
 
     get getStrategies (): any {return Strategies};
 
