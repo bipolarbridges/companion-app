@@ -42,12 +42,29 @@ Clone the respository and ensure you have the requirements below:
 	(we will fill in the path in the next step)
 
 6. Go to the Google Cloud Platform [here](https://console.cloud.google.com/iam-admin/serviceaccounts?project=bipolarbridges). On the "App Engine default service account", click the three dots, select "Create key", and download the json file. Fill in the path to this downloaded file in the `.env` from the previous step.
+
 ## Running and Deploying the App
 
-### Run Mobile Apps Locally
+### Run Mobile Apps Locally on a Simulator
 
-* **iOS**: To run project locally run `yarn ios` from the `./mobile` directory
-* **Android**: To run project locally the first time, open the android directory in android studio, sync with gradle and run the app. In subsequent runs, run `yarn android` from the `./mobile` directory
+**iOS**: To run project locally run `yarn ios` from the `./mobile` directory
+
+**Android**: To run project locally the first time, open the android directory in android studio, sync with gradle and run the app. In subsequent runs, run `yarn android` from the `./mobile` directory
+
+### Run Mobile Apps Locally on a Real Device
+
+**iOS** (Mac Instructions):
+
+1. Open `./mobile/ios/CompanionKit.xcworkspace` in Xcode
+2. In the menu bar (top of screen), go to: Xcode > Preferences > Accounts and sign in with your Apple ID
+3. Click the folder icon in the left navigation pane, and click on “CompanionKit”
+4. In the tabs that open, select “Signing and Capabilities"
+5. Remove the “Associated Domains” capability
+6. Select “Automatically manage signing”
+7. In the “Team dropdown, select your personal team
+8. Open “Keychain Access” from your search bar and on the left navigation pane, ensure “login” is selected
+9. In the tabs that open, select the “Certificates” tab. Find your apple development key, right click and select “Get Info”. In the pop-up that opens, select “Access Control”, and add Xcode with the plus button. (You may also need to follow this step again in the “Keys” tab)
+
 
 ### Deploy Cloud Functionality
 
