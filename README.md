@@ -64,6 +64,7 @@ Clone the respository and ensure you have the requirements below:
 7. In the “Team dropdown, select your personal team
 8. Open “Keychain Access” from your search bar and on the left navigation pane, ensure “login” is selected
 9. In the tabs that open, select the “Certificates” tab. Find your apple development key, right click and select “Get Info”. In the pop-up that opens, select “Access Control”, and add Xcode with the plus button. (You may also need to follow this step again in the “Keys” tab)
+10. Finally change the bundle id in your `.env` file to something unique and run `yarn env:set` from the root directory
 
 
 ### Deploy Cloud Functionality
