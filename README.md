@@ -64,7 +64,17 @@ Clone the respository and ensure you have the requirements below:
 7. In the “Team dropdown, select your personal team
 8. Open “Keychain Access” from your search bar and on the left navigation pane, ensure “login” is selected
 9. In the tabs that open, select the “Certificates” tab. Find your apple development key, right click and select “Get Info”. In the pop-up that opens, select “Access Control”, and add Xcode with the plus button. (You may also need to follow this step again in the “Keys” tab)
-10. Finally change the bundle id in your `.env` file to something unique and run `yarn env:set` from the root directory
+10. Change the bundle id in your `.env` file to something unique and run `yarn env:set` from the root directory
+11. Run the app on your physical device through Xcode
+
+**Android** (Mac Instructions):
+
+1. Enable "DEVELOPER OPTIONS" by going to Settings > About phone > Software Information
+2. Scroll to the bottom and tap on "Build number" seven times (you will see a countdown to let you know when you get to 7)
+3. Go back to Settings > Developer options, and enable "USB Debugging"
+4. Plug in your device via USB and run `adb devices` on your terminal (this verifies connection to the Android Debug Bridge)
+5. You should see "List of devices attached". Make sure your device is listed
+6. Run the app on your physical device by running `yarn android`
 
 
 ### Deploy Cloud Functionality
