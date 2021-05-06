@@ -7,6 +7,8 @@
 1. PR title (above) matches the name of a task on Notion
 2. Task on notion has PR # set to the number of this PR
 3. The base branch of this PR is correct
+4. The status of the PR is set to 'Draft' if applicable
+5. The PR includes an appropriate status label.
 
 # BEGIN PR DESCRIPTION
 
