@@ -26,4 +26,4 @@
 *Include any content which demonstrates new functionality, such as screenshots (for frontend features), links to staging, results of benchmarks.*
 
 ## Testing
-*How the changes are tested, if applicable. Should be 'None', or a non-empty subset of $\{$'Manual', 'Automated'$\}$. For instance, if the code has unit-tests in Jest but requires some manual testing for integration, you might put 'Automated, Manual'.*
+*How the changes are tested, if applicable. Should be 'None', or a non-empty subset of { 'Manual', 'Automated' }. For instance, if the code has unit-tests in Jest but requires some manual testing for integration, you might put 'Automated, Manual'.*
