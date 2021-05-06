@@ -1,6 +1,6 @@
 # Polarus Companion App Pull-Request Template
 
-**Please use this format to fill out the description of your PR as you make progress.** Read the following form carefully, and delete this section before creating the PR.
+**Please use this format to fill out the description of your PR as you make progress.** Read the following form carefully, and delete this section when done.
 
 ## PR Checklist
 (Delete when all items are complete)
