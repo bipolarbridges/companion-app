@@ -1,4 +1,5 @@
-import {observable} from 'mobx';
+import { observable} from 'mobx';
+import AppController from 'src/controllers';
 import { Domains,Domain_Importance, DOMAIN_COUNT, Strategies } from "../constants/QoLSurvey";
 import { createLogger } from 'common/logger';
 
@@ -36,6 +37,7 @@ export default class ChooseDomainViewModel {
 
     get getStrategies (): any {return Strategies};
 
+    //  Returns the three domains displayed on the choose domain screen, main(center donain), ldomain(domain on left side), rdomain(domain on right side)
     public getDomainDisplay () : string[] {
         return [Domains[this._leftDomain], 
         Domains[this._mainDomain], 
@@ -43,6 +45,7 @@ export default class ChooseDomainViewModel {
         Domain_Importance[this._mainDomain]];
     }
 
+    //  Iterates through the domains as user clicks the next or back button, (-1) going back, (1) going forward through the list of domains
     public getNextDomain (dir:number) : void {
         if (dir > 0){
             if (!((this._rightDomain + 1) > (DOMAIN_COUNT))) {
@@ -62,8 +65,13 @@ export default class ChooseDomainViewModel {
         }
     }
 
-    public selectDomain(domain: string): void {
+    // adds selected domains by user to the selected domains array, use this array to persist to backend
+    public selectDomain(domain: string): Boolean {
+        if (this._selectedDomains.includes(domain)) {
+            return false;
+        } 
         this._selectedDomains.push(domain);
+        return true;
     }
 
 }

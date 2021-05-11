@@ -2,8 +2,8 @@ import { ViewState } from '../base';
 import React from 'react';
 import { observer } from 'mobx-react';
 import AppViewModel from 'src/viewModels';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Animated, Dimensions } from 'react-native';
-import { MasloPage, Container, Button} from 'src/components';
+import { StyleSheet, Text, View, ScrollView, TouchableHighlight, TouchableOpacity, Animated, Dimensions, Alert } from 'react-native';
+import { MasloPage, Container, Button, BackArrow, GradientChart, Card } from 'src/components';
 import { ScenarioTriggers } from '../../abstractions';
 import Images from 'src/constants/images';
 import Colors from 'src/constants/colors';
@@ -91,8 +91,16 @@ export class ChooseDomainView extends ViewState {
     }
 
     onSelectDomain = n => {
-        this.viewModel.selectDomain(n);
-        this.trigger(ScenarioTriggers.Tertiary);
+        if (this.viewModel.selectDomain(n)) {
+            this.trigger(ScenarioTriggers.Tertiary)
+        } else {
+            Alert.alert(
+                'Oops',
+                'Looks like you have already selected that domain.',
+                [
+                    { text: 'OK' },
+                ]);
+        }
     }
 
     onselectThird = () => {
@@ -203,43 +211,35 @@ export class ChooseDomainView extends ViewState {
                         </View>
                         {/* </View> */}
                     </View>
-                    <View style={{ justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 50, marginBottom: 50 }}>
-                        <Button
-                            title="Select Focus Domain"
-                            style={styles.domain}
-                            titleStyles={styles.selectDomain}
-                            onPress={() => domainsChosen.length == 2 ? this.onselectThird() : this.onSelectDomain(domain)}
-                            isTransparent
-                        />
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 50,
-                        }}>
-
-                        <TouchableOpacity
-                            //  onLayout = {event => this.setState({xDomain: event.nativeEvent.layout.x})}
-                            onPress={() => this.viewModel.getNextDomain(-1)}
-                        // onPress = {() => this.setState({domain: domain - 1, rDomain: rDomain - 1, lDomain: lDomain - 1})}
-
-                        >
-                            <Images.backIcon width={20} height={20} />
-                        </TouchableOpacity>
-                        <Text style={[TextStyles.p1, styles.domain, { fontSize: 30 }]}>{domain}</Text>
-                        <TouchableOpacity
-                            //  onPress = {() => this.setState({domain:domain + 1, rDomain:rDomain + 1, lDomain:lDomain + 1})}
-
-                            //  onPress = {() => this.setState({domain:rDomain === domainLength? domain: domain + 1, rDomain:rDomain === domainLength? rDomain: rDomain + 1, lDomain:rDomain === domainLength? lDomain: lDomain + 1})}
-                            onPress={() => this.viewModel.getNextDomain(1)}
-                        >
-                            <Images.backIcon width={20} height={20} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text style={[TextStyles.labelMedium, styles.domain, { fontSize: 17 }]}>{lDomain}</Text>
-                        <Text style={[TextStyles.labelMedium, styles.domain, { fontSize: 17 }]}>{rDomain}</Text>
+                    <View style={{justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 50, marginBottom: 50}}>
+                                <Button
+                                    title="Select Focus Domain"
+                                    style={styles.domain}
+                                    titleStyles={styles.selectDomain}
+                                    onPress={() => domainsChosen.length == 2?this.onselectThird(): this.onSelectDomain(domain)}
+                                    isTransparent
+                                />
+                     </View>
+                    <View 
+                     style={{
+                         flexDirection: 'row', 
+                         justifyContent: 'space-between', 
+                         marginBottom: 50,
+                         }}>
+                    
+                         <TouchableOpacity 
+                        onPress = {() => this.viewModel.getNextDomain(-1)}
+                         
+                         >
+                         <Images.backIcon width={20} height={20} />
+                         </TouchableOpacity>
+                         <Text style={[TextStyles.p1, styles.domain, {fontSize: 30}]}>{domain}</Text>
+                         <TouchableOpacity 
+                       
+                        onPress = {() => this.viewModel.getNextDomain(1)}
+                         >
+                         <Images.backIcon width={20} height={20} style={{transform: [{ rotate: '180deg' }]}}/>
+                         </TouchableOpacity>
                     </View>
                 </Container>
             </MasloPage>
@@ -264,15 +264,10 @@ const styles = StyleSheet.create({
         width: '90%',
     },
     topView: {
-        // flex: 1,
         borderWidth: 1,
         borderColor: 'red',
         width: '100%',
         height: '100%'
-        // marginLeft: 'auto',
-        // marginRight: 'auto',
-        // height: 100
-        // borderRadius: 5
 
     },
     pView: {
@@ -282,8 +277,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // borderWidth: 1,
-        // borderColor: '#007aff',
         borderRadius: 4,
     },
     placeholderHeading: {
