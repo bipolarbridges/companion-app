@@ -65,7 +65,7 @@ Clone the respository and ensure you have the requirements below:
 8. Open “Keychain Access” from your search bar and on the left navigation pane, ensure “login” is selected
 9. In the tabs that open, select the “Certificates” tab. Find your apple development key, right click and select “Get Info”. In the pop-up that opens, select “Access Control”, and add Xcode with the plus button. (You may also need to follow this step again in the “Keys” tab)
 10. Change the bundle id in your `.env` file to something unique and run `yarn env:set` from the root directory
-11. Run the app on your physical device through Xcode
+11. Run the app on your physical device through Xcode. When prompted, "CompanionKit" would like to find and connect to local devices on your network choose OK otherwise you will receive a bundle.js error and not be able to run. If you tapped Don't Allow delete CompanionKit from your iPhone and retry.
 
 **Android** (Mac Instructions):
 
