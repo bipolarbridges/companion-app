@@ -45,14 +45,7 @@ export class QolEndView extends ViewState<{ opacity: Animated.Value}> {
         this.trigger(ScenarioTriggers.Cancel);
     }
 
-    private onEndSurvey = async () => {
-        await this.viewModel.sendSurveyResults();
-        if (this.viewModel.isUnfinished) {
-            await this.viewModel.saveSurveyProgress(null);
-        }
-        if (this.viewModel.qolType = QolType.Monthly) {
-            this.viewModel.updatePendingMonthlyQol();
-        }
+    private onEndSurvey = () => {
         AppViewModel.Instance.QOL = new QOLSurveyViewModel();
         this.cancel();
     }

@@ -62,12 +62,11 @@ export default class TestBackendControllerBase implements IBackendController {
 
     // Store partial survey state
 	// Any subsequent calls to get will return this state
-    public async sendPartialQol(surveyScores: QolSurveyResults,
-        questionNumber: number, domainNumber: number, firstTimeQol: boolean): Promise<boolean> {
-        if (surveyScores === null) {
+    public async sendPartialQol(qol: PartialQol): Promise<boolean> {
+        if (qol.scores === null) {
             this._partialQolState = null;
         } else {
-            this._partialQolState = {questionNum: questionNumber, domainNum: domainNumber, scores: surveyScores, isFirstTimeQol: firstTimeQol};
+            this._partialQolState = qol;
         }
         return true;
     }

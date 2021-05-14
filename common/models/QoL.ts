@@ -40,6 +40,7 @@ export type PartialQol = {
     domainNum: number,
     scores: QolSurveyResults,
     isFirstTimeQol: boolean,
+    date: number,
 };
 
 export type SurveyState = {

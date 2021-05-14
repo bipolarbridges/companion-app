@@ -24,21 +24,14 @@ export default class BackendControllerBase implements IBackendController {
 
     // Store partial survey state
     // Any subsequent calls to get will return this state
-    public async sendPartialQol(surveyScores: QolSurveyResults,
-        questionNumber: number, domainNumber: number, isFirstTimeQol: boolean): Promise<boolean> {
+    public async sendPartialQol(qol: PartialQol): Promise<boolean> {
 
         console.log(`set partial qol: userId = ${this._userId}`);
         if (!this._userId) {
             return false;
         }
-        const data = surveyScores == null ? null : {
-            questionNum: questionNumber,
-            domainNum: domainNumber,
-            scores: surveyScores,
-            isFirstTimeQol,
-        };
         try {
-            await RepoFactory.Instance.surveyState.setByUserId(this._userId, data);
+            await RepoFactory.Instance.surveyState.setByUserId(this._userId, qol);
             return true;
         } catch (err) {
             return false;

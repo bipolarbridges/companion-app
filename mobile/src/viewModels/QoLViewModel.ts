@@ -113,17 +113,26 @@ export default class QOLSurveyViewModel {
     public savePrevResponse(prevResponse: number): void {
         const currDomain: string = this.domain;
         this._surveyResponses[currDomain] += prevResponse;
+        this.saveSurveyProgress(this.qolMags);
     }
 
     public saveSurveyProgress = async (qolMags: PersonaArmState) => {
         this._armMags = qolMags;
         let res: boolean;
         if (qolMags === null) {
-            res = await AppController.Instance.User.backend.sendPartialQol(null, null, null, null);
+            res = await AppController.Instance.User.backend.sendPartialQol(null);
             this.isUnfinished = false;
 
         } else {
-            res = await AppController.Instance.User.backend.sendPartialQol(this._surveyResponses, this._questionNum, this._domainNum, this.showInterlude);
+            // _questionNum + 1 is required as this method is called before nextQuestion() which increments the questionNum counter
+            let partialQol: PartialQol = {
+                questionNum: this._questionNum + 1,
+                domainNum: this._domainNum,
+                scores: this._surveyResponses,
+                isFirstTimeQol: this.showInterlude,
+                date: new Date().getTime(),
+            }
+            res = await AppController.Instance.User.backend.sendPartialQol(partialQol);
             this.isUnfinished = true;
         }
         return res;

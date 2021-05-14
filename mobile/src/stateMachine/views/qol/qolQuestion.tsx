@@ -7,6 +7,7 @@ import { MasloPage, Container, Button } from 'src/components';
 import { ScenarioTriggers } from '../../abstractions';
 import Colors from '../../../constants/colors';
 import TextStyles from '../../../../src/styles/TextStyles';
+import QOLSurveyViewModel, { QolType } from '../../../viewModels/QoLViewModel';
 
 import { styles } from 'react-native-markdown-renderer';
 
@@ -32,18 +33,22 @@ export class QolQuestion extends ViewState {
 
     async start() {}
 
-    private saveProgress = async () => {
-        await this.viewModel.saveSurveyProgress(this.persona.qolMags);
-        this.cancel();
-    }
-
     private cancel = () => {
         this.persona.qolMags = this.viewModel.origMags;
         this.trigger(ScenarioTriggers.Cancel);
     }
 
-    private finish = () => {
+    private finish = async () => {
         this.trigger(ScenarioTriggers.Submit);
+        if (this.viewModel.questionNum == (this.viewModel.numQuestions - 1)) {
+       await this.viewModel.sendSurveyResults();
+        if (this.viewModel.isUnfinished) {
+            await this.viewModel.saveSurveyProgress(null);
+        }
+        if (this.viewModel.qolType = QolType.Monthly) {
+            this.viewModel.updatePendingMonthlyQol();
+        }
+    }
     }
 
     private isNextDomain = (currQuestion: number) => {
@@ -99,7 +104,7 @@ export class QolQuestion extends ViewState {
             title: `Do you really want to stop the survey? Your progress will be saved.`,
             primaryButton: {
                 text: 'yes, stop',
-                action: this.saveProgress,
+                action: this.cancel,
             },
             secondaryButton: {
                 text: 'no, go back',
