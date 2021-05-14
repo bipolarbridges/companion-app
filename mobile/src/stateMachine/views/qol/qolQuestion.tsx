@@ -41,14 +41,15 @@ export class QolQuestion extends ViewState {
     private finish = async () => {
         this.trigger(ScenarioTriggers.Submit);
         if (this.viewModel.questionNum == (this.viewModel.numQuestions - 1)) {
-       await this.viewModel.sendSurveyResults();
-        if (this.viewModel.isUnfinished) {
-            await this.viewModel.saveSurveyProgress(null);
+            await this.viewModel.sendSurveyResults();
+
+            if (this.viewModel.isUnfinished) {
+                await this.viewModel.saveSurveyProgress(null);
+            }
+            if (this.viewModel.qolType = QolType.Monthly) {
+                this.viewModel.updatePendingMonthlyQol();
+            }
         }
-        if (this.viewModel.qolType = QolType.Monthly) {
-            this.viewModel.updatePendingMonthlyQol();
-        }
-    }
     }
 
     private isNextDomain = (currQuestion: number) => {
