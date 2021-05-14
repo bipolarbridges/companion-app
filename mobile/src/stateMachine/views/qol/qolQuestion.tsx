@@ -40,15 +40,13 @@ export class QolQuestion extends ViewState {
 
     private finish = async () => {
         this.trigger(ScenarioTriggers.Submit);
-        if (this.viewModel.questionNum == (this.viewModel.numQuestions - 1)) {
-            await this.viewModel.sendSurveyResults();
+        await this.viewModel.sendSurveyResults();
 
-            if (this.viewModel.isUnfinished) {
-                await this.viewModel.saveSurveyProgress(null);
-            }
-            if (this.viewModel.qolType = QolType.Monthly) {
-                this.viewModel.updatePendingMonthlyQol();
-            }
+        if (this.viewModel.isUnfinished) {
+            await this.viewModel.saveSurveyProgress(null);
+        }
+        if (this.viewModel.qolType = QolType.Monthly) {
+            this.viewModel.updatePendingMonthlyQol();
         }
     }
 
@@ -79,14 +77,15 @@ export class QolQuestion extends ViewState {
         this.viewModel.savePrevResponse(prevResponse);
         const newDomainMag: number = this.calculateNewDomainMag(prevResponse);
         this.persona.qolMags = {...this.persona.qolMags, [this.viewModel.domain]: newDomainMag }
-        if (this.viewModel.questionNum != (this.viewModel.numQuestions - 1)) {
+
+        if (this.viewModel.questionNum == (this.viewModel.numQuestions - 1)) {
+            this.finish();
+        } else {
             if (this.isNextDomain(this.viewModel.questionNum + 1)) { 
                 this.animateDomainChange();
             } else {
                 this.viewModel.nextQuestion();
             }
-        } else {
-            this.finish();
         }
     }
 
