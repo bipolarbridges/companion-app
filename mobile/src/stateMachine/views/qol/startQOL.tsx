@@ -8,7 +8,6 @@ import { ScenarioTriggers } from '../../abstractions';
 import AppController from 'src/controllers';
 import { QolType } from 'src/viewModels/QoLViewModel';
 
-import { styles } from 'react-native-markdown-renderer';
 import { PersonaArmState } from 'dependencies/persona/lib';
 
 const minContentHeight = 460;

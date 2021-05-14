@@ -9,8 +9,6 @@ import Colors from '../../../constants/colors';
 import TextStyles from '../../../../src/styles/TextStyles';
 import QOLSurveyViewModel, { QolType } from '../../../viewModels/QoLViewModel';
 
-import { styles } from 'react-native-markdown-renderer';
-
 const minContentHeight = 560;
 
 @observer

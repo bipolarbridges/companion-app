@@ -154,36 +154,42 @@ export class LocalSettingsController implements ILocalSettingsController {
     }
 
     updateQolOnboarding(diff: Partial<QolSettings>) {
-        const qol = this.current.qol || { };
-        transaction(() => {
-            let changed = transferChangedFields(diff, qol, "seenOnboardingQol", 'lastMonthlyQol');
+        const qol = this.current.qol;
+        if (qol) {
+            transaction(() => {
+                let changed = transferChangedFields(diff, qol, "seenOnboardingQol", 'lastMonthlyQol');
 
-            if (changed) {
-                this.update({ qol });
-            }
-        });
+                if (changed) {
+                    this.update({ qol });
+             }
+            });
+        }
     }
 
     updateLastMonthlyQol(diff: Partial<QolSettings>) {
-        const qol = this.current.qol || { };
-        transaction(() => {
-            let changed = transferChangedFields(diff, qol, 'lastMonthlyQol');
+        const qol = this.current.qol;
+        if (qol) {
+         transaction(() => {
+                let changed = transferChangedFields(diff, qol, 'lastMonthlyQol');
 
-            if (changed) {
+                if (changed) {
                 this.update({ qol });
-            }
-        });
+             }
+         });
+        }
     }
 
     updatePendingMonthlyQol(diff: Partial<QolSettings>) {
-        const qol = this.current.qol || { };
-        transaction(() => {
-            let changed = transferChangedFields(diff, qol, 'pendingMonthlyQol');
+        const qol = this.current.qol;
+        if (qol) {
+            transaction(() => {
+             let changed = transferChangedFields(diff, qol, 'pendingMonthlyQol');
 
-            if (changed) {
+             if (changed) {
                 this.update({ qol });
             }
-        });
+         });
+        }
     }
 }
 
