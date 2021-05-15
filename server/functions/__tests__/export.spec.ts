@@ -3,17 +3,18 @@ import { ExportFunctions } from '../src/export';
 import { init } from './util/firebase';
 import { assert } from 'chai';
 
-const test = init('example-test');
+const {test, app} = init('example-test');
 
 describe('Export Functions', () => {
     afterEach(test.cleanup);
+
     it('Should export new accounts', async () => {
         const clientId = 'client0';
         const handle = test.wrap(ExportFunctions.newAccount);
-        await admin.firestore()
-        .doc(`/clients/${clientId}`).create({
-            onboarded: true,
-          });
+        await admin.firestore(app)
+            .doc(`/clients/${clientId}`).create({
+                onboarded: true,
+            });
         const acctId = 'account0';
         const coachId = 'coach0';
         const snap = await test.firestore.makeDocumentSnapshot(
@@ -23,17 +24,18 @@ describe('Export Functions', () => {
             params: { clientId, acctId },
         }));
         assert.isNull(result.error);
-      });
+    });
+
     it('Should export new record data', async () => {
         const clientId = 'client0@email.com';
         const handle = test.wrap(ExportFunctions.measurement);
-        await admin.firestore()
+        await admin.firestore(app)
             .doc(`/clients/${clientId}`).create({
                 onboarded: true,
             });
         const acctId = 'account1';
         const coachId = 'GUcXaXk6jOuw5fUw';
-        await admin.firestore()
+        await admin.firestore(app)
             .doc(`/clients/${clientId}/accounts/${acctId}`)
             .create({ coachId });
         const recordId = 'record1';
