@@ -175,7 +175,7 @@ export class UserController extends UserControllerBase implements IUserControlle
         return this._documents;
     }
 
-    get backend() { return this._backend.value; };
+    get backend() { return this._backend.value; }
 
     get firstName() { return this.user?.firstName; }
     get lastName() { return this.user?.lastName; }

@@ -160,7 +160,7 @@ export default class HomeViewModel {
 
     private isTimeForMonthlyQol(): boolean {
         const lastMonthlyQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastMonthlyQol);
-        let nextMonthlyQol: Date = lastMonthlyQol;
+        const nextMonthlyQol: Date = lastMonthlyQol;
         nextMonthlyQol.setDate(nextMonthlyQol.getDate() + 28);
         const today: Date = new Date();
         if (nextMonthlyQol.getDay() === today.getDay() && nextMonthlyQol.getMonth() === today.getMonth()
@@ -177,10 +177,10 @@ export default class HomeViewModel {
         if (lastSurveyScores === null) {
             return PersonaArmState.createEmptyArmState();
         }
-        let currMags: PersonaArmState = {};
-        for (let domain of PersonaDomains) {
-            let score: number = lastSurveyScores[domain];
-            let mag: number = 0.4 + (score * 3 / 100);
+        const currMags: PersonaArmState = {};
+        for (const domain of PersonaDomains) {
+            const score: number = lastSurveyScores[domain];
+            const mag: number = 0.4 + (score * 3 / 100);
             currMags[domain] = mag;
         }
         return currMags;

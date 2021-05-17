@@ -15,15 +15,15 @@ const minContentHeight = 1000;
 
 @observer
 export class QolEndView extends ViewState<{ opacity: Animated.Value}> {
-    
+
     state = {
         opacity: new Animated.Value(0),
     };
-    
+
     constructor(props) {
         super(props);
         this._contentHeight = this.persona.setupContainerHeight(minContentHeight, { transition: { duration: 2.2 }});
-        this.persona.view = {...this.persona.view, position: { x: this.persona.view.position.x, y: Layout.window.height*0.18} };
+        this.persona.view = {...this.persona.view, position: { x: this.persona.view.position.x, y: Layout.window.height * 0.18} };
     }
 
     public get viewModel() {
@@ -31,12 +31,12 @@ export class QolEndView extends ViewState<{ opacity: Animated.Value}> {
     }
 
     async start() {
-        logger.log("QoL Survey Results:", this.viewModel.surveyResponses);
+        logger.log('QoL Survey Results:', this.viewModel.surveyResponses);
         Animated.timing(this.state.opacity, {
             toValue: 1,
             delay: 1000,
             duration: 500,
-            useNativeDriver: true
+            useNativeDriver: true,
         }).start();
     }
 
@@ -63,19 +63,19 @@ export class QolEndView extends ViewState<{ opacity: Animated.Value}> {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     title: {
         justifyContent: 'center',
         textAlign: 'center',
         width: '100%',
     },
     message: {
-        marginTop: "100%",
+        marginTop: '100%',
         textAlign: 'center',
         width: '90%',
         marginBottom: '10%',
     },
     readyButton: {
         width: '70%',
-    }
+    },
 });

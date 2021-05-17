@@ -53,7 +53,7 @@ export class QolStartView extends ViewState {
             secondaryButton: {
                 text: 'no, go back',
                 action: this.hideModal,
-            }
+            },
         });
     })
 
@@ -62,10 +62,10 @@ export class QolStartView extends ViewState {
         return (
             <MasloPage style={this.baseStyles.page} onClose={() => this.onClose()}>
                 <Container style={[styles.container, { height: this._contentHeight }]}>
-                    <Text style={[this.textStyles.h1, styles.title]}>Welcome{(this.viewModel.qolType === QolType.Monthly) ? " back":""}!</Text>
+                    <Text style={[this.textStyles.h1, styles.title]}>Welcome{(this.viewModel.qolType === QolType.Monthly) ? ' back' : ''}!</Text>
                     <Text style={[this.textStyles.p1, styles.message]}> {(this.viewModel.qolType === QolType.Monthly) ?
                     "Welcome to your monthly check-in! We'll start with getting an update on your quality of life." :
-                    "I’m happy you’re here! First, I’ll need to gather some information about your current Quality of Life. Ready to begin?"}
+                    'I’m happy you’re here! First, I’ll need to gather some information about your current Quality of Life. Ready to begin?'}
                     </Text>
                     <Button title="I'M READY" style={styles.readyButton} onPress={() => this.onStartSurvey()}/>
                 </Container>
@@ -74,10 +74,10 @@ export class QolStartView extends ViewState {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     container: {
         paddingTop: '30%',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     title: {
         justifyContent: 'center',
@@ -92,5 +92,5 @@ const styles = StyleSheet.create({
     },
     readyButton: {
         width: '70%',
-    }
+    },
 });

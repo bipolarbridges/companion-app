@@ -56,7 +56,7 @@ export class WelcomeView extends ViewState {
             toValue: 1,
             delay: 500,
             duration: 500,
-            useNativeDriver: true
+            useNativeDriver: true,
         }).start();
     }
 

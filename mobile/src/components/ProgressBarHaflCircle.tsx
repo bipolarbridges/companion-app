@@ -49,7 +49,7 @@ export default function ProgressBarHaflCircle(this: never, props: PropsGradient)
             toValue: getOffset(diameter, progress),
             duration: 2000,
             delay: 750,
-            useNativeDriver: true
+            useNativeDriver: true,
         }).start();
     }, [progress]);
 

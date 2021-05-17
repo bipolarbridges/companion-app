@@ -1,5 +1,5 @@
 import { observable, computed, toJS } from 'mobx';
-import { SurveyQuestions, QUESTIONS_COUNT, DOMAIN_QUESTION_COUNT } from "../constants/QoLSurvey";
+import { SurveyQuestions, QUESTIONS_COUNT, DOMAIN_QUESTION_COUNT } from '../constants/QoLSurvey';
 import { PersonaDomains } from '../stateMachine/persona';
 import { createLogger } from 'common/logger';
 import AppController from 'src/controllers';
@@ -10,8 +10,8 @@ import { PersonaArmState } from 'dependencies/persona/lib';
 export const logger = createLogger('[QOLModel]');
 
 export enum QolType {
-    Onboarding = "ONBOARDING",
-    Monthly = "MONTHLY",
+    Onboarding = 'ONBOARDING',
+    Monthly = 'MONTHLY',
 }
 
 export default class QOLSurveyViewModel {
@@ -46,7 +46,7 @@ export default class QOLSurveyViewModel {
                 this._questionNum = 0;
                 this._domainNum = 0;
                 const surveyResponses = {};
-                for (let domain of PersonaDomains) {
+                for (const domain of PersonaDomains) {
                     surveyResponses[domain] = 0;
                 }
                 this._surveyResponses = surveyResponses;
@@ -58,12 +58,11 @@ export default class QOLSurveyViewModel {
     }
 
     getMags(scores: QolSurveyResults): PersonaArmState {
-        let currMags: PersonaArmState = {};
-        for (let domain of PersonaDomains) {
-            let score: number = scores[domain];
+        const currMags: PersonaArmState = {};
+        for (const domain of PersonaDomains) {
+            const score: number = scores[domain];
             let mag: number;
-            if (score === 0) { mag = 0.2; }
-            else { mag = 0.4 + (score * 3 / 100); }
+            if (score === 0) { mag = 0.2; } else { mag = 0.4 + (score * 3 / 100); }
             currMags[domain] = mag;
         }
         return currMags;
@@ -72,7 +71,7 @@ export default class QOLSurveyViewModel {
     async init() {
         return await this.initModel;
     }
-    
+
     @computed
     get questionNum(): number { return this._questionNum; }
 
@@ -94,10 +93,10 @@ export default class QOLSurveyViewModel {
     resetSurveyResults(): void {
         const surveyResponses = {};
 
-        for (let domain of PersonaDomains) {
+        for (const domain of PersonaDomains) {
             surveyResponses[domain] = 0;
         }
-        
+
         this._surveyResponses = surveyResponses;
     }
 
@@ -125,13 +124,13 @@ export default class QOLSurveyViewModel {
 
         } else {
             // _questionNum + 1 is required as this method is called before nextQuestion() which increments the questionNum counter
-            let partialQol: PartialQol = {
+            const partialQol: PartialQol = {
                 questionNum: this._questionNum + 1,
                 domainNum: this._domainNum,
                 scores: this._surveyResponses,
                 isFirstTimeQol: this.showInterlude,
                 date: new Date().getTime(),
-            }
+            };
             res = await AppController.Instance.User.backend.sendPartialQol(partialQol);
             this.isUnfinished = true;
         }
@@ -144,7 +143,7 @@ export default class QOLSurveyViewModel {
     }
 
     public updateQolOnboarding = () => {
-        this._settings.updateQolOnboarding({ seenOnboardingQol: true, lastMonthlyQol: Date() })
+        this._settings.updateQolOnboarding({ seenOnboardingQol: true, lastMonthlyQol: Date() });
         this.showInterlude = true;
     }
 
@@ -152,4 +151,3 @@ export default class QOLSurveyViewModel {
         this._settings.updatePendingMonthlyQol({ pendingMonthlyQol: false });
     }
 }
-

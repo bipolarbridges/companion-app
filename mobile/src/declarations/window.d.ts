@@ -1,5 +1,5 @@
 
-declare module window {
+declare namespace window {
     export const navigator: { sendBeacon?: any } = null;
 
     export const addEventListener = null;

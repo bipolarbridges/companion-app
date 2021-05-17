@@ -157,7 +157,7 @@ export class LocalSettingsController implements ILocalSettingsController {
         const qol = this.current.qol;
         if (qol) {
             transaction(() => {
-                let changed = transferChangedFields(diff, qol, "seenOnboardingQol", 'lastMonthlyQol');
+                const changed = transferChangedFields(diff, qol, 'seenOnboardingQol', 'lastMonthlyQol');
 
                 if (changed) {
                     this.update({ qol });
@@ -170,7 +170,7 @@ export class LocalSettingsController implements ILocalSettingsController {
         const qol = this.current.qol;
         if (qol) {
          transaction(() => {
-                let changed = transferChangedFields(diff, qol, 'lastMonthlyQol');
+                const changed = transferChangedFields(diff, qol, 'lastMonthlyQol');
 
                 if (changed) {
                 this.update({ qol });
@@ -183,7 +183,7 @@ export class LocalSettingsController implements ILocalSettingsController {
         const qol = this.current.qol;
         if (qol) {
             transaction(() => {
-             let changed = transferChangedFields(diff, qol, 'pendingMonthlyQol');
+             const changed = transferChangedFields(diff, qol, 'pendingMonthlyQol');
 
              if (changed) {
                 this.update({ qol });

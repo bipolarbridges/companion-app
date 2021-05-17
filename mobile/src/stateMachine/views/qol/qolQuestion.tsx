@@ -16,11 +16,11 @@ export class QolQuestion extends ViewState {
 
     labelState = {
         opacity: new Animated.Value(1),
-    }
+    };
 
     constructor(props) {
         super(props);
-        this._contentHeight = this.persona.setupContainerHeight(minContentHeight, { rotation: -140 - (this.viewModel.domainNum*30), transition: { duration: 1 }, scale: 0.8 });
+        this._contentHeight = this.persona.setupContainerHeight(minContentHeight, { rotation: -140 - (this.viewModel.domainNum * 30), transition: { duration: 1 }, scale: 0.8 });
         this.viewModel.origMags = this.persona.qolMags;
         this.persona.qolMags = this.viewModel.qolMags;
     }
@@ -29,7 +29,7 @@ export class QolQuestion extends ViewState {
         return AppViewModel.Instance.QOL;
     }
 
-    async start() {}
+    // async start() {}
 
     private cancel = () => {
         this.persona.qolMags = this.viewModel.origMags;
@@ -43,7 +43,7 @@ export class QolQuestion extends ViewState {
         if (this.viewModel.isUnfinished) {
             await this.viewModel.saveSurveyProgress(null);
         }
-        if (this.viewModel.qolType = QolType.Monthly) {
+        if (this.viewModel.qolType === QolType.Monthly) {
             this.viewModel.updatePendingMonthlyQol();
         }
     }
@@ -57,7 +57,7 @@ export class QolQuestion extends ViewState {
             toValue: 0,
             delay: 0,
             duration: 20,
-            useNativeDriver: true
+            useNativeDriver: true,
         }).start(() => {
             this.viewModel.nextQuestion();
             this.persona.view = {...this.persona.view, rotation: (this.persona.view.rotation - 30), transition: {duration: 1}};
@@ -65,21 +65,21 @@ export class QolQuestion extends ViewState {
                 toValue: 1,
                 delay: 200,
                 duration: 900,
-                useNativeDriver: true
+                useNativeDriver: true,
             }).start();
             this.checkForInterlude();
-        });        
+        });
     }
 
     private nextQuestion = (prevResponse: number) => {
         this.viewModel.savePrevResponse(prevResponse);
         const newDomainMag: number = this.calculateNewDomainMag(prevResponse);
-        this.persona.qolMags = {...this.persona.qolMags, [this.viewModel.domain]: newDomainMag }
+        this.persona.qolMags = {...this.persona.qolMags, [this.viewModel.domain]: newDomainMag };
 
-        if (this.viewModel.questionNum == (this.viewModel.numQuestions - 1)) {
+        if (this.viewModel.questionNum === (this.viewModel.numQuestions - 1)) {
             this.finish();
         } else {
-            if (this.isNextDomain(this.viewModel.questionNum + 1)) { 
+            if (this.isNextDomain(this.viewModel.questionNum + 1)) {
                 this.animateDomainChange();
             } else {
                 this.viewModel.nextQuestion();
@@ -89,10 +89,10 @@ export class QolQuestion extends ViewState {
 
     private calculateNewDomainMag = (response: number) => {
         let booster: number = 0;
-        if ((this.viewModel.questionNum+1) % 4 === 1) {
+        if ((this.viewModel.questionNum + 1) % 4 === 1) {
             booster = 0.2;
         }
-        let inc: number = response * 3 / 100;
+        const inc: number = response * 3 / 100;
         const oldMag: number = this.persona.qolMags[this.viewModel.domain];
         return oldMag + inc + booster;
     }
@@ -107,10 +107,9 @@ export class QolQuestion extends ViewState {
             secondaryButton: {
                 text: 'no, go back',
                 action: this.hideModal,
-            }
+            },
         });
     })
-
 
     private checkForInterlude() {
         if (this.viewModel.showInterlude && this.viewModel.questionNum === this.viewModel.numQuestions / 2) {
@@ -125,7 +124,7 @@ export class QolQuestion extends ViewState {
             primaryButton: {
                 text: 'CONTINUE',
                 action: this.hideModal,
-            }
+            },
         });
     })
 
@@ -137,7 +136,7 @@ export class QolQuestion extends ViewState {
                         <Text style={styles.domainLabel}>{this.viewModel.domain.toUpperCase()}</Text>
                     </Animated.View>
                     <View style={styles.subText1}>
-                        <Text style={this.textStyles.p3}>{this.viewModel.questionNum+1} of {this.viewModel.numQuestions}</Text>
+                        <Text style={this.textStyles.p3}>{this.viewModel.questionNum + 1} of {this.viewModel.numQuestions}</Text>
                     </View>
                     <Text style={{...this.textStyles.p3, marginTop: '8%'}}>OVER THE LAST 7 DAYS I HAVE...</Text>
                     <View style={styles.question}>
@@ -156,23 +155,23 @@ export class QolQuestion extends ViewState {
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     container: {
         paddingTop: 40,
-        paddingBottom: 15
+        paddingBottom: 15,
     },
     domainLabel: {
         marginLeft: '70%',
-        fontFamily: TextStyles.labelMedium.fontFamily
+        fontFamily: TextStyles.labelMedium.fontFamily,
     },
     subText1: {
         alignItems: 'center',
         width: '100%',
-        marginTop: '4%'
+        marginTop: '4%',
     },
     questionText: {
         marginVertical: '5%',
-        textAlign: "center"
+        textAlign: 'center',
     },
     title: {
         width: '100%',
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: '60%',
         justifyContent: 'space-between',
-        position: "absolute",
+        position: 'absolute',
         bottom: 30,
     },
     buttons: {
@@ -193,5 +192,5 @@ const styles = StyleSheet.create({
     question: {
         alignItems: 'center',
         width: '100%',
-    }
+    },
 });
