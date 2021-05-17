@@ -29,7 +29,9 @@ export class QolQuestion extends ViewState {
         return AppViewModel.Instance.QOL;
     }
 
-    // async start() {}
+    async start() {
+        // Not yet implemented
+    }
 
     private cancel = () => {
         this.persona.qolMags = this.viewModel.origMags;
