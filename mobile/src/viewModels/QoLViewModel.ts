@@ -133,6 +133,7 @@ export default class QOLSurveyViewModel {
                 scores: this._surveyResponses,
                 isFirstTimeQol: this.showInterlude,
                 date: new Date().getTime(),
+                qolType: this.qolType,
             }
             res = await AppController.Instance.User.backend.sendPartialQol(partialQol);
             this.isUnfinished = true;
