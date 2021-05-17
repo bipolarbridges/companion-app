@@ -6,7 +6,7 @@ import { StyleSheet, Text } from 'react-native';
 import { MasloPage, Container, Button } from 'src/components';
 import { ScenarioTriggers } from '../../abstractions';
 import AppController from 'src/controllers';
-import { QolType } from 'src/viewModels/QoLViewModel';
+import { QolType } from 'common/models/QoL';
 
 import { styles } from 'react-native-markdown-renderer';
 import { PersonaArmState } from 'dependencies/persona/lib';

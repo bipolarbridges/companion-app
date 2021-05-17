@@ -5,7 +5,6 @@
 */
 
 import { Identify } from 'common/models';
-import { QolType } from '../../mobile/src/viewModels/QoLViewModel'
 
 export enum DomainScope {
     GENERAL = 'GENERAL',
@@ -35,6 +34,13 @@ export type QuestionIded = Identify<Question>;
 export type QolSurveyResults = {
     [dom: string]: number,
 };
+
+export enum QolType {
+    Onboarding = "ONBOARDING",
+    Monthly = "MONTHLY",
+    Weekly = "WEEKLY",
+    Daily = "DAILY"
+}
 
 export type PartialQol = {
     questionNum: number,

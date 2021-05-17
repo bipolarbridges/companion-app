@@ -9,13 +9,6 @@ import { PersonaArmState } from 'dependencies/persona/lib';
 
 export const logger = createLogger('[QOLModel]');
 
-export enum QolType {
-    Onboarding = "ONBOARDING",
-    Monthly = "MONTHLY",
-    Weekly = "WEEKLY",
-    Daily = "DAILY"
-}
-
 export default class QOLSurveyViewModel {
 
     @observable
