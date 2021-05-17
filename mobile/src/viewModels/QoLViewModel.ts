@@ -6,6 +6,7 @@ import AppController from 'src/controllers';
 import { ILocalSettingsController } from 'src/controllers/LocalSettings';
 import { PartialQol, QolSurveyResults } from 'common/models/QoL';
 import { PersonaArmState } from 'dependencies/persona/lib';
+import { QolType } from 'common/models/QoL';
 
 export const logger = createLogger('[QOLModel]');
 
