@@ -5,6 +5,7 @@
 */
 
 import { Identify } from 'common/models';
+import { QolType } from '../../mobile/src/viewModels/QoLViewModel'
 
 export enum DomainScope {
     GENERAL = 'GENERAL',
@@ -41,6 +42,7 @@ export type PartialQol = {
     scores: QolSurveyResults,
     isFirstTimeQol: boolean,
     date: number,
+    qolType: QolType;
 };
 
 export type SurveyState = {
