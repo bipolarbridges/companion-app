@@ -7,7 +7,8 @@ import { MasloPage, Container, Button } from 'src/components';
 import { ScenarioTriggers } from '../../abstractions';
 import Colors from '../../../constants/colors';
 import TextStyles from '../../../../src/styles/TextStyles';
-import QOLSurveyViewModel, { QolType } from '../../../viewModels/QoLViewModel';
+import QOLSurveyViewModel from '../../../viewModels/QoLViewModel';
+import { QolType } from 'common/models/QoL';
 
 const minContentHeight = 560;
 

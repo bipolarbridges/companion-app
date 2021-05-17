@@ -18,7 +18,7 @@ import { InterventionTipsStatuses, Identify, DocumentLinkEntry } from 'common/mo
 import { TransitionObserver } from 'common/utils/transitionObserver';
 import { UserProfileName } from 'src/screens/components/UserProfileName';
 import AppViewModel from 'src/viewModels';
-import { QolType } from 'src/viewModels/QoLViewModel';
+import { QolType } from 'common/models/QoL';
 
 const minContentHeight = 535;
 const MaxHeight = Layout.isSmallDevice ? 174 : 208;

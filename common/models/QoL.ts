@@ -36,10 +36,10 @@ export type QolSurveyResults = {
 };
 
 export enum QolType {
-    Onboarding = "ONBOARDING",
-    Monthly = "MONTHLY",
-    Weekly = "WEEKLY",
-    Daily = "DAILY"
+    Onboarding = 'ONBOARDING',
+    Monthly = 'MONTHLY',
+    Weekly = 'WEEKLY',
+    Daily = 'DAILY',
 }
 
 export type PartialQol = {
