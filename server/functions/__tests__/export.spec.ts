@@ -88,7 +88,7 @@ describe('Export Functions', () => {
     });
 
     it('Should export new survey data', async () => {
-        const clientId = 'client0@email.com';
+        const clientId = 'client1@email.com';
         const handle = test.wrap(ExportFunctions.qolsurvey);
         await admin.firestore(app)
             .doc(`/clients/${clientId}`).create({
@@ -117,6 +117,6 @@ describe('Export Functions', () => {
             },
             `/${Collections.SurveyResults}/${surveyId}`);
         const result = await(handle(snap));
-        assert.isNull(result.error);
+        assert.isTrue(result);
     })
 });
