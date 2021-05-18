@@ -8,7 +8,7 @@ The steps below are required to set up a local instance of this project. The sub
 
 ### 1. Install Requirements
 
-Clone the respository and ensure you have the requirements below:
+Clone the repository and ensure you have the requirements below:
 
  * React Native CLI development environment for both iOS and Android (Needed for running mobile apps. Xcode and Android studio must be installed in order to run iOS and android apps, respectively.)  
  Instructions: [https://reactnative.dev/docs/environment-setup](https://reactnative.dev/docs/environment-setup)
