@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: bipolarbridges/data-services
-          ref: 4959b3acef1994befb10aa769c35f1142b0198fb
+          ref: export-api-v0
           path: data-services
       - name: Create shared network
         run: docker network create bb_default
