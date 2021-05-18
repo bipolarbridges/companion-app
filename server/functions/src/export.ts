@@ -6,6 +6,11 @@ import { FunctionBackendController } from '../src/services/backend';
 import {
     RemoteCallResult,
 } from '../../../common/abstractions/controlllers/IBackendController';
+import Collections from 'common/database/collections';
+import {QolSurveyResults} from 'common/models/QoL';
+import { GenericUserRepo, SurveyResultsRepo } from 'common/database/repositories';
+import BackendControllerBase from 'common/controllers/BackendController';
+import { SurveyResults } from 'common/database/repositories/SurveyResultsRepo';
 
 const fns: any = {};
 
@@ -78,6 +83,14 @@ const extract: Extractions = {
         },
 };
 
+type QolSurveyData = {
+    userId: string,
+    data: {
+        date: number,
+        results: QolSurveyResults
+    }
+}
+
 fns.measurement = FeatureSettings.ExportToDataServices
     && functions.firestore.document('/records/{recordId}')
         .onCreate(async (snap, context): Promise<ExportResult> => {
@@ -111,5 +124,15 @@ fns.measurement = FeatureSettings.ExportToDataServices
                 return { error: e };
             });
         });
+
+fns.qolsurvey = FeatureSettings.ExportToDataServices
+    && functions.firestore.document(`/${Collections.SurveyResults}/{id}`)
+    .onCreate(async (snap, context): Promise<boolean> => {
+
+        const data: QolSurveyData = snap.data() as QolSurveyData;
+        const backend = new FunctionBackendController();
+        backend.setUser(data.userId);
+        return backend.sendSurveyResults(data.data.results);      
+    })
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;
