@@ -2,7 +2,7 @@ import { PartialQol, QolSurveyResults } from 'common/models/QoL';
 import GenericUserRepo from './GenericUserRepo';
 import Collections from 'common/database/collections';
 
-export type SurveyResults = {
+type SurveyResults = {
     date: number,
     results: QolSurveyResults,
 };

@@ -2,6 +2,7 @@ import * as admin from 'firebase-admin';
 import { ExportFunctions } from '../src/export';
 import { init } from './util/firebase';
 import { assert } from 'chai';
+import Collections from 'common/database/collections';
 
 const {test, app} = init('example-test');
 
@@ -10,6 +11,7 @@ describe('Export Functions', () => {
 
     it('Should export new accounts', async () => {
         const clientId = 'client0';
+        
         const handle = test.wrap(ExportFunctions.newAccount);
         await admin.firestore(app)
             .doc(`/clients/${clientId}`).create({
@@ -83,5 +85,38 @@ describe('Export Functions', () => {
             `/records/${recordId}`);
         const result = await(handle(snap));
         assert.isNull(result.error);
-      });
+    });
+
+    it('Should export new survey data', async () => {
+        const clientId = 'client0@email.com';
+        const handle = test.wrap(ExportFunctions.qolsurvey);
+        await admin.firestore(app)
+            .doc(`/clients/${clientId}`).create({
+                onboarded: true,
+            });
+        const surveyId = 'survey1';
+        const snap = await test.firestore.makeDocumentSnapshot(
+            {
+                userId: clientId,
+                data: {
+                    date: 1620854423788,
+                    results: {
+                        cognition: 12,
+                        home: 12,
+                        independence: 12,
+                        leisure: 12,
+                        money: 12,
+                        mood: 12,
+                        physical: 12,
+                        relationships: 12,
+                        "self-esteem": 12,
+                        sleep: 12,
+                        spiritual: 12
+                    }
+                }
+            },
+            `/${Collections.SurveyResults}/${surveyId}`);
+        const result = await(handle(snap));
+        assert.isNull(result.error);
+    })
 });

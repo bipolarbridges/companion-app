@@ -8,9 +8,6 @@ import {
 } from '../../../common/abstractions/controlllers/IBackendController';
 import Collections from 'common/database/collections';
 import {QolSurveyResults} from 'common/models/QoL';
-import { GenericUserRepo, SurveyResultsRepo } from 'common/database/repositories';
-import BackendControllerBase from 'common/controllers/BackendController';
-import { SurveyResults } from 'common/database/repositories/SurveyResultsRepo';
 
 const fns: any = {};
 
@@ -30,7 +27,7 @@ fns.newAccount = FeatureSettings.ExportToDataServices
             console.log(`New account for client[${client}], coach[${coach}]`);
             return backend.logNewAccount(client, coach)
                 .then((res: RemoteCallResult) => {
-                    return { error: res.error };
+                    return { error: res.error? res.error: null};
                 });
         });
 
