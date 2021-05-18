@@ -30,7 +30,7 @@ if [[ $? != 0 ]]; then
 else
     if [ $yes == 0 ]; then
         read -r -p "Is this okay? [Y/n] " confirm
-        if [[ ! $confirm =~ ^[Yy]$ ]]; then
+        if [[ ! $confirm =~ ^[Yy]$ ]] ; then	
             echo "exiting."
             exit 0
         fi
@@ -41,7 +41,7 @@ if [ ! -f ".env" ]; then
     echo "No env file installed!"
     if [ $yes == 0 ]; then
         read -r -p "Continue? [Y/n] " confirm
-        if [[ ! "$confirm" =~ ^[Yy]$ ]] ; then
+        if [[ ! "$confirm" =~ ^[Yy]$ ]] ; then	
             echo "exiting."
             exit 0
         fi
