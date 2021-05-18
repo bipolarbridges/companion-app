@@ -9,14 +9,14 @@ export default class BackendControllerBase implements IBackendController {
     private _userId: string = null;
 
     logNewAccount(clientID: string, coachID: string): Promise<RemoteCallResult> {
-        console.info('Method not implemented.');
-        return Promise.resolve({error: null})
+        console.warn('Method not implemented.');
+        return Promise.resolve({error: null});
     }
 
     logMeasurement(clientID: string, coachID: string, type: string, value: number, date: number): Promise<RemoteCallResult> {
-        console.info('Method not implemented.');
-        return Promise.resolve({error: null})
-    }    
+        console.warn('Method not implemented.');
+        return Promise.resolve({error: null});
+    }
 
     // Fetch the latests survey results (i.e. scores)
     public async getSurveyResults(): Promise<QolSurveyResults> {

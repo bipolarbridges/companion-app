@@ -7,7 +7,7 @@ import {
     RemoteCallResult,
 } from '../../../common/abstractions/controlllers/IBackendController';
 import Collections from 'common/database/collections';
-import {QolSurveyResults} from 'common/models/QoL';
+import { QolSurveyResults } from 'common/models/QoL';
 
 const fns: any = {};
 
@@ -27,7 +27,9 @@ fns.newAccount = FeatureSettings.ExportToDataServices
             console.log(`New account for client[${client}], coach[${coach}]`);
             return backend.logNewAccount(client, coach)
                 .then((res: RemoteCallResult) => {
-                    return { error: res.error? res.error: null};
+                    return {
+                        error: res.error ? res.error : null,
+                    };
                 });
         });
 
@@ -84,9 +86,9 @@ type QolSurveyData = {
     userId: string,
     data: {
         date: number,
-        results: QolSurveyResults
-    }
-}
+        results: QolSurveyResults,
+    },
+};
 
 fns.measurement = FeatureSettings.ExportToDataServices
     && functions.firestore.document('/records/{recordId}')
@@ -125,11 +127,10 @@ fns.measurement = FeatureSettings.ExportToDataServices
 fns.qolsurvey = FeatureSettings.ExportToDataServices
     && functions.firestore.document(`/${Collections.SurveyResults}/{id}`)
     .onCreate(async (snap, context): Promise<boolean> => {
-
         const data: QolSurveyData = snap.data() as QolSurveyData;
         const backend = new FunctionBackendController();
         backend.setUser(data.userId);
-        return backend.sendSurveyResults(data.data.results);      
-    })
+        return backend.sendSurveyResults(data.data.results);
+    });
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;

@@ -13,7 +13,7 @@ export class FunctionBackendController extends BackendControllerBase {
             baseURL: `${config.prot}://${config.addr}:${config.port}`,
         });
     }
-    
+
     protected get Client(): IBackendClient {
         return {
             post: this.ax.post,
