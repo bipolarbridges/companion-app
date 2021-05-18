@@ -8,23 +8,23 @@ import { createLogger } from 'common/logger';
 import { styles } from 'react-native-markdown-renderer';
 import Layout from 'src/constants/Layout';
 import AppViewModel from 'src/viewModels';
-import QOLSurveyViewModel, { QolType } from '../../../viewModels/QoLViewModel';
+import QOLSurveyViewModel from '../../../viewModels/QoLViewModel';
 
 export const logger = createLogger('[endQOL]');
 
 const minContentHeight = 1000;
 
 @observer
-export class QolEndView extends ViewState<{ opacity: Animated.Value}> {
-    
+export class QolEndView extends ViewState<{ opacity: Animated.Value }> {
+
     state = {
         opacity: new Animated.Value(0),
     };
-    
+
     constructor(props) {
         super(props);
-        this._contentHeight = this.persona.setupContainerHeight(minContentHeight, { transition: { duration: 2.2 }});
-        this.persona.view = {...this.persona.view, position: { x: this.persona.view.position.x, y: Layout.window.height*0.18} };
+        this._contentHeight = this.persona.setupContainerHeight(minContentHeight, { transition: { duration: 2.2 } });
+        this.persona.view = { ...this.persona.view, position: { x: this.persona.view.position.x, y: Layout.window.height * 0.18 } };
     }
 
     public get viewModel() {
@@ -57,14 +57,14 @@ export class QolEndView extends ViewState<{ opacity: Animated.Value}> {
                 <Animated.View style={[{ height: this._contentHeight, alignItems: 'center', opacity: this.state.opacity }]}>
                     <Text style={[this.textStyles.h1, styles.title]}>Great job! Here are your Quality of Life results.</Text>
                     <Text style={[this.textStyles.p1, styles.message]}>There are 12 different Life Domains within your overall Quality of Life.</Text>
-                    <Button title="CONTINUE" style={styles.readyButton} onPress={() => this.onEndSurvey()}/>
+                    <Button title="CONTINUE" style={styles.readyButton} onPress={() => this.onEndSurvey()} />
                 </Animated.View>
             </MasloPage>
         );
     }
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
     title: {
         justifyContent: 'center',
         textAlign: 'center',

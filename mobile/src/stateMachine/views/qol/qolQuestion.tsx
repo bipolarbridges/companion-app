@@ -39,6 +39,7 @@ export class QolQuestion extends ViewState {
         this.trigger(ScenarioTriggers.Cancel);
     }
 
+    // Called when survey is completed
     private finish = async () => {
         this.trigger(ScenarioTriggers.Submit);
         await this.viewModel.sendSurveyResults();
@@ -52,7 +53,7 @@ export class QolQuestion extends ViewState {
     }
 
     private isNextDomain = (currQuestion: number) => {
-        return (currQuestion + 1) % (this.viewModel.domainQuestions) === 1 && (currQuestion !== 1);
+        return (currQuestion + 1) % (this.viewModel.domainQuestionCount) === 1 && (currQuestion !== 1);
     }
 
     private animateDomainChange = () => {
@@ -63,7 +64,7 @@ export class QolQuestion extends ViewState {
             useNativeDriver: true,
         }).start(() => {
             this.viewModel.nextQuestion();
-            this.persona.view = {...this.persona.view, rotation: (this.persona.view.rotation - 30), transition: {duration: 1}};
+            this.persona.view = { ...this.persona.view, rotation: (this.persona.view.rotation - 30), transition: { duration: 1 } };
             Animated.timing(this.labelState.opacity, {
                 toValue: 1,
                 delay: 200,
@@ -77,7 +78,7 @@ export class QolQuestion extends ViewState {
     private nextQuestion = (prevResponse: number) => {
         this.viewModel.savePrevResponse(prevResponse);
         const newDomainMag: number = this.calculateNewDomainMag(prevResponse);
-        this.persona.qolMags = {...this.persona.qolMags, [this.viewModel.domain]: newDomainMag };
+        this.persona.qolMags = { ...this.persona.qolMags, [this.viewModel.domain]: newDomainMag };
 
         if (this.viewModel.questionNum === (this.viewModel.numQuestions - 1)) {
             this.finish();
@@ -135,22 +136,22 @@ export class QolQuestion extends ViewState {
         return (
             <MasloPage style={this.baseStyles.page} onClose={() => this.onClose()}>
                 <Container style={[styles.container, { height: this._contentHeight }]}>
-                    <Animated.View style={{opacity: this.labelState.opacity}}>
+                    <Animated.View style={{ opacity: this.labelState.opacity }}>
                         <Text style={styles.domainLabel}>{this.viewModel.domain.toUpperCase()}</Text>
                     </Animated.View>
                     <View style={styles.subText1}>
                         <Text style={this.textStyles.p3}>{this.viewModel.questionNum + 1} of {this.viewModel.numQuestions}</Text>
                     </View>
-                    <Text style={{...this.textStyles.p3, marginTop: '8%'}}>OVER THE LAST 7 DAYS I HAVE...</Text>
+                    <Text style={{ ...this.textStyles.p3, marginTop: '8%' }}>OVER THE LAST 7 DAYS I HAVE...</Text>
                     <View style={styles.question}>
                         <Text style={[this.textStyles.h2, styles.questionText]}>{this.viewModel.question}</Text>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <Button title="STRONGLY AGREE" style={styles.buttons} titleStyles={{color: Colors.survey.btnFontColor}} withBorder={true} onPress={() => this.nextQuestion(5)}></Button>
-                        <Button title="AGREE" style={styles.buttons} titleStyles={{color: Colors.survey.btnFontColor}} withBorder={true} onPress={() => this.nextQuestion(4)}></Button>
-                        <Button title="NEUTRAL" style={styles.buttons} titleStyles={{color: Colors.survey.btnFontColor}} withBorder={true} onPress={() => this.nextQuestion(3)}></Button>
-                        <Button title="DISAGREE" style={styles.buttons} titleStyles={{color: Colors.survey.btnFontColor}} withBorder={true} onPress={() => this.nextQuestion(2)}></Button>
-                        <Button title="STRONGLY DISAGREE" style={styles.buttons} titleStyles={{color: Colors.survey.btnFontColor}} withBorder={true} onPress={() => this.nextQuestion(1)}></Button>
+                        <Button title="STRONGLY AGREE" style={styles.buttons} titleStyles={{ color: Colors.survey.btnFontColor }} withBorder={true} onPress={() => this.nextQuestion(5)}></Button>
+                        <Button title="AGREE" style={styles.buttons} titleStyles={{ color: Colors.survey.btnFontColor }} withBorder={true} onPress={() => this.nextQuestion(4)}></Button>
+                        <Button title="NEUTRAL" style={styles.buttons} titleStyles={{ color: Colors.survey.btnFontColor }} withBorder={true} onPress={() => this.nextQuestion(3)}></Button>
+                        <Button title="DISAGREE" style={styles.buttons} titleStyles={{ color: Colors.survey.btnFontColor }} withBorder={true} onPress={() => this.nextQuestion(2)}></Button>
+                        <Button title="STRONGLY DISAGREE" style={styles.buttons} titleStyles={{ color: Colors.survey.btnFontColor }} withBorder={true} onPress={() => this.nextQuestion(1)}></Button>
                     </View>
                 </Container>
             </MasloPage>

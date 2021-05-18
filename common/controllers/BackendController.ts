@@ -16,9 +16,9 @@ export default class BackendControllerBase implements IBackendController {
     }
 
     // Submit new survey results
-    public async sendSurveyResults(results: QolSurveyResults): Promise<boolean> {
+    public async sendSurveyResults(results: QolSurveyResults, startDate: number, questionCompletionDates: number[]): Promise<boolean> {
         console.log(`add qol results: userId = ${this._userId}`);
-        await RepoFactory.Instance.surveyResults.addResults(this._userId, results);
+        await RepoFactory.Instance.surveyResults.addResults(this._userId, results, startDate, questionCompletionDates);
         return true;
     }
 
@@ -34,6 +34,7 @@ export default class BackendControllerBase implements IBackendController {
             await RepoFactory.Instance.surveyState.setByUserId(this._userId, qol);
             return true;
         } catch (err) {
+            console.log(`sendPartialQol ERROR:  ${err}`);
             return false;
         }
     }

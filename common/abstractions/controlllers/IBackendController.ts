@@ -4,7 +4,7 @@ export interface IBackendController {
 
     getSurveyResults(): Promise<QolSurveyResults>;
 
-    sendSurveyResults(results: QolSurveyResults): Promise<boolean>;
+    sendSurveyResults(results: QolSurveyResults, startDate: number, questionCompletionDates: number[]): Promise<boolean>;
 
     sendPartialQol(qol: PartialQol): Promise<boolean>;
 

@@ -8,23 +8,23 @@ import { Identify } from 'common/models';
 
 export enum DomainScope {
     GENERAL = 'GENERAL',
-    WORK    = 'WORK',
+    WORK = 'WORK',
     STUDENT = 'STUDENT',
 }
 
 export type Domain = {
-    scope:      DomainScope,
-    position:   number,
-    name:       string,
-    slug:       string,
+    scope: DomainScope,
+    position: number,
+    name: string,
+    slug: string,
 };
 
 export type DomainIded = Identify<Domain>;
 
 export type Question = {
-    domainId:   string, // reference to single domain
-    text:       string,
-    position:   number,
+    domainId: string, // reference to single domain
+    text: string,
+    position: number,
 };
 
 export type QuestionIded = Identify<Question>;
@@ -38,8 +38,6 @@ export type QolSurveyResults = {
 export enum QolType {
     Onboarding = 'ONBOARDING',
     Monthly = 'MONTHLY',
-    Weekly = 'WEEKLY',
-    Daily = 'DAILY',
 }
 
 export type PartialQol = {
@@ -47,8 +45,9 @@ export type PartialQol = {
     domainNum: number,
     scores: QolSurveyResults,
     isFirstTimeQol: boolean,
-    date: number,
-    qolType: QolType;
+    startDate: number,
+    lastResponseDate: number,
+    questionCompletionDates: number[]
 };
 
 export type SurveyState = {

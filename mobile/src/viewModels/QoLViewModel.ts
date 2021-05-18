@@ -16,16 +16,18 @@ export default class QOLSurveyViewModel {
     private _questionNum: number;
     @observable
     private _domainNum: number;
-    private _surveyResponses: any;
+    private _surveyResponses: QolSurveyResults;
     private _armMags: PersonaArmState;
     public isUnfinished: boolean;
     public initModel: Promise<void>;
     public origMags: PersonaArmState;
     public showInterlude: boolean = false;
     public qolType: QolType;
+    public startDate: number;
+    public questionCompletionDates: number[];
 
     public readonly numQuestions: number = QUESTIONS_COUNT;
-    public readonly domainQuestions: number = DOMAIN_QUESTION_COUNT;
+    public readonly domainQuestionCount: number = DOMAIN_QUESTION_COUNT;
     private readonly _settings: ILocalSettingsController = AppController.Instance.User.localSettings;
 
     constructor() {
@@ -34,11 +36,14 @@ export default class QOLSurveyViewModel {
                 this._questionNum = partialQolState.questionNum;
                 this._domainNum = partialQolState.domainNum;
                 this._surveyResponses = partialQolState.scores;
+                this.startDate = partialQolState.startDate;
+                this.questionCompletionDates = partialQolState.questionCompletionDates;
                 this._armMags = this.getMags(partialQolState.scores);
                 this.isUnfinished = true;
                 this.showInterlude = partialQolState.isFirstTimeQol;
                 return;
             } else {
+                this.startDate = new Date().getTime();
                 this._questionNum = 0;
                 this._domainNum = 0;
                 const surveyResponses = {};
@@ -46,6 +51,7 @@ export default class QOLSurveyViewModel {
                     surveyResponses[domain] = 0;
                 }
                 this._surveyResponses = surveyResponses;
+                this.questionCompletionDates = [];
                 this._armMags = PersonaArmState.createEmptyArmState();
                 this.isUnfinished = false;
                 return;
@@ -68,7 +74,7 @@ export default class QOLSurveyViewModel {
     async init() {
         return await this.initModel;
     }
-    
+
     @computed
     get questionNum(): number { return this._questionNum; }
 
@@ -93,7 +99,7 @@ export default class QOLSurveyViewModel {
         for (let domain of PersonaDomains) {
             surveyResponses[domain] = 0;
         }
-        
+
         this._surveyResponses = surveyResponses;
     }
 
@@ -121,13 +127,17 @@ export default class QOLSurveyViewModel {
 
         } else {
             // _questionNum + 1 is required as this method is called before nextQuestion() which increments the questionNum counter
+            const now = new Date().getTime();
+            this.questionCompletionDates[this.questionNum] = now;
+
             let partialQol: PartialQol = {
                 questionNum: this._questionNum + 1,
                 domainNum: this._domainNum,
                 scores: this._surveyResponses,
                 isFirstTimeQol: this.showInterlude,
-                date: new Date().getTime(),
-                qolType: this.qolType,
+                startDate: this.startDate,
+                lastResponseDate: now,
+                questionCompletionDates: this.questionCompletionDates,
             }
             res = await AppController.Instance.User.backend.sendPartialQol(partialQol);
             this.isUnfinished = true;
@@ -136,7 +146,7 @@ export default class QOLSurveyViewModel {
     }
 
     public sendSurveyResults = async () => {
-        const res: boolean = await AppController.Instance.User.backend.sendSurveyResults(this._surveyResponses);
+        const res: boolean = await AppController.Instance.User.backend.sendSurveyResults(this._surveyResponses, this.startDate, this.questionCompletionDates);
         return res;
     }
 
