@@ -47,7 +47,7 @@ export type PartialQol = {
     isFirstTimeQol: boolean,
     startDate: number,
     lastResponseDate: number,
-    questionCompletionDates: number[]
+    questionCompletionDates: number[],
 };
 
 export type SurveyState = {

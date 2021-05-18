@@ -6,7 +6,7 @@ type SurveyResults = {
     date: number,
     results: QolSurveyResults,
     startDate: number,
-    questionCompletionDates: number[]
+    questionCompletionDates: number[],
 };
 
 export default class SurveyResultsRepo extends GenericUserRepo<SurveyResults> {
