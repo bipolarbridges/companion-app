@@ -3,13 +3,25 @@ import { ExportFunctions } from '../src/export';
 import { init } from './util/firebase';
 import { assert } from 'chai';
 import Collections from 'common/database/collections';
+import { initializeAsync } from '../../../common/services/firebase';
+import clientConfig from './mocks/client/config';
+import * as firebase from './util/firebase';
 
+async function fbCleanup() {
+    await firebase.clear();
+    await test.cleanup();
+}
 const {test, app} = init('example-test');
 
 describe('Export Functions', () => {
-    afterEach(test.cleanup);
+    beforeAll(async () => {
+        // Initialize testing client
+        await initializeAsync(clientConfig);
+    });
 
-    it('Should export new accounts', async () => {
+    afterEach(fbCleanup);
+
+    it('Should export new accounts', async (done) => {
         const clientId = 'client0';
 
         const handle = test.wrap(ExportFunctions.newAccount);
@@ -26,9 +38,10 @@ describe('Export Functions', () => {
             params: { clientId, acctId },
         }));
         assert.isNull(result.error);
+        done();
     });
 
-    it('Should export new record data', async () => {
+    it('Should export new record data', async (done) => {
         const clientId = 'client0@email.com';
         const handle = test.wrap(ExportFunctions.measurement);
         await admin.firestore(app)
@@ -85,16 +98,17 @@ describe('Export Functions', () => {
             `/records/${recordId}`);
         const result = await(handle(snap));
         assert.isNull(result.error);
+        done();
     });
 
-    it('Should export new survey data', async () => {
+    it('Should export new survey data', async (done) => {
         const clientId = 'client1@email.com';
         const handle = test.wrap(ExportFunctions.qolsurvey);
         await admin.firestore(app)
             .doc(`/clients/${clientId}`).create({
                 onboarded: true,
             });
-        const surveyId = 'survey1';
+        const id = 'survey1';
         const snap = await test.firestore.makeDocumentSnapshot(
             {
                 userId: clientId,
@@ -115,8 +129,9 @@ describe('Export Functions', () => {
                     },
                 },
             },
-            `/${Collections.SurveyResults}/${surveyId}`);
-        const result = await(handle(snap));
+            `/${Collections.SurveyResults}/${id}`);
+        const result = await handle(snap);
         assert.isTrue(result);
+        done();
     });
 });

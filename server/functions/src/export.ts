@@ -130,7 +130,8 @@ fns.qolsurvey = FeatureSettings.ExportToDataServices
         const data: QolSurveyData = snap.data() as QolSurveyData;
         const backend = new FunctionBackendController();
         backend.setUser(data.userId);
-        return backend.sendSurveyResults(data.data.results);
+        const result : boolean = await backend.sendSurveyResults(data.data.results);
+        return result;
     });
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;
