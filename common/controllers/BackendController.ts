@@ -1,4 +1,4 @@
-import { QolSurveyResults } from 'models/QoL';
+import { QolSurveyResults } from '../models/QoL';
 import {
     IBackendClient,
     IBackendController, RemoteCallResult,
