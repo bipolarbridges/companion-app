@@ -1,3 +1,4 @@
+import { QolSurveyResults } from 'models/QoL';
 import {
     IBackendClient,
     IBackendController, RemoteCallResult,
@@ -55,4 +56,28 @@ export default abstract class BackendControllerBase implements IBackendControlle
             });
     }
 
+    public logSurveyResult(userId: string, date: number, result: QolSurveyResults): Promise<RemoteCallResult> {
+        return this.Client.post('/survey', 
+        {
+            userId,
+            data: {
+                date,
+                result
+            }
+        }, 
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.Authorization,
+            },
+        })
+        .then((res: any) => {
+            return { error: null } as RemoteCallResult;
+        })
+        .catch((err: any) => {
+            return {
+                error: `Error calling service: ${err}`,
+            };
+        });
+    }
 }

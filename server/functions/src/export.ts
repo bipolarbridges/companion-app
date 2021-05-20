@@ -6,6 +6,8 @@ import { FunctionBackendController } from '../src/services/backend';
 import {
     RemoteCallResult,
 } from '../../../common/abstractions/controlllers/IBackendController';
+import Collections from 'common/database/collections';
+import { QolSurveyResults } from 'common/models/QoL';
 
 const fns: any = {};
 
@@ -110,6 +112,22 @@ fns.measurement = FeatureSettings.ExportToDataServices
             .catch((e) => {
                 return { error: e };
             });
+        });
+
+type QoLData = {
+    userId: string,
+    data: {
+        date: number,
+        results: QolSurveyResults
+    }
+};
+
+fns.qolsurvey = FeatureSettings.ExportToDataServices
+    && functions.firestore.document(`/${Collections.SurveyResults}/{id}`)
+        .onCreate(async (snap, context): Promise<ExportResult> => {
+            const data: QoLData = snap.data() as QoLData;
+            const backend = new FunctionBackendController();
+            return backend.logSurveyResult(data.userId, data.data.date, data.data.results)
         });
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;
