@@ -92,7 +92,7 @@ export class WelcomeView extends ViewState {
                             <Image style={styles.gIcon} source={googleIcon} />
                             <Text style={this.textStyles.btnTitle}>sign in with google</Text>
                         </Button>
-                        { Platform.OS === 'ios' && Features.Mobile.SignIn.Apple && this.enableAppleButton ? (
+                        {Platform.OS === 'ios' && Features.Mobile.SignIn.Apple && this.enableAppleButton ? (
                             <AppleAuthentication.AppleAuthenticationButton
                                 buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
                                 buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.WHITE}
@@ -103,6 +103,7 @@ export class WelcomeView extends ViewState {
                         ) : null}
 
                         <Button
+                            testID='email'
                             title="sign in with email"
                             style={styles.mailButton}
                             titleStyles={styles.mailButtonTitle}
@@ -113,7 +114,7 @@ export class WelcomeView extends ViewState {
                             {this.legalBlock}
                             <Text style={[this.textStyles.p4, styles.version]}>
                                 v{AppController.Instance.version.current}{AppController.Instance.version.build}
-                                { AppController.Instance.version.hasNext ? (
+                                {AppController.Instance.version.hasNext ? (
                                     <Text onPress={AppController.Instance.version.update} > (new version available)</Text>
                                 ) : ''}
                             </Text>

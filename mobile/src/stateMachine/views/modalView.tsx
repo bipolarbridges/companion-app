@@ -7,6 +7,7 @@ import Colors from 'src/constants/colors';
 import Layout from 'src/constants/Layout';
 
 export type ModalButton = {
+    testID?: string;
     text: string;
     color?: string;
     action: () => Promise<any> | void;
@@ -42,6 +43,7 @@ function renderSecondary(secondaryButton: ModalButtonOrCustom) {
 
     return (
         <ActivityButton
+            testID={secondaryButton.testID}
             onPress={secondaryButton.action}
             title={secondaryButton.text}
             loading="promise"

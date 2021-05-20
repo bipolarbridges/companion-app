@@ -18,6 +18,7 @@ export interface ButtonProps {
     withBorder?: boolean;
     underlayColor?: string;
     buttonForm?: boolean;
+    testID?: string;
 }
 
 export default class Button extends React.Component<ButtonProps> {
@@ -53,11 +54,12 @@ export default class Button extends React.Component<ButtonProps> {
 
         return (
             <TouchableHighlight
-                style={[ styles.button, disabled && styles.disabledButton, withBorder && styles.withBorder, isTransparent && styles.buttonTransparent, buttonForm && styles.buttonForm, style ]}
+                style={[styles.button, disabled && styles.disabledButton, withBorder && styles.withBorder, isTransparent && styles.buttonTransparent, buttonForm && styles.buttonForm, style]}
                 onPress={this._onPressHandler}
                 underlayColor={underlayColor ? underlayColor : btnUnderlayColor()}
                 activeOpacity={1}
                 disabled={disabled}
+                testID={this.props.testID}
             >
                 { title
                     ? <Text style={[TextStyles.btnTitle, disabled && styles.disabledText, isTransparent ? { color: Colors.button.transparentText } : {}, buttonForm && styles.buttonFormText, titleStyles]}>

@@ -173,6 +173,7 @@ export class SignInView extends ViewState {
                             <Text style={[scaleDownTitle ? this.textStyles.h3 : this.textStyles.h1, styles.title]}>{`What's your email?\nI need it to find your account.`}</Text>
                         </View>
                         <TextInput
+                            testID='emailtextfield'
                             onSubmit={this.submit}
                             model={model.email}
                             placeholder="your@email.com"

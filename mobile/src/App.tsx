@@ -1,6 +1,6 @@
 import React, { ErrorInfo } from 'react';
 import {
-    StatusBar, StyleSheet, View, AppState, AppStateStatus, Alert,
+    StatusBar, StyleSheet, View, AppState, AppStateStatus, Alert, LogBox
 } from 'react-native';
 import { AppLoading } from 'expo';
 import { observer, Provider as MobxProvider } from 'mobx-react';
@@ -66,6 +66,8 @@ export default class App extends React.Component<IAppProps> {
     };
 
     componentDidMount() {
+        LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+        LogBox.ignoreAllLogs();//Ignore all log notifications
         AppState.addEventListener('change', this._onAppStateChanged);
         AppQueryService.prewarm();
 
@@ -194,7 +196,7 @@ export default class App extends React.Component<IAppProps> {
 
         this._onAppStateChanged(AppState.currentState);
 
-        this.showDevAlert();
+        // this.showDevAlert();
 
         const AnalyticsService = new AnalyticsExpo();
         InitAnalytics(AnalyticsService);

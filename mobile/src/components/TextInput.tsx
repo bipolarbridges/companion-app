@@ -16,6 +16,7 @@ import Colors from 'src/constants/colors';
 import TextStyles from 'src/styles/TextStyles';
 
 interface ITextInputProps {
+    testID?: string;
     model: TextInputVM | null;
     forceError?: string;
     placeholder?: string;
@@ -110,6 +111,7 @@ export default class Input extends React.Component<ITextInputProps> {
         return (
             <View style={[styles.wrap, styleWrap]}>
                 <TextInput
+                    testID={this.props.testID}
                     autoCorrect={autoCorrect}
                     ref={inputRef}
                     onSubmitEditing={this._onSubmit}

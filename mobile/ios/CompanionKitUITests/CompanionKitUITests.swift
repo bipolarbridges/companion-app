@@ -48,12 +48,18 @@ class CompanionKitUITests: XCTestCase {
       snapshot("enterPassword")
       
       sleep(1)
-      let passwordTextField = app.textFields["passwordtextfield"]
+
+      let passwordTextField = app.descendants(matching: .any)["passwordtextfield"]
       passwordTextField.tap()
       passwordTextField.setText(text: SIGNIN_PASSWORD, application: app)
       app.keyboards.buttons["done"].tap()
-      sleep(10)
+      sleep(1)
       snapshot("loggedIn")
+      
+      let skipButton = app.descendants(matching: .any)["skipBtn"]
+      skipButton.tap()
+      sleep(1)
+      snapshot("home")
     }
   
 

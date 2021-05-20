@@ -139,6 +139,7 @@ export abstract class PasswordBase extends ViewState {
                             <Text style={[scaleDownTitle ? this.textStyles.h3 : this.textStyles.h1, styles.title]}>{this.title}</Text>
                         </View>
                         <TextInput
+                            testID='passwordtextfield'
                             onSubmit={this.submit}
                             model={this.viewModel.password}
                             forceError={this.viewModel.error}

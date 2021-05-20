@@ -15,6 +15,7 @@ export class NotificationsPermissionView extends ViewState {
             },
             secondaryButton: {
                 text: 'skip',
+                testID: 'skipBtn',
                 action: this.onSkip,
             },
         });
