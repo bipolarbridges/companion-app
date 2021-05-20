@@ -128,8 +128,8 @@ type QoLData = {
     userId: string,
     data: {
         date: number,
-        results: QolSurveyResults
-    }
+        results: QolSurveyResults,
+    },
 };
 
 fns.qolsurvey = FeatureSettings.ExportToDataServices
@@ -137,7 +137,7 @@ fns.qolsurvey = FeatureSettings.ExportToDataServices
         .onCreate(async (snap, context): Promise<ExportResult> => {
             const data: QoLData = snap.data() as QoLData;
             const backend = new FunctionBackendController();
-            return backend.logSurveyResult(data.userId, data.data.date, data.data.results)
+            return backend.logSurveyResult(data.userId, data.data.date, data.data.results);
         });
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;

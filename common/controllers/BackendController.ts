@@ -57,14 +57,14 @@ export default abstract class BackendControllerBase implements IBackendControlle
     }
 
     public logSurveyResult(userId: string, date: number, result: QolSurveyResults): Promise<RemoteCallResult> {
-        return this.Client.post('/survey', 
+        return this.Client.post('/survey',
         {
             userId,
             data: {
                 date,
-                result
-            }
-        }, 
+                result,
+            },
+        },
         {
             headers: {
                 'Content-Type': 'application/json',
