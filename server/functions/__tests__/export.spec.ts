@@ -130,8 +130,8 @@ describe('Export Functions', () => {
                 },
             },
             `/${Collections.SurveyResults}/${id}`);
-        const result = await handle(snap);
-        assert.isTrue(result);
+        const result = await(handle(snap));
+        assert.isNull(result.error);
         done();
     });
 });

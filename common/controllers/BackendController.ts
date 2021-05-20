@@ -1,70 +1,83 @@
-import { IBackendController, RemoteCallResult } from 'common/abstractions/controlllers/IBackendController';
+import { QolSurveyResults } from '../models/QoL';
 import {
-    QolSurveyResults,
-    PartialQol,
-} from 'common/models/QoL';
-import RepoFactory from 'common/controllers/RepoFactory';
+    IBackendClient,
+    IBackendController, RemoteCallResult,
+} from '../abstractions/controlllers/IBackendController';
 
-export default class BackendControllerBase implements IBackendController {
-    private _userId: string = null;
+export default abstract class BackendControllerBase implements IBackendController {
 
-    logNewAccount(clientID: string, coachID: string): Promise<RemoteCallResult> {
-        console.warn('Method not implemented.');
-        return Promise.resolve({error: null});
+    protected abstract get Client(): IBackendClient;
+    protected abstract get Authorization(): string;
+
+    public logNewAccount(clientID: string, coachID: string): Promise<RemoteCallResult> {
+        console.log(`Using key: ${this.Authorization}`);
+        return this.Client.post('/account',
+            { clientID, coachID },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': this.Authorization,
+                },
+            })
+            .then((res: any) => {
+                return { error: null } as RemoteCallResult;
+            })
+            .catch((err: any) => {
+                return {
+                    error: `Error calling service: ${err}`,
+                };
+            });
     }
 
-    logMeasurement(clientID: string, coachID: string, type: string, value: number, date: number): Promise<RemoteCallResult> {
-        console.warn('Method not implemented.');
-        return Promise.resolve({error: null});
+    public logMeasurement(clientID: string, coachID: string, type: string, value: number, date: number): Promise<RemoteCallResult> {
+        return this.Client.post('/measurement',
+            {
+                clientID,
+                coachID,
+                data: {
+                    date,
+                    dataType: type,
+                    value,
+                },
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': this.Authorization,
+                },
+            })
+            .then((res: any) => {
+                return { error: null } as RemoteCallResult;
+            })
+            .catch((err: any) => {
+                return {
+                    error: `Error calling service: ${err}`,
+                };
+            });
     }
 
-    // Fetch the latests survey results (i.e. scores)
-    public async getSurveyResults(): Promise<QolSurveyResults> {
-        console.log(`get qol results: userId = ${this._userId}`);
-        return await RepoFactory.Instance.surveyResults.getLatestResults(this._userId);
+    public logSurveyResult(userId: string, date: number, result: QolSurveyResults): Promise<RemoteCallResult> {
+        return this.Client.post('/survey', 
+        {
+            userId,
+            data: {
+                date,
+                result
+            }
+        }, 
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.Authorization,
+            },
+        })
+        .then((res: any) => {
+            return { error: null } as RemoteCallResult;
+        })
+        .catch((err: any) => {
+            return {
+                error: `Error calling service: ${err}`,
+            };
+        });
     }
-
-    // Submit new survey results
-    public async sendSurveyResults(results: QolSurveyResults): Promise<boolean> {
-        console.log(`add qol results: userId = ${this._userId}`);
-        await RepoFactory.Instance.surveyResults.addResults(this._userId, results);
-        return true;
-    }
-
-    // Store partial survey state
-    // Any subsequent calls to get will return this state
-    public async sendPartialQol(surveyScores: QolSurveyResults,
-        questionNumber: number, domainNumber: number, isFirstTimeQol: boolean): Promise<boolean> {
-
-        console.log(`set partial qol: userId = ${this._userId}`);
-        if (!this._userId) {
-            return false;
-        }
-        const data = surveyScores == null ? null : {
-            questionNum: questionNumber,
-            domainNum: domainNumber,
-            scores: surveyScores,
-            isFirstTimeQol,
-        };
-        try {
-            await RepoFactory.Instance.surveyState.setByUserId(this._userId, data);
-            return true;
-        } catch (err) {
-            return false;
-        }
-    }
-
-    // Get last stored state
-    // null value indicates no outstanding survey
-    public async getPartialQol(): Promise<PartialQol> {
-        console.log(`get partial qol: userId = ${this._userId}`);
-        const result = await RepoFactory.Instance.surveyState.getByUserId(this._userId);
-        console.log(`get partial qol: result = ${JSON.stringify(result)}`);
-        return result;
-    }
-
-    public setUser(userId: string) {
-        this._userId = userId;
-    }
-
 }

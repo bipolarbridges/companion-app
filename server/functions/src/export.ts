@@ -124,14 +124,20 @@ fns.measurement = FeatureSettings.ExportToDataServices
             });
         });
 
+type QoLData = {
+    userId: string,
+    data: {
+        date: number,
+        results: QolSurveyResults
+    }
+};
+
 fns.qolsurvey = FeatureSettings.ExportToDataServices
     && functions.firestore.document(`/${Collections.SurveyResults}/{id}`)
-    .onCreate(async (snap, context): Promise<boolean> => {
-        const data: QolSurveyData = snap.data() as QolSurveyData;
-        const backend = new FunctionBackendController();
-        backend.setUser(data.userId);
-        const result : boolean = await backend.sendSurveyResults(data.data.results);
-        return result;
-    });
+        .onCreate(async (snap, context): Promise<ExportResult> => {
+            const data: QoLData = snap.data() as QoLData;
+            const backend = new FunctionBackendController();
+            return backend.logSurveyResult(data.userId, data.data.date, data.data.results)
+        });
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;
