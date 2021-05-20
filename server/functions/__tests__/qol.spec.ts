@@ -11,7 +11,7 @@ import clientConfig from './mocks/client/config';
 import { createDomain, createQuestion, getDomains, getQuestions } from 'server/qol';
 import { QoLActionTypes } from 'common/models/dtos/qol';
 
-const test = firebase.init('qol-test');
+const {test, app} = firebase.init('qol-test');
 
 async function fbCleanup() {
     await firebase.clear();
