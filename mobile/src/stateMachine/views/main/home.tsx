@@ -316,7 +316,6 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
         return (
             <MasloPage style={[this.baseStyles.page, { backgroundColor: Colors.home.bg }]}>
                 <Animated.View style={[this.baseStyles.container, styles.container, { height: this._contentHeight, opacity: this.state.opacity }]}>
-                    <Button title="Qol Survey" style={styles.qolButton} onPress={() => this.onStartQOL()}/>
                     {this.state.isUnfinishedQol === null ? <Text>Loading..</Text> : this.getTitle()}
                     { loading
                         ? <ActivityIndicator size="large" />
@@ -372,10 +371,4 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         textAlign: 'center',
     },
-    qolButton: {
-        width: '30%',
-        height: 30,
-        marginLeft: 20,
-        marginBottom: 15
-    }
 });
