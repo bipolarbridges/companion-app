@@ -8,6 +8,7 @@ export type UserLocalSettings = {
 
     notifications?: NotificationsSettings;
     qol?: QolSettings;
+    lastDailyCheckIn?: string;
 };
 
 export type NotificationsSettings = {

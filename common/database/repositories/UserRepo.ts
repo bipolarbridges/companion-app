@@ -202,6 +202,8 @@ export class UserRepo {
         try {
             const docRef = this.db.doc(Collections.userLocalSettings(uid, deviceId));
             settings.deviceId = deviceId;
+            // This was causing an error, notifications are not really setup yet
+            if (settings.notifications == null) delete settings.notifications;
             await docRef.set(settings, { merge: true });
         } catch (err) {
             logger.error('updateLocalSettings: ', err);

@@ -29,6 +29,7 @@ export interface ILocalSettingsController {
     updateQolOnboarding(diff: Partial<QolSettings>): void;
     updateLastMonthlyQol(diff: Partial<QolSettings>): void;
     updatePendingMonthlyQol(diff: Partial<QolSettings>): void;
+    updateLastDailyCheckIn(diff: string): void;
 
     flushChanges(): Promise<void>;
 }
@@ -86,6 +87,7 @@ export class LocalSettingsController implements ILocalSettingsController {
     private submitChanges = async () => {
         const diff: Partial<UserLocalSettings> = {
             notifications: toJS(this._current.notifications),
+            lastDailyCheckIn: toJS(this._current.lastDailyCheckIn)
         };
 
         if (this._sameDevice && this._sameDevice.notifications) {
@@ -182,6 +184,18 @@ export class LocalSettingsController implements ILocalSettingsController {
 
             if (changed) {
                 this.update({ qol });
+            }
+        });
+    }
+
+    updateLastDailyCheckIn(diff: string) {
+        let lastDailyCheckIn = this.current.lastDailyCheckIn;
+        transaction(() => {
+            let changed = diff !== lastDailyCheckIn;
+
+            if (changed) {
+                lastDailyCheckIn = diff;
+                this.update({ lastDailyCheckIn });
             }
         });
     }

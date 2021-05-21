@@ -103,45 +103,55 @@ export default class HomeViewModel {
             })) || EmptyArr;
         }
 
+        const needsDailyCheckIn = !this.hasCompletedDailyCheckInToday();
+        
+
         if (AppViewModel.Instance.QOL.isUnfinished) {
-            return [
+            let res: ITipItem[] = [
                 <IFinishQolTipItem>{
                     id: 'finish-qol',
                     type: 'finish-qol',
                     title: 'Tap to continue your QoL Survey!',
                 },
-                // Currently always shows 'daily' check-in as this feature has not yet been implemented
-                <ICheckInTipItem>{
-                    id: 'check-in',
-                    type: 'check-in',
-                    title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
-                },
             ];
+            if (needsDailyCheckIn) {
+                res = res.concat(
+                    <ICheckInTipItem>{
+                        id: 'check-in',
+                        type: 'check-in',
+                        title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
+                    })
+            }
+            return res;
         }
 
         if (this.isTimeForMonthlyQol()) {
-            return [
+            let res: ITipItem[] = [
                 <IMonthlyQolTipItem>{
                     id: 'monthly-qol',
                     type: 'monthly-qol',
                     title: "It's time for your monthly check-in!",
                 },
-                // Currently always shows 'daily' check-in as this feature has not yet been implemented
-                <ICheckInTipItem>{
-                    id: 'check-in',
-                    type: 'check-in',
-                    title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
-                },
             ];
+            if (needsDailyCheckIn) {
+                
+                res = res.concat(
+                    <ICheckInTipItem>{
+                        id: 'check-in',
+                        type: 'check-in',
+                        title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
+                    })
+            }
+            return res;
         }
 
-        return [
+        return needsDailyCheckIn ? [
             <ICheckInTipItem>{
                 id: 'check-in',
                 type: 'check-in',
                 title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
             },
-        ];
+        ] : [];
     }
 
     @computed
@@ -184,6 +194,13 @@ export default class HomeViewModel {
         } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingMonthlyQol) { return true; }
         return false;
     }
+
+    private hasCompletedDailyCheckInToday(): boolean {
+        const lastDailyCheckIn: Date = new Date(AppController.Instance.User.localSettings?.current?.lastDailyCheckIn);
+        const today: Date = new Date();
+
+        return (lastDailyCheckIn.getDay() === today.getDay() && lastDailyCheckIn.getMonth() === today.getMonth() && lastDailyCheckIn.getFullYear() === today.getFullYear())
+        }
 
     public getArmMagnitudes = async () => {
         const lastSurveyScores: QolSurveyResults = await AppController.Instance.User.backend.getSurveyResults();
