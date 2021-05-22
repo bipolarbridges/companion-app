@@ -12,7 +12,7 @@ export default abstract class BackendControllerBase implements IBackendControlle
     public logNewAccount(id: string, coachID: string): Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
         return this.Client.post('/client',
-            { id },
+            { id: id },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -23,7 +23,9 @@ export default abstract class BackendControllerBase implements IBackendControlle
                 return { error: null } as RemoteCallResult;
             })
             .catch((err: any) => {
+                console.log(err?.message);
                 return {
+                    msg: err?.message,
                     error: `Error calling service: ${err}`,
                 };
             });
@@ -33,8 +35,8 @@ export default abstract class BackendControllerBase implements IBackendControlle
         console.log(`Using key: ${this.Authorization}`);
         return this.Client.post('/measurement',
             {
-                clientID,
-                coachID,
+                clientID: clientID,
+                coachID: coachID,
                 data: {
                     date,
                     dataType: type,
@@ -52,21 +54,25 @@ export default abstract class BackendControllerBase implements IBackendControlle
             })
             .catch((err: any) => {
                 return {
+                    msg: err?.message,
                     error: `Error calling service: ${err}`,
                 };
             });
     }
 
-    public logSurveyResult(userId: string, date: number, result: QolSurveyResults): Promise<RemoteCallResult> {
+    public logSurveyResult(clientID: string, date: number, result: QolSurveyResults): Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
-        return this.Client.post('/survey',
-        {
-            userId,
+        const data = {
+            userId: clientID,
             data: {
                 date,
                 result,
             },
-        },
+        }
+
+        console.log(data)
+        return this.Client.post('/survey',
+        data,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -78,6 +84,7 @@ export default abstract class BackendControllerBase implements IBackendControlle
         })
         .catch((err: any) => {
             return {
+                msg: err?.message,
                 error: `Error calling service: ${err}`,
             };
         });
@@ -85,12 +92,19 @@ export default abstract class BackendControllerBase implements IBackendControlle
 
     public pingTest():  Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
-        return this.Client._get('/', null, null)
+        return this.Client._get('/', 
+        {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': this.Authorization,
+            },
+        })
             .then((res: any) => {
                 return { error: null } as RemoteCallResult;
             })
             .catch((err: any) => {
                 return {
+                    msg: err?.message,
                     error: `Error calling service: ${err}`,
                 };
             });

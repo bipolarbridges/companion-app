@@ -15,6 +15,7 @@ const fns: any = {};
 
 type ExportResult = {
     error?: any,
+    msg?: any
 };
 
 fns.newAccount = FeatureSettings.ExportToDataServices
@@ -26,9 +27,10 @@ fns.newAccount = FeatureSettings.ExportToDataServices
             const coach = acct.coachId;
             console.log(`New account for client[${client}], coach[${coach}]`);
             const result: RemoteCallResult = await backend.logNewAccount(client, coach);
-
+            console.log(result);
             return {
                 error: result.error ? result.error : null,
+                msg: result.message ? result.message : null,
             };
         });
 
@@ -98,7 +100,7 @@ fns.measurement = FeatureSettings.ExportToDataServices
                 backend.logMeasurement(data.clientUid, data.coachUid, ex.typeId, ex.value, data.date)
                 .then((res: RemoteCallResult) => {
                     if (res.error) {
-                        return Promise.reject(res.error);
+                        return Promise.reject(res);
                     } else {
                         return Promise.resolve();
                     }
