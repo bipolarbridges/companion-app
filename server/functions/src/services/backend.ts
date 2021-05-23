@@ -17,6 +17,7 @@ export class FunctionBackendController extends BackendControllerBase {
     protected get Client(): IBackendClient {
         return {
             post: this.ax.post,
+            _get: this.ax.get
         };
     }
 

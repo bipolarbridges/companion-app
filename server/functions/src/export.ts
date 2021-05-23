@@ -18,19 +18,18 @@ type ExportResult = {
 };
 
 fns.newAccount = FeatureSettings.ExportToDataServices
-    && functions.firestore.document('/clients/{clientId}/accounts/{acctId}')
+    && functions.firestore.document('/clients/{clientId}/accounts/{clientCardId}')
         .onCreate(async (snap, context) => {
             const backend = new FunctionBackendController();
             const acct = snap.data();
             const client = context.params.clientId;
             const coach = acct.coachId;
             console.log(`New account for client[${client}], coach[${coach}]`);
-            return backend.logNewAccount(client, coach)
-                .then((res: RemoteCallResult) => {
-                    return {
-                        error: res.error ? res.error : null,
-                    };
-                });
+            const result: RemoteCallResult = await backend.logNewAccount(client, coach);
+
+            return {
+                error: result.error ? result.error : null,
+            };
         });
 
 type RecordExport = {
@@ -120,6 +119,7 @@ fns.measurement = FeatureSettings.ExportToDataServices
                 return { error: null };
             })
             .catch((e) => {
+                console.log(e);
                 return { error: e };
             });
         });
@@ -137,7 +137,11 @@ fns.qolsurvey = FeatureSettings.ExportToDataServices
         .onCreate(async (snap, context): Promise<ExportResult> => {
             const data: QoLData = snap.data() as QoLData;
             const backend = new FunctionBackendController();
-            return backend.logSurveyResult(data.userId, data.data.date, data.data.results);
+            const result: ExportResult = await backend.logSurveyResult(data.userId, data.data.date, data.data.results);
+            const ping: ExportResult = await backend.pingTest();
+            console.log(result);
+            console.log(ping);
+            return {...result, ...ping};
         });
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;

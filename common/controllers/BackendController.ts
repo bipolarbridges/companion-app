@@ -9,10 +9,10 @@ export default abstract class BackendControllerBase implements IBackendControlle
     protected abstract get Client(): IBackendClient;
     protected abstract get Authorization(): string;
 
-    public logNewAccount(clientID: string, coachID: string): Promise<RemoteCallResult> {
+    public logNewAccount(id: string, coachID: string): Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
-        return this.Client.post('/account',
-            { clientID, coachID },
+        return this.Client.post('/client',
+            { id },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,6 +30,7 @@ export default abstract class BackendControllerBase implements IBackendControlle
     }
 
     public logMeasurement(clientID: string, coachID: string, type: string, value: number, date: number): Promise<RemoteCallResult> {
+        console.log(`Using key: ${this.Authorization}`);
         return this.Client.post('/measurement',
             {
                 clientID,
@@ -57,6 +58,7 @@ export default abstract class BackendControllerBase implements IBackendControlle
     }
 
     public logSurveyResult(userId: string, date: number, result: QolSurveyResults): Promise<RemoteCallResult> {
+        console.log(`Using key: ${this.Authorization}`);
         return this.Client.post('/survey',
         {
             userId,
@@ -79,5 +81,18 @@ export default abstract class BackendControllerBase implements IBackendControlle
                 error: `Error calling service: ${err}`,
             };
         });
+    }
+
+    public pingTest():  Promise<RemoteCallResult> {
+        console.log(`Using key: ${this.Authorization}`);
+        return this.Client._get('/', null, null)
+            .then((res: any) => {
+                return { error: null } as RemoteCallResult;
+            })
+            .catch((err: any) => {
+                return {
+                    error: `Error calling service: ${err}`,
+                };
+            });
     }
 }

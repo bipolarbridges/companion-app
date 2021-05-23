@@ -7,10 +7,7 @@ import { initializeAsync } from '../../../common/services/firebase';
 import clientConfig from './mocks/client/config';
 import * as firebase from './util/firebase';
 
-async function fbCleanup() {
-    await firebase.clear();
-    await test.cleanup();
-}
+
 const {test, app} = init('example-test');
 
 describe('Export Functions', () => {
@@ -18,8 +15,10 @@ describe('Export Functions', () => {
         // Initialize testing client
         await initializeAsync(clientConfig);
     });
-
-    afterEach(fbCleanup);
+    
+    afterAll(async () => {
+        await test.cleanup();
+    });
 
     it('Should export new accounts', async (done) => {
         const clientId = 'client0';
@@ -131,6 +130,7 @@ describe('Export Functions', () => {
             },
             `/${Collections.SurveyResults}/${id}`);
         const result = await(handle(snap));
+        console.log(result);
         assert.isNull(result.error);
         done();
     });
