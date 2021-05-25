@@ -42,6 +42,7 @@ export default class QoLControllerBase implements IQoLController {
     // Get last stored state
     // null value indicates no outstanding survey
     public async getPartialQol(): Promise<PartialQol> {
+
         console.log(`get partial qol: userId = ${this._userId}`);
         const result = await RepoFactory.Instance.surveyState.getByUserId(this._userId);
         console.log(`get partial qol: result = ${JSON.stringify(result)}`);
