@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { StyleSheet, Text, ScrollView, ActivityIndicator, View, Animated } from 'react-native';
 import TextStyles from 'src/styles/TextStyles';
 import Colors from 'src/constants/colors';
-import { Container, MasloPage, Placeholder } from 'src/components';
+import { Container, MasloPage, Placeholder, Button } from 'src/components';
 import HomeViewModel from 'src/viewModels/HomeViewModel';
 import BottomBar from 'src/screens/components/BottomBar';
 import CheckInCard from 'src/screens/components/CheckInCard';
@@ -17,8 +17,8 @@ import { IInterventionTipItem, ITipItem } from 'src/viewModels/components/TipIte
 import { InterventionTipsStatuses, Identify, DocumentLinkEntry } from 'common/models';
 import { TransitionObserver } from 'common/utils/transitionObserver';
 import { UserProfileName } from 'src/screens/components/UserProfileName';
-import AppController from 'src/controllers';
 import AppViewModel from 'src/viewModels';
+import { QolType } from 'src/viewModels/QoLViewModel';
 
 const minContentHeight = 535;
 const MaxHeight = Layout.isSmallDevice ? 174 : 208;
@@ -26,12 +26,13 @@ const MaxHeight = Layout.isSmallDevice ? 174 : 208;
 let isFirstLaunch = true;
 
 @observer
-export class HomeView extends ViewState<{ opacity: Animated.Value }> {
+export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQol: boolean }> {
 
     private _linkDocModalShown = true;
 
     state = {
         opacity: new Animated.Value(0),
+        isUnfinishedQol: null,
     };
 
     constructor(props, ctx) {
@@ -40,18 +41,22 @@ export class HomeView extends ViewState<{ opacity: Animated.Value }> {
         const smallHeight = this.layout.window.height < 800;
         this.persona.state = PersonaStates.Idle;
         this._contentHeight = smallHeight
-            ? this.persona.setupContainerHeightForceScroll({ rotation: 360 })
-            : this.persona.setupContainerHeight(minContentHeight, { rotation: 360 });
+            ? this.persona.setupContainerHeightForceScroll({ rotation: 120 , transition: {duration: 1.5}})
+            : this.persona.setupContainerHeight(minContentHeight, { rotation: 120 , transition: {duration: 1.5}});
     }
 
     get viewModel() { return HomeViewModel.Instance; }
+    get viewQolModel() { return AppViewModel.Instance.QOL; }
+    
 
     async start() {
+        await AppViewModel.Instance.QOL.init();
         const mags = await this.viewModel.getArmMagnitudes();
-        this.persona.view = {...this.persona.view, login: true, logout: false, armMagnitudes: mags };
+        this.persona.qolMags = mags;
+        this.setState({...this.state, isUnfinishedQol: AppViewModel.Instance.QOL.isUnfinished});
         Animated.timing(this.state.opacity, {
             toValue: 1,
-            delay: isFirstLaunch ? 600 : 300,
+            delay: isFirstLaunch ? 1000 : 400,
             duration: 500,
             useNativeDriver: true
         }).start(this.checkNewLinkDoc);
@@ -117,6 +122,19 @@ export class HomeView extends ViewState<{ opacity: Animated.Value }> {
 
     private onAddCheckin = () => {
         this.trigger(ScenarioTriggers.Submit);
+    }
+
+    private onfinishQol = () => {
+        this.trigger(ScenarioTriggers.Quaternary);
+    }
+
+    private onMonthlyQol = () => {
+        this.viewQolModel.setQolType = QolType.Monthly;
+        this.trigger(ScenarioTriggers.Tertiary);
+    }
+
+    private onStartQOL = () => {
+        this.trigger(ScenarioTriggers.Tertiary);
     }
 
     private openStoryDetails = (jid: string) => {
@@ -210,6 +228,16 @@ export class HomeView extends ViewState<{ opacity: Animated.Value }> {
                 return;
             }
 
+            case 'finish-qol': {
+                this.onfinishQol();
+                return;
+            }
+
+            case 'monthly-qol': {
+                this.onMonthlyQol();
+                return;
+            }
+
             case 'docLinkTip': {
                 t.open();
                 return;
@@ -288,7 +316,8 @@ export class HomeView extends ViewState<{ opacity: Animated.Value }> {
         return (
             <MasloPage style={[this.baseStyles.page, { backgroundColor: Colors.home.bg }]}>
                 <Animated.View style={[this.baseStyles.container, styles.container, { height: this._contentHeight, opacity: this.state.opacity }]}>
-                    { this.getTitle() }
+                    <Button title="Qol Survey" style={styles.qolButton} onPress={() => this.onStartQOL()}/>
+                    {this.state.isUnfinishedQol === null ? <Text>Loading..</Text> : this.getTitle()}
                     { loading
                         ? <ActivityIndicator size="large" />
                         : this.getCheckinsList()
@@ -343,4 +372,10 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5,
         textAlign: 'center',
     },
+    qolButton: {
+        width: '30%',
+        height: 30,
+        marginLeft: 20,
+        marginBottom: 15
+    }
 });
