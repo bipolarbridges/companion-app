@@ -34,6 +34,7 @@ export default class BackendControllerBase implements IBackendController {
             await RepoFactory.Instance.surveyState.setByUserId(this._userId, qol);
             return true;
         } catch (err) {
+            console.log(`ERROR: setByUserId with ${this._userId} failed`);
             return false;
         }
     }
