@@ -9,6 +9,7 @@ import { ThrottleAction } from 'common/utils/throttle';
 import { IEvent, Event } from 'common/utils/event';
 import { AppVersion } from './AppVersion';
 import logger from 'common/logger';
+import { QolType } from 'common/models/QoL';
 
 const DeviceId = ExpoConstants.installationId;
 
@@ -27,8 +28,8 @@ export interface ILocalSettingsController {
 
     updateNotifications(diff: Partial<NotificationsSettings>): void;
     updateQolOnboarding(diff: Partial<QolSettings>): void;
-    updateLastMonthlyQol(diff: Partial<QolSettings>): void;
-    updatePendingMonthlyQol(diff: Partial<QolSettings>): void;
+    updateLastQol(diff: Partial<QolSettings>, type: QolType): void;
+    updatePendingQol(diff: Partial<QolSettings>, type: QolType): void;
     updateLastDailyCheckIn(diff: string): void;
 
     flushChanges(): Promise<void>;
@@ -166,10 +167,22 @@ export class LocalSettingsController implements ILocalSettingsController {
         });
     }
 
-    updateLastMonthlyQol(diff: Partial<QolSettings>) {
+    updateLastQol(diff: Partial<QolSettings>, type: QolType) {
         const qol = this.current.qol || { };
+        let toChange: keyof QolSettings;
+        switch (type) {
+            case QolType.Monthly:
+                toChange = 'lastMonthlyQol';
+                break;
+            case QolType.Weekly:
+                toChange = 'lastWeeklyQol';
+                break;
+            default:
+                console.log(`updateLastQol ERROR: ${type} not implemented in switch`)
+                return;
+        }
         transaction(() => {
-            let changed = transferChangedFields(diff, qol, 'lastMonthlyQol');
+            let changed = transferChangedFields(diff, qol, toChange);
 
             if (changed) {
                 this.update({ qol });
@@ -177,10 +190,22 @@ export class LocalSettingsController implements ILocalSettingsController {
         });
     }
 
-    updatePendingMonthlyQol(diff: Partial<QolSettings>) {
+    updatePendingQol(diff: Partial<QolSettings>, type: QolType) {
         const qol = this.current.qol || { };
+        let toChange: keyof QolSettings;
+        switch (type) {
+            case QolType.Monthly:
+                toChange = 'pendingMonthlyQol';
+                break;
+            case QolType.Weekly:
+                toChange = 'pendingWeeklyQol';
+                break;
+            default:
+                console.log(`updatePendingQol ERROR: ${type} not implemented in switch`)
+                return;
+        }
         transaction(() => {
-            let changed = transferChangedFields(diff, qol, 'pendingMonthlyQol');
+            let changed = transferChangedFields(diff, qol, toChange);
 
             if (changed) {
                 this.update({ qol });

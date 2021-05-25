@@ -3,7 +3,7 @@ import CheckInViewModel from './CheckInViewModel';
 import { computed } from 'mobx';
 import NamesHelper from 'common/utils/nameHelper';
 import { months } from 'common/utils/dateHelpers';
-import { ITipItem, IStaticTipItem, ICheckInTipItem, IFinishQolTipItem, IMonthlyQolTipItem, IAssessmentTipItem, IDocumentLinkTip } from './components/TipItemViewModel';
+import { ITipItem, IStaticTipItem, ICheckInTipItem, IFinishQolTipItem, IMonthlyQolTipItem, IWeeklyQolTipItem, IAssessmentTipItem, IDocumentLinkTip } from './components/TipItemViewModel';
 import AppViewModel from './index';
 import InterventionTipsViewModel from 'src/viewModels/components/InterventionTipsViewModel';
 import Localization from 'src/services/localization';
@@ -16,6 +16,7 @@ import { QolSurveyResults } from 'common/models/QoL';
 import { PersonaDomains } from 'src/stateMachine/persona';
 import { PersonaArmState } from 'dependencies/persona/lib';
 import { ILocalSettingsController } from 'src/controllers/LocalSettings';
+import { QolType } from 'common/models/QoL';
 import logger from 'common/logger';
 
 const EmptyArr: any[] = [];
@@ -104,54 +105,52 @@ export default class HomeViewModel {
         }
 
         const needsDailyCheckIn = !this.hasCompletedDailyCheckInToday();
-        
+        let res: ITipItem[] = [];
+
+        if (needsDailyCheckIn) {
+            res = [
+                <ICheckInTipItem>{
+                    id: 'check-in',
+                    type: 'check-in',
+                    title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
+                }];
+        }
 
         if (AppViewModel.Instance.QOL.isUnfinished) {
-            let res: ITipItem[] = [
+            res.unshift(
                 <IFinishQolTipItem>{
                     id: 'finish-qol',
                     type: 'finish-qol',
                     title: 'Tap to continue your QoL Survey!',
-                },
-            ];
-            if (needsDailyCheckIn) {
-                res = res.concat(
-                    <ICheckInTipItem>{
-                        id: 'check-in',
-                        type: 'check-in',
-                        title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
-                    })
-            }
+                });
             return res;
         }
 
         if (this.isTimeForMonthlyQol()) {
-            let res: ITipItem[] = [
+            res.unshift(
                 <IMonthlyQolTipItem>{
                     id: 'monthly-qol',
                     type: 'monthly-qol',
                     title: "It's time for your monthly check-in!",
-                },
-            ];
-            if (needsDailyCheckIn) {
-                
-                res = res.concat(
-                    <ICheckInTipItem>{
-                        id: 'check-in',
-                        type: 'check-in',
-                        title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
-                    })
-            }
-            return res;
+                });
         }
 
-        return needsDailyCheckIn ? [
-            <ICheckInTipItem>{
+        if (this.isTimeForWeeklyQol()) {
+            res.unshift(
+                <IWeeklyQolTipItem>{
+                    id: 'weekly-qol',
+                    type: 'weekly-qol',
+                    title: "It's time for your weekly check-in!",
+                });
+        }
+
+        return res.length == 0 ?
+            [<ICheckInTipItem>{
                 id: 'check-in',
                 type: 'check-in',
                 title: AppViewModel.Instance.CreateCheckIn.question || 'Create a new check-in!',
-            },
-        ] : [];
+            }] 
+            : res;
     }
 
     @computed
@@ -188,12 +187,28 @@ export default class HomeViewModel {
         const today: Date = new Date();
         if (nextMonthlyQol.getDay() === today.getDay() && nextMonthlyQol.getMonth() === today.getMonth()
         && nextMonthlyQol.getFullYear() === today.getFullYear()) {
-            this._settings.updateLastMonthlyQol({ lastMonthlyQol: Date() });
-            this._settings.updatePendingMonthlyQol({ pendingMonthlyQol: true });
+            this._settings.updateLastQol({ lastMonthlyQol: Date() }, QolType.Monthly);
+            this._settings.updatePendingQol({ pendingMonthlyQol: true }, QolType.Monthly);
             return true;
         } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingMonthlyQol) { return true; }
         return false;
     }
+
+        // returns true if it has been 7 calendar days since last Weekly QoL
+        private isTimeForWeeklyQol(): boolean {
+            const lastWeeklyQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastWeeklyQol);
+            console.log(`lastWeeklyQol: ${AppController.Instance.User.localSettings?.current?.qol?.lastWeeklyQol}`);
+            let nextWeeklyQol: Date = lastWeeklyQol;
+            nextWeeklyQol.setDate(nextWeeklyQol.getDate() + 7);
+            const today: Date = new Date();
+            if (nextWeeklyQol.getDay() === today.getDay() && nextWeeklyQol.getMonth() === today.getMonth()
+            && nextWeeklyQol.getFullYear() === today.getFullYear()) {
+                this._settings.updateLastQol({ lastWeeklyQol: Date() }, QolType.Weekly);
+                this._settings.updatePendingQol({ pendingWeeklyQol: true }, QolType.Weekly);
+                return true;
+            } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol) { return true; }
+            return false;
+        }
 
     private hasCompletedDailyCheckInToday(): boolean {
         const lastDailyCheckIn: Date = new Date(AppController.Instance.User.localSettings?.current?.lastDailyCheckIn);

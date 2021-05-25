@@ -13,7 +13,8 @@ function getTipIcon(type: TipTypes) {
         case 'check-in':
         case 'assessment':
         case 'finish-qol':
-        case 'monthly-qol': {
+        case 'monthly-qol':
+        case 'weekly-qol': {
             return <PlusIcon width={16} height={16} />;
         }
 

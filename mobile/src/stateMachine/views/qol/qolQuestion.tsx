@@ -47,9 +47,7 @@ export class QolQuestion extends ViewState {
         if (this.viewModel.isUnfinished) {
             await this.viewModel.saveSurveyProgress(null);
         }
-        if (this.viewModel.qolType === QolType.Monthly) {
-            this.viewModel.updatePendingMonthlyQol();
-        }
+        this.viewModel.updatePendingQol();
     }
 
     private isNextDomain = (currQuestion: number) => {

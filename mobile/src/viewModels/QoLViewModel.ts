@@ -155,8 +155,19 @@ export default class QOLSurveyViewModel {
         this.showInterlude = true;
     }
 
-    public updatePendingMonthlyQol = () => {
-        this._settings.updatePendingMonthlyQol({ pendingMonthlyQol: false });
+    public updatePendingQol = () => {
+        switch (this.qolType) {
+            case QolType.Monthly:
+                this._settings.updatePendingQol({ pendingMonthlyQol: false }, this.qolType);
+                break;
+            case QolType.Monthly:
+                this._settings.updatePendingQol({ pendingWeeklyQol: false }, this.qolType);
+                break;
+            default:
+                console.log(`QoLViewModel: updatePendingQol ERROR: ${this.qolType} not implemented in switch`)
+                return;
+        }
+        
     }
 }
 

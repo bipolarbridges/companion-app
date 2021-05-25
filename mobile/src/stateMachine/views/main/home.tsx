@@ -129,7 +129,12 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
     }
 
     private onMonthlyQol = () => {
-        this.viewQolModel.setQolType = QolType.Monthly;
+        // this.viewQolModel.setQolType = QolType.Monthly;
+        this.trigger(ScenarioTriggers.Tertiary);
+    }
+
+    private onWeeklyQol = () => {
+        // this.viewQolModel.setQolType = QolType.Weekly;
         this.trigger(ScenarioTriggers.Tertiary);
     }
 
@@ -235,6 +240,11 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
 
             case 'monthly-qol': {
                 this.onMonthlyQol();
+                return;
+            }
+
+            case 'weekly-qol': {
+                this.onWeeklyQol();
                 return;
             }
 
