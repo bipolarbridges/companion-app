@@ -71,10 +71,10 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     message: {
-        marginTop: "100%",
+        marginTop: "95%",
         textAlign: 'center',
         width: '90%',
-        marginBottom: '10%',
+        marginBottom: '8%',
     },
     readyButton: {
         width: '70%',
