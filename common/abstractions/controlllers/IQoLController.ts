@@ -1,8 +1,9 @@
 import { PartialQol, QolSurveyResults } from 'common/models/QoL';
+import { DomainSelection } from 'common/models/userState';
 
 export type Domains = string[];
 
-export interface IBackendController {
+export interface IQoLController {
 
     getSurveyResults(): Promise<QolSurveyResults>;
 
@@ -13,9 +14,7 @@ export interface IBackendController {
 
     getPartialQol(): Promise<PartialQol>;
 
-    // setDomain(domain: string): Promise<boolean>;
-
-    // getDomains(): Promise<Domains>;
+    setDomains(domains: DomainSelection): Promise<void>;
 
     setUser(userId: string): void;
 }

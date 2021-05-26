@@ -1,7 +1,6 @@
 import { observable} from 'mobx';
-import AppController from 'src/controllers';
-import { Domains,Domain_Importance, DOMAIN_COUNT, Strategies } from "../constants/QoLSurvey";
 import { createLogger } from 'common/logger';
+import { DomainIded } from 'common/models/QoL';
 
 export const logger = createLogger('[QOLModel]');
 
@@ -15,10 +14,11 @@ export default class ChooseDomainViewModel {
     private _rightDomain: number;
     
 
-    public _selectedDomains: any;
+    public _availableDomains: DomainIded[];
+    public _selectedDomains: DomainIded[];
 
 
-    public domainCount: number = DOMAIN_COUNT;
+    public domainCount: number;
 
 
 
@@ -28,8 +28,15 @@ export default class ChooseDomainViewModel {
         this._rightDomain = 2;
         this._leftDomain = 0;
 
-        const selectedDomains = [];
-        this._selectedDomains = selectedDomains;
+        this._availableDomains = [];
+        this._selectedDomains = [];
+        this.domainCount = 0;
+    }
+
+    public setAvailableDomains(doms: DomainIded[]) {
+        this._availableDomains = doms;
+        this.domainCount = doms.length;
+        console.log("available domains: ", this._availableDomains.map(d => d.slug));
     }
 
     // @computed
@@ -39,16 +46,21 @@ export default class ChooseDomainViewModel {
 
     //  Returns the three domains displayed on the choose domain screen, main(center donain), ldomain(domain on left side), rdomain(domain on right side)
     public getDomainDisplay () : string[] {
-        return [Domains[this._leftDomain], 
-        Domains[this._mainDomain], 
-        Domains[this._rightDomain],
-        Domain_Importance[this._mainDomain]];
+        if (this.domainCount < 3) {
+            console.log("Warning: not enough domains available!");
+            return [null, null, null, null];
+        }
+        console.log("indices", this._leftDomain, this._mainDomain, this._rightDomain);
+        return [this._availableDomains[this._leftDomain].name,
+        this._availableDomains[this._mainDomain].name,
+        this._availableDomains[this._rightDomain].name,
+        this._availableDomains[this._mainDomain].importance];
     }
 
     //  Iterates through the domains as user clicks the next or back button, (-1) going back, (1) going forward through the list of domains
     public getNextDomain (dir:number) : void {
         if (dir > 0){
-            if (!((this._rightDomain + 1) > (DOMAIN_COUNT))) {
+            if (this._rightDomain + 1 < this.domainCount) {
                 this._rightDomain++;
                 this._mainDomain++;
                 this._leftDomain++;
@@ -56,7 +68,7 @@ export default class ChooseDomainViewModel {
         }
 
         if (dir < 0){
-            if (!((this._leftDomain - 1) < -1)) {
+            if (this._leftDomain - 1 >= 0) {
                 this._rightDomain--;
                 this._mainDomain--;
                 this._leftDomain--;
@@ -66,12 +78,22 @@ export default class ChooseDomainViewModel {
     }
 
     // adds selected domains by user to the selected domains array, use this array to persist to backend
-    public selectDomain(domain: string): Boolean {
-        if (this._selectedDomains.includes(domain)) {
+    public selectDomain(domain: DomainIded): Boolean {
+        if (this._selectedDomains.map(d => d.id).includes(domain.id)) {
             return false;
-        } 
+        }
         this._selectedDomains.push(domain);
         return true;
+    }
+
+    public getDomainByName(name: string): DomainIded {
+        let dom: DomainIded = null;
+        this._availableDomains.forEach(d => {
+            if (d.name === name) {
+                dom = d;
+            }
+        });
+        return dom;
     }
 
 }

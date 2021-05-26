@@ -1,52 +1,3 @@
-export const Domains = [
-    "PHYSICAL",
-    "SLEEP",
-    "MOOD",
-    "COGNITION",
-    "LEISURE",
-    "RELATIONSHIPS",
-    "SPIRITUAL",
-    "MONEY",
-    "HOME",
-    "SELF-ESTEEM",
-    "INDEPENDENCE",
-    "IDENTITY",
-]
-
-export const Strategies = [
-   {strat:"Consectetur adipiscing elit", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor1", domains:["PHYSICAL"]},
-   {strat:"Eiusmod tempor incididunt ut", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor2",domains:["MOOD", "COGNITION"]},
-   {strat:"Aliquip ex ea commodo consequat", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor3",domains:["LEISURE", "PHYSICAL"]},
-   {strat:"Excepteur sint occaecat cupidatat", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor4",domains:["HOME", "SELF_ESTEEM"]},
-   {strat:"culpa qui officia deserunt mollit", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor5",domains:["IDENTITY", "INDEPENDENCE"]},
-   {strat:"Vulputate mi sit amet mauris commodo",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor6",domains:["MONEY", "RELATIONSHIPS", "SPIRITUALITY"]},
-   {strat:"Viverra nam libero justo ", info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor7",domains:["IDENTITY"]},
-   {strat:"Integer feugiat scelerisque",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor8", domains:["SLEEP"]},
-   {strat:"Consectetur adipiscing elit12",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor9", domains:["SLEEP", "MONEY"]},
-   {strat:"Eiusmod tempor incididunt 3",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor10", domains:["SPIRITUAL"]},
-   {strat:"Aliquip ex ea commodo consequat12",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor11", domains:["MOOD", "SLEEP", "IDENTITY"]},
-   {strat:"Excepteur sint occaecat cupidatat12",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor12", domains: ["SELF_ESTEEM", "INDEPENDENCE", "MONEY"]},
-   {strat:"Consectetur adipiscing elit1",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor143", domains:["LEISURE", "MONEY"]},
-   {strat:"Eiusmod tempor incididunt ut1",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor14", domains:["SPIRITUAL", "PHYSICAL"]},
-   {strat:"Aliquip ex ea commodo consequat1",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor15", domains:["MOOD", "SLEEP", "COGNITION"]},
-   {strat:"Excepteur sint occaecat cupidatat1",info:"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor16", domains: ["SELF_ESTEEM", "INDEPENDENCE"]},
-]
-
-export const Domain_Importance =  [
-    "PHYSICAL = Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
-    "SLEEP = Sleeeeepz Sleeeeepz Sleeeeepz Sleeeeepz incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud ",
-    "MOOD = exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure Million Dollar Bills Million Dollar Bills Million Dollar Bills Million Dollar Bills",
-    "COGNITION = dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Smarty Pants",
-    "LEISURE = Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit ",
-    "RELATIONSHIPS = Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod ",
-    "SPIRITUAL = Arcu felis bibendum ut tristique et egestas quis ipsum suspendisse",
-    "MONEY = Sem fringilla ut morbi tincidunt augue interdum velit euismod in",
-    "HOME = Gravida quis blandit turpis cursus in. Rutrum quisque non tellus orci",
-    "SELFESTEEM = Egestas diam in arcu cursus euismod quis viverra nibh. Ac turpis egestas ",
-    "INDEPENDENCE = Orci a scelerisque purus semper eget duis at tellus at.",
-    "IDENTITY = ullamcorper morbi tincidunt ornare massa eget egestas. Vitae justo"
-]
-
 export const DOMAIN_QUESTION_COUNT = 4;
 
 export const SurveyQuestions  = [
@@ -111,7 +62,4 @@ export const SurveyQuestions  = [
     "Had control over my life",
 ];
 
-
-
 export const QUESTIONS_COUNT = SurveyQuestions.length; // 48
-export const DOMAIN_COUNT = Domains.length; // 12

@@ -12,17 +12,12 @@ import TextStyles, { mainFontMedium } from 'src/styles/TextStyles';
 
 import { styles } from 'react-native-markdown-renderer';
 
+import AppController from 'src/controllers';
+
 const minContentHeight = 300;
 const { width } = Dimensions.get('window');
 const date = new Date();
 const today = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-// const domains = ['','DOMAIN1', 'DOMAIN2', 'DOMAIN3',''];
-// const content = [
-//     "DOMANIN1 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod", 
-//     "DOMAIN2 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam",
-//     "DOMAIN3 quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-//     "it in volutate velit esse cillum dolore eu fugiat nulla pariatur."
-// ];
 
 @observer
 export class ChooseDomainView extends ViewState {
@@ -80,7 +75,11 @@ export class ChooseDomainView extends ViewState {
 
     }
 
-    async start() { }
+    async start() {
+        let possibleDomains = await AppController.Instance.User.backend.getPossibleDomains();
+        this.viewModel.setAvailableDomains(possibleDomains);
+        this.forceUpdate();
+    }
 
     private cancel = () => {
         this.trigger(ScenarioTriggers.Cancel);
@@ -90,8 +89,10 @@ export class ChooseDomainView extends ViewState {
         this.trigger(ScenarioTriggers.Submit);
     }
 
-    onSelectDomain = n => {
-        if (this.viewModel.selectDomain(n)) {
+    onSelectDomain = (n: string) => {
+        if (this.viewModel.selectDomain(this.viewModel.getDomainByName(n))) {
+            AppController.Instance.User.backend
+                .setDomains(this.viewModel._selectedDomains.map(d => d.id));
             this.trigger(ScenarioTriggers.Tertiary)
         } else {
             Alert.alert(

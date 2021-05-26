@@ -17,12 +17,15 @@ export type Domain = {
     position:   number,
     name:       string,
     slug:       string,
+    importance: string,     // description of why the domain is important
 };
 
 export type DomainIded = Identify<Domain>;
 
+export type DomainId = string;
+
 export type Question = {
-    domainId:   string, // reference to single domain
+    domainId:   DomainId, // reference to single domain
     text:       string,
     position:   number,
 };

@@ -1,11 +1,14 @@
-import { IBackendController, Domains} from 'common/abstractions/controlllers/IBackendController';
+import { IQoLController, Domains } from 'common/abstractions/controlllers/IQoLController';
 import {
     QolSurveyResults,
     PartialQol,
+    Domain,
 } from 'common/models/QoL';
 import RepoFactory from 'common/controllers/RepoFactory';
+import { Identify } from 'models';
+import { DomainSelection, UserState } from 'common/models/userState';
 
-export default class BackendControllerBase implements IBackendController {
+export default class QoLControllerBase implements IQoLController {
 
     private _userId: string = null;
 
@@ -38,28 +41,50 @@ export default class BackendControllerBase implements IBackendController {
             isFirstTimeQol,
         };
         try {
-            await RepoFactory.Instance.surveyState.setByUserId(this._userId, data);
+            let st: UserState = await RepoFactory.Instance.userState.getByUserId(this._userId);
+            if (st) {
+                st.surveyState = data;
+            } else {
+                st = {
+                    surveyState: data,
+                    focusDomains: []
+                }
+            }
+            await RepoFactory.Instance.userState.setByUserId(this._userId, st);
             return true;
         } catch (err) {
             return false;
         }
     }
 
-    public async getDomains(): Promise<Domains> {
-        // STUB FUNCTION
-        return ["HEALTH", "PHYSICAL"];
+    public async getPossibleDomains(): Promise<Identify<Domain>[]> {
+        return await RepoFactory.Instance.qolDomains.get();
     }
 
-    public async setDomain(domain: string): Promise<boolean> {
-        // STUB FUNCTION
-        const success = true;
-        return true;
+    public async setDomains(domains: DomainSelection): Promise<void> {
+        console.log("setting focus domains: ", domains);
+        let st: UserState = await RepoFactory.Instance.userState.getByUserId(this._userId);
+        if (st === null) {
+            st = {
+                focusDomains: domains,
+                surveyState: null
+            }
+        } else {
+            st.focusDomains = domains;
+        }
+        await RepoFactory.Instance.userState.setByUserId(this._userId, st);
     }
+
     // Get last stored state
     // null value indicates no outstanding survey
     public async getPartialQol(): Promise<PartialQol> {
+
         console.log(`get partial qol: userId = ${this._userId}`);
-        const result = await RepoFactory.Instance.surveyState.getByUserId(this._userId);
+        const state = await RepoFactory.Instance.userState.getByUserId(this._userId);
+        let result = null;
+        if (state) {
+            result = state.surveyState;
+        }
         console.log(`get partial qol: result = ${JSON.stringify(result)}`);
         return result;
     }
