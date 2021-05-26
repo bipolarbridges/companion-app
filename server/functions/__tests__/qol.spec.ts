@@ -10,6 +10,12 @@ import clientConfig from './mocks/client/config';
 
 import { createDomain, createQuestion, getDomains, getQuestions } from 'server/qol';
 import { QoLActionTypes } from 'common/models/dtos/qol';
+import { IBackendController } from 'common/abstractions/controlllers/IBackendController';
+import * as userData from './mocks/data/users';
+import { ClientAuthController } from './mocks/client/controllers';
+import { IAuthController } from 'common/abstractions/controlllers/IAuthController';
+import BackendController from 'common/controllers/BackendController';
+import { PartialQol } from 'common/models/QoL';
 
 const test = firebase.init('qol-test');
 
@@ -18,7 +24,7 @@ async function fbCleanup() {
     await test.cleanup();
 }
 
-describe('QoL', () => {
+describe('QoL API', () => {
     beforeAll(async () => {
         // Initialize testing client
         await initializeAsync(clientConfig);
@@ -98,6 +104,102 @@ describe('QoL', () => {
                 type: QoLActionTypes.GetQuestions,
             });
             assert.lengthOf(getResult.results, 1);
+        });
+    });
+});
+
+const qolData = [
+    {
+        'physical': 10,
+        'sleep': 7,
+        'mood': 10,
+        'cognition': 7,
+        'leisure': 10,
+        'relationships': 10,
+        'spiritual': 8,
+        'money': 8,
+        'home': 10,
+        'self-esteem': 8,
+        'independence': 10,
+        'identity': 10,
+    },
+    {
+        'physical': 7,
+        'sleep': 7,
+        'mood': 10,
+        'cognition': 7,
+        'leisure': 8,
+        'relationships': 10,
+        'spiritual': 8,
+        'money': 8,
+        'home': 10,
+        'self-esteem': 8,
+        'independence': 10,
+        'identity': 1,
+    },
+];
+
+let auth: IAuthController = null;
+let backend: BackendController = null; // this is the component under test
+
+async function setUser(idx: number): Promise<userData.User> {
+    await auth.signOut(); // we are using indexed users
+    const u = userData.getUser(idx);
+    await auth.signInWithEmailPassword(u.email, u.password);
+    backend.setUser(userData.getId(idx));
+    return u;
+}
+
+describe('QoL Helpers', () => {
+    beforeAll(async () => {
+        await initializeAsync(clientConfig);
+    });
+    describe('Partial State Sync', () => {
+        afterEach(async () => {
+            await fbCleanup();
+            await userData.clear();
+        });
+        beforeEach(async () => {
+            await userData.create();
+            auth = new ClientAuthController();
+            backend = new BackendController();
+            const u = userData.getUser();
+            await auth.signInWithEmailPassword(u.email, u.password);
+        });
+        it('Should properly indicate when no state exists', async () => {
+            const result: PartialQol = await backend.getPartialQol();
+            assert.isNull(result);
+        });
+        it('Should set partial state', async () => {
+            const sendResult: boolean = await backend.sendPartialQol(null, qolData[0], 0, 0);
+            assert.isTrue(sendResult);
+            const getResult: PartialQol = await backend.getPartialQol();
+            assert.equal(getResult.scores, qolData[0]);
+        });
+        it('Should restore the latest state', async () => {
+            assert.notEqual(qolData[0], qolData[1]);
+            await backend.sendPartialQol(null, qolData[0], 0, 0);
+            await backend.sendPartialQol(null, qolData[1], 0, 0);
+            const getResult: PartialQol = await backend.getPartialQol();
+            assert.equal(getResult.scores, qolData[1]);
+        });
+        it('Should manage state per user', async () => {
+            assert.notEqual(qolData[0], qolData[1]);
+
+            // first user, and send
+            await setUser(0);
+            await backend.sendPartialQol(null, qolData[0], 0, 0);
+
+            // second user, send, get
+            await setUser(1);
+            await backend.sendPartialQol(null, qolData[1], 0, 0);
+            let getResult: PartialQol = await backend.getPartialQol();
+            assert.equal(getResult.scores, qolData[1]);
+
+            // first user, get
+            await setUser(0);
+            getResult = await backend.getPartialQol();
+            assert.equal(getResult.scores, qolData[0]);
         });
     });
 });
