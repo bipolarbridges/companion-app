@@ -104,6 +104,7 @@ export default class HomeViewModel {
             })) || EmptyArr;
         }
 
+        this.submitPendingWeeklyIfTimeForMonthly() // MK-TODO: Need clarification on logic of weekly and monthly qol collision
         const needsDailyCheckIn = !this.hasCompletedDailyCheckInToday();
         let res: ITipItem[] = [];
 
@@ -179,7 +180,14 @@ export default class HomeViewModel {
         ];
     }
 
+    private submitPendingWeeklyIfTimeForMonthly() {
+        if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol && this.isTimeForMonthlyQol()) {
+            this._settings.updatePendingQol({ pendingWeeklyQol: false }, QolType.Weekly);
+        }
+    }
+
     // returns true if it has been 28 calendar days since last Monthly QoL
+    // return true if there is a pending Monthly QoL
     private isTimeForMonthlyQol(): boolean {
         const lastMonthlyQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastMonthlyQol);
         let nextMonthlyQol: Date = lastMonthlyQol;
@@ -195,6 +203,7 @@ export default class HomeViewModel {
     }
 
         // returns true if it has been 7 calendar days since last Weekly QoL
+        // return true if there is a pending Weekly QoL
         private isTimeForWeeklyQol(): boolean {
             const lastWeeklyQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastWeeklyQol);
             console.log(`lastWeeklyQol: ${AppController.Instance.User.localSettings?.current?.qol?.lastWeeklyQol}`);
