@@ -19,13 +19,22 @@ export class QolStartView extends ViewState {
         super(props);
         this._contentHeight = this.persona.setupContainerHeight(minContentHeight, { rotation: -15, transition: { duration: 1.5 } });
         if (!AppController.Instance.User.localSettings?.current?.qol?.seenOnboardingQol) {
-            this.viewModel.setQolType = QolType.Onboarding;
+            this.viewModel.qolType = QolType.Onboarding;
             this.viewModel.updateQolOnboarding();
         }
     }
 
     async start() {
         await this.viewModel.init();
+        // If there is a weekly qol that is partialy complete submit it
+        if (AppController.Instance.User.localSettings?.current?.qol?.pendingMonthlyQol && AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol) {
+            await this.viewModel.sendSurveyResults();
+
+            if (this.viewModel.isUnfinished) {
+                await this.viewModel.saveSurveyProgress(null);
+            }
+            this.viewModel.qolType = QolType.Monthly;
+        }
     }
 
     public get viewModel() {

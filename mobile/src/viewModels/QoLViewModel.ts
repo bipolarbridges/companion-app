@@ -91,8 +91,6 @@ export default class QOLSurveyViewModel {
 
     get qolMags(): any { return this._armMags; }
 
-    set setQolType(type: QolType) { this.qolType = type; }
-
     resetSurveyResults(): void {
         const surveyResponses = {};
 
@@ -138,6 +136,7 @@ export default class QOLSurveyViewModel {
                 startDate: this.startDate,
                 lastResponseDate: now,
                 questionCompletionDates: this.questionCompletionDates,
+                type: this.qolType,
             }
             res = await AppController.Instance.User.backend.sendPartialQol(partialQol);
             this.isUnfinished = true;
@@ -160,7 +159,7 @@ export default class QOLSurveyViewModel {
             case QolType.Monthly:
                 this._settings.updatePendingQol({ pendingMonthlyQol: false }, this.qolType);
                 break;
-            case QolType.Monthly:
+            case QolType.Weekly:
                 this._settings.updatePendingQol({ pendingWeeklyQol: false }, this.qolType);
                 break;
             default:

@@ -129,12 +129,12 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
     }
 
     private onMonthlyQol = () => {
-        // this.viewQolModel.setQolType = QolType.Monthly;
+        this.viewQolModel.qolType = QolType.Monthly;
         this.trigger(ScenarioTriggers.Tertiary);
     }
 
     private onWeeklyQol = () => {
-        // this.viewQolModel.setQolType = QolType.Weekly;
+        this.viewQolModel.qolType = QolType.Weekly;
         this.trigger(ScenarioTriggers.Tertiary);
     }
 

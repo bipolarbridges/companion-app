@@ -49,6 +49,7 @@ export type PartialQol = {
     startDate: number,
     lastResponseDate: number,
     questionCompletionDates: number[],
+    type: QolType,
 };
 
 export type SurveyState = {
