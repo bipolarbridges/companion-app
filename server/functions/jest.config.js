@@ -20,6 +20,8 @@ module.exports = {
 	},
 	moduleDirectories: [
 		'<rootDir>/src',
+	],
+	modulePaths: [
 		'<rootDir>/node_modules',
 		'<rootDir/../../dashboard/node_modules>',
         'src',
