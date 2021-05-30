@@ -3,8 +3,8 @@ import { ExportFunctions } from '../src/export';
 import { init } from './util/firebase';
 import { assert } from 'chai';
 import Collections from 'common/database/collections';
-import { initializeAsync } from '../../../common/services/firebase';
-import clientConfig from './mocks/client/config';
+// import { initializeAsync } from '../../../common/services/firebase';
+// import clientConfig from './mocks/client/config';
 import * as firebase from './util/firebase';
 
 

@@ -1,4 +1,4 @@
-import { QolSurveyResults } from "../../models/QoL"
+import { QolSurveyResults } from 'common/models/QoL';
 
 export type RemoteCallResult = {
     error?: string,
