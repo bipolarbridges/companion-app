@@ -27,7 +27,6 @@ Clone the respository and ensure you have the requirements below:
  To install: ```npm i -g react-native-cli```
 
 ### 2. Configure the Development Environment
-
 1. Download the `GoogleService-Info.plist` file from the ios app on firebase. Place this file in `./mobile/configs/app`.
 2. Download the `google-services.json` file from the android app on firebase. Place this file in `./mobile/configs/app` and in `./mobile/android/app`.
 3. Copy the `.env-starter` file to `.env` in the root directory, and fill in each variable with the correct values. Alternatively, obtain an environment file from another developer on the team.
