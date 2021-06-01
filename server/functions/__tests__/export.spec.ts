@@ -7,11 +7,10 @@ import Collections from 'common/database/collections';
 // import clientConfig from './mocks/client/config';
 import * as firebase from './util/firebase';
 
-
 const {test, app} = init('example-test');
 
 describe('Export Functions', () => {
-    afterEach(async () => { 
+    afterEach(async () => {
         await firebase.clear();
         await test.cleanup();
     });
@@ -126,7 +125,7 @@ describe('Export Functions', () => {
                 `/${Collections.SurveyResults}/${id}`);
             result = await(handle(snap));
             console.log(result);
-            
+
         } catch (err) {
             console.log(err);
             fail();

@@ -15,7 +15,7 @@ const fns: any = {};
 
 type ExportResult = {
     error?: any,
-    msg?: any
+    msg?: any,
 };
 
 fns.newAccount = FeatureSettings.ExportToDataServices

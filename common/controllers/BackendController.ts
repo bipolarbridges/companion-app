@@ -68,9 +68,9 @@ export default abstract class BackendControllerBase implements IBackendControlle
                 date,
                 result,
             },
-        }
+        };
 
-        console.log(data)
+        console.log(data);
         return this.Client.post('/survey',
         data,
         {
@@ -92,7 +92,7 @@ export default abstract class BackendControllerBase implements IBackendControlle
 
     public pingTest():  Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
-        return this.Client._get('/', 
+        return this.Client._get('/',
         {
             headers: {
                 'Content-Type': 'application/json',
