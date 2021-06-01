@@ -26,12 +26,14 @@ class CompanionKitUITests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    // func name MUST start with "test" in a XCTest file
+    // screenshots are only captured when run with Fastlane
+    func testScreenshots() throws {
       let app = XCUIApplication()
       setupSnapshot(app)
       app.launch()
-                  
+      
+      // Use waitForExistence as it can take a while for all the elements to appear on launch
       app.otherElements["email"].waitForExistence(timeout: 30)
 
       snapshot("01Launch")
@@ -49,6 +51,7 @@ class CompanionKitUITests: XCTestCase {
       
       sleep(1)
 
+      // "passwordtextfield" does not show up in app.textFields so using app.descendants(matching: .any) here
       let passwordTextField = app.descendants(matching: .any)["passwordtextfield"]
       passwordTextField.tap()
       passwordTextField.setText(text: SIGNIN_PASSWORD, application: app)
