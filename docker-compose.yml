@@ -1,7 +1,7 @@
 version: '3'
 services:
   mock_api:
-    build: server/functions/__tests__/mocks/export
+    build: server/functions/__tests__/mocks/api
     ports:
       - 8888:8888
     command: "yarn start"

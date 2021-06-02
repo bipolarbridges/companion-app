@@ -8,44 +8,44 @@ app.use(express.json());
 app.use(cors());
 
 app.post('/client', (req, res) => {
-    const data = req.body
-    if (!data['id']) {
+    const data = req.body;
+    if (!data.id) {
         res.status(400).send({
-            message: "Missing id field"
-        })
+            message: 'Missing id field',
+        });
     } else {
         res.status(201).send({
-            message: "Created"
+            message: 'Created',
         });
     }
 });
 
 app.get('/client/:clientId', (req, res) => {
     res.status(200).send({
-        id: req.params.clientId
+        id: req.params.clientId,
     });
 });
 
 app.post('/measurement', (req, res) => {
-    const data = req.body
-    if (!data['clientID'] 
-                || !data['data']
-                || !data.data['date'] || !data.data['dataType'] || !data.data['value']) {
+    const data = req.body;
+    if (!data.clientID
+                || !data.data
+                || !data.data.date || !data.data.dataType || !data.data.value) {
         res.status(400).send({
-            message: "Missing data fields"
-        })
-    } else if (isNaN(data.data['date'])) {
+            message: 'Missing data fields',
+        });
+    } else if (isNaN(data.data.date)) {
         res.status(400).send({
-            message: "date must be a number"
-        })
-    } else { 
+            message: 'date must be a number',
+        });
+    } else {
         res.status(201).send({
-            message: "Created"
-        })
+            message: 'Created',
+        });
     }
-})
+});
 
-const port = parseInt(process.env.BACKEND_API_PORT);
+const port = parseInt(process.env.BACKEND_API_PORT, 10);
 const host = process.env.BACKEND_API_ADDRESS;
 
 const server = app.listen(port, host, () => {
@@ -54,7 +54,7 @@ const server = app.listen(port, host, () => {
 
 process.on('SIGINT', async () => {
     server.close(() => {
-        console.log("\n\nBye.")
-        process.exit()
-    })
+        console.log('\n\nBye.');
+        process.exit();
+    });
 });

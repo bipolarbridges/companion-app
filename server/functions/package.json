@@ -3,6 +3,7 @@
   "version": "1.5.6",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
+    "lint:fix": "tslint --project tsconfig.json --fix",
     "build": "rm -rf ./lib && ttsc",
     "watch": "concurrently \"nodemon --exec \\\"yarn lint\\\" \" \"tsc --watch --noEmit\" ",
     "serve": "env-cmd firebase emulators:start --only functions,firestore -P staging",
@@ -22,7 +23,7 @@
     "deploy:hosting:web:stage": "firebase deploy -P staging --only hosting:web-staging",
     "deploy:hosting:web:prod": "firebase deploy -P production --only hosting:web-prod",
     "logs": "firebase functions:log",
-    "start:mock_api": "cd __tests__/mocks/export && yarn docker:start", 
+    "start:mock_api": "cd __tests__/mocks/api && yarn docker:start", 
     "test": "yarn start:mock_api && yarn build && env-cmd firebase emulators:exec -P staging 'jest test --config=./jest.config.js'"
   },
   "main": "lib/server/functions/src/index.js",
