@@ -172,15 +172,15 @@ describe('QoL Helpers', () => {
             assert.isNull(result);
         });
         it('Should set partial state', async () => {
-            const sendResult: boolean = await backend.sendPartialQol(null, qolData[0], 0, 0);
+            const sendResult: boolean = await backend.sendPartialQol(qolData[0], 0, 0, true);
             assert.isTrue(sendResult);
             const getResult: PartialQol = await backend.getPartialQol();
             assert.equal(getResult.scores, qolData[0]);
         });
         it('Should restore the latest state', async () => {
             assert.notEqual(qolData[0], qolData[1]);
-            await backend.sendPartialQol(null, qolData[0], 0, 0);
-            await backend.sendPartialQol(null, qolData[1], 0, 0);
+            await backend.sendPartialQol(qolData[0], 0, 0, true);
+            await backend.sendPartialQol(qolData[1], 0, 0, true);
             const getResult: PartialQol = await backend.getPartialQol();
             assert.equal(getResult.scores, qolData[1]);
         });
@@ -189,11 +189,11 @@ describe('QoL Helpers', () => {
 
             // first user, and send
             await setUser(0);
-            await backend.sendPartialQol(null, qolData[0], 0, 0);
+            await backend.sendPartialQol(qolData[0], 0, 0, true);
 
             // second user, send, get
             await setUser(1);
-            await backend.sendPartialQol(null, qolData[1], 0, 0);
+            await backend.sendPartialQol(qolData[1], 0, 0, true);
             let getResult: PartialQol = await backend.getPartialQol();
             assert.equal(getResult.scores, qolData[1]);
 
