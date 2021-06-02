@@ -4,9 +4,8 @@ import { PersonaDomains } from '../stateMachine/persona';
 import { createLogger } from 'common/logger';
 import AppController from 'src/controllers';
 import { ILocalSettingsController } from 'src/controllers/LocalSettings';
-import { PartialQol, QolSurveyResults } from 'common/models/QoL';
+import { PartialQol, QolSurveyResults, QolSurveyType } from 'src/constants/QoL';
 import { PersonaArmState } from 'dependencies/persona/lib';
-import { QolType } from 'common/models/QoL';
 
 export const logger = createLogger('[QOLModel]');
 
@@ -22,7 +21,7 @@ export default class QOLSurveyViewModel {
     public initModel: Promise<void>;
     public origMags: PersonaArmState;
     public showInterlude: boolean = false;
-    public qolType: QolType;
+    public QolSurveyType: QolSurveyType;
     public startDate: number;
     public questionCompletionDates: number[];
 
@@ -91,7 +90,7 @@ export default class QOLSurveyViewModel {
 
     get qolMags(): any { return this._armMags; }
 
-    set setQolType(type: QolType) { this.qolType = type; }
+    set setQolSurveyType(type: QolSurveyType) { this.QolSurveyType = type; }
 
     resetSurveyResults(): void {
         const surveyResponses = {};
@@ -136,7 +135,6 @@ export default class QOLSurveyViewModel {
                 scores: this._surveyResponses,
                 isFirstTimeQol: this.showInterlude,
                 startDate: this.startDate,
-                lastResponseDate: now,
                 questionCompletionDates: this.questionCompletionDates,
             }
             res = await AppController.Instance.User.backend.sendPartialQol(partialQol);

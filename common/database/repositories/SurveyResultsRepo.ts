@@ -1,4 +1,4 @@
-import { PartialQol, QolSurveyResults } from 'common/models/QoL';
+import { PartialQol, QolSurveyResults } from 'src/constants/QoL';
 import GenericUserRepo from './GenericUserRepo';
 import Collections from 'common/database/collections';
 

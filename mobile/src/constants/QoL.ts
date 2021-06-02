@@ -35,19 +35,20 @@ export type QolSurveyResults = {
     [dom: string]: number,
 };
 
-export enum QolType {
+export enum QolSurveyType {
     Onboarding = 'ONBOARDING',
     Monthly = 'MONTHLY',
 }
+
+export type QoLSurveyTimestamp = number;
 
 export type PartialQol = {
     questionNum: number,
     domainNum: number,
     scores: QolSurveyResults,
     isFirstTimeQol: boolean,
-    startDate: number,
-    lastResponseDate: number,
-    questionCompletionDates: number[],
+    startDate: QoLSurveyTimestamp,
+    questionCompletionDates: QoLSurveyTimestamp[],
 };
 
 export type SurveyState = {

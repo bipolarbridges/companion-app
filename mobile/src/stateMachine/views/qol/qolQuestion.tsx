@@ -8,7 +8,7 @@ import { ScenarioTriggers } from '../../abstractions';
 import Colors from '../../../constants/colors';
 import TextStyles from '../../../../src/styles/TextStyles';
 import QOLSurveyViewModel from '../../../viewModels/QoLViewModel';
-import { QolType } from 'common/models/QoL';
+import { QolSurveyType } from 'src/constants/QoL';
 
 const minContentHeight = 560;
 
@@ -47,7 +47,7 @@ export class QolQuestion extends ViewState {
         if (this.viewModel.isUnfinished) {
             await this.viewModel.saveSurveyProgress(null);
         }
-        if (this.viewModel.qolType === QolType.Monthly) {
+        if (this.viewModel.QolSurveyType === QolSurveyType.Monthly) {
             this.viewModel.updatePendingMonthlyQol();
         }
     }

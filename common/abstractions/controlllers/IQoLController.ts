@@ -1,4 +1,4 @@
-import { PartialQol, QolSurveyResults } from 'common/models/QoL';
+import { PartialQol, QolSurveyResults } from '../../../mobile/src/constants/QoL';
 
 export interface IQoLController {
 
