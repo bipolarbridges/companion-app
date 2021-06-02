@@ -10,12 +10,13 @@ import clientConfig from './mocks/client/config';
 
 import { createDomain, createQuestion, getDomains, getQuestions } from 'server/qol';
 import { QoLActionTypes } from 'common/models/dtos/qol';
-import { IBackendController } from 'common/abstractions/controlllers/IBackendController';
+// import { IBackendController } from 'common/abstractions/controlllers/IBackendController';
 import * as userData from './mocks/data/users';
 import { ClientAuthController } from './mocks/client/controllers';
 import { IAuthController } from 'common/abstractions/controlllers/IAuthController';
-import BackendController from 'common/controllers/BackendController';
+import IQoLController from 'common/controllers/QoLController';
 import { PartialQol } from 'common/models/QoL';
+import QoLControllerBase from 'common/controllers/QoLController';
 
 const test = firebase.init('qol-test');
 
@@ -140,7 +141,7 @@ const qolData = [
 ];
 
 let auth: IAuthController = null;
-let backend: BackendController = null; // this is the component under test
+let backend: IQoLController = null; // this is the component under test
 
 async function setUser(idx: number): Promise<userData.User> {
     await auth.signOut(); // we are using indexed users
@@ -162,7 +163,7 @@ describe('QoL Helpers', () => {
         beforeEach(async () => {
             await userData.create();
             auth = new ClientAuthController();
-            backend = new BackendController();
+            backend = new QoLControllerBase();
             const u = userData.getUser();
             await auth.signInWithEmailPassword(u.email, u.password);
         });
