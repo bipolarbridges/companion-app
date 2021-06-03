@@ -2,10 +2,7 @@ import { FunctionDefinition } from 'common/abstractions/functions.definition';
 import firebase from 'firebase';
 import { ILogger, createLogger } from 'common/logger';
 
-import type { functions } from 'firebase';
-
-type HttpsError = functions.HttpsError;
-
+type HttpsError = firebase.functions.HttpsError;
 export class FunctionFactory<TArg, TResult> {
 
     private readonly logger: ILogger;

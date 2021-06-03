@@ -9,11 +9,11 @@ export default abstract class BackendControllerBase implements IBackendControlle
     protected abstract get Authorization(): string;
 
     public logNewAccount
-    (clientID: string, coachID: string)
+    (id: string)
     : Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
-        return this.Client.post('/account',
-            { clientID, coachID },
+        return this.Client.post('/client',
+            { id: id },
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -24,7 +24,9 @@ export default abstract class BackendControllerBase implements IBackendControlle
                 return { error: null } as RemoteCallResult;
             })
             .catch((err: any) => {
+                console.log(err?.message);
                 return {
+                    msg: err?.message,
                     error: `Error calling service: ${err}`,
                 };
             });
@@ -54,6 +56,7 @@ export default abstract class BackendControllerBase implements IBackendControlle
             })
             .catch((err: any) => {
                 return {
+                    msg: err?.message,
                     error: `Error calling service: ${err}`,
                 };
             });

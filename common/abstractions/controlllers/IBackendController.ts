@@ -1,5 +1,6 @@
 export type RemoteCallResult = {
     error?: string,
+    message?: any,
 };
 
 export interface IBackendClient {
