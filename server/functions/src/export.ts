@@ -16,17 +16,19 @@ type ExportResult = {
 };
 
 fns.newAccount = FeatureSettings.ExportToDataServices
-    && functions.firestore.document('/clients/{clientId}/accounts/{acctId}')
+    && functions.firestore.document('/clients/{clientId}/accounts/{clientCardId}')
         .onCreate(async (snap, context) => {
             const backend = new FunctionBackendController();
             const acct = snap.data();
             const client = context.params.clientId;
             const coach = acct.coachId;
             console.log(`New account for client[${client}], coach[${coach}]`);
-            return backend.logNewAccount(client, coach)
-                .then((res: RemoteCallResult) => {
-                    return { error: res.error };
-                });
+            const result: RemoteCallResult = await backend.logNewAccount(client);
+            console.log(result);
+            return {
+                error: result.error ? result.error : null,
+                msg: result.message ? result.message : null,
+            };
         });
 
 type RecordExport = {
