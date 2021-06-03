@@ -35,7 +35,6 @@ class ClientCardRepo {
         const qu = query.where('email', '==', email);
 
         const snapshot = await qu.get();
-
         const result = (snapshot.docs || []).map(d => {
             const res = getIdentify<ClientCardIded & { coachId: string }>(d);
             res.coachId = d.ref.parent.parent.id;
