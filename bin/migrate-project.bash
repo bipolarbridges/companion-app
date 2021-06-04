@@ -4,6 +4,10 @@
 # Essentially replaces step 2 of the README (Configure Development Environment)
 # Provided that the existing project is configured correctly.
 
+# Usage
+
+# ./bin/migrate-project.bash old_dir new_dir
+
 old=$1
 new=$2
 
