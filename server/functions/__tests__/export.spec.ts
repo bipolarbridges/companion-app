@@ -2,11 +2,17 @@ import * as admin from 'firebase-admin';
 import { ExportFunctions } from '../src/export';
 import { init } from './util/firebase';
 import { assert } from 'chai';
-
+import Collections from 'common/database/collections';
+// import { initializeAsync } from '../../../common/services/firebase';
+// import clientConfig from './mocks/client/config';
+import * as firebase from './util/firebase';
 const {test, app} = init('example-test');
 
 describe('Export Functions', () => {
-    afterEach(test.cleanup);
+    afterEach(async () => {
+        await firebase.clear();
+        await test.cleanup();
+    });
 
     it('Should export new accounts', async () => {
         const clientId = 'client0';
