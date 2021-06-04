@@ -7,6 +7,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get('/', (req, res) => {
+    res.status(200).send("it's alive!");
+});
+
 app.post('/client', (req, res) => {
     const data = req.body;
     if (!data.id) {
@@ -46,7 +50,7 @@ app.post('/measurement', (req, res) => {
 });
 
 const port = parseInt(process.env.BACKEND_API_PORT, 10);
-const host = process.env.BACKEND_API_ADDRESS;
+const host = process.env.API_ADDR;
 
 const server = app.listen(port, host, () => {
     console.log(`Mock app listening at http://${host}:${port}`);
