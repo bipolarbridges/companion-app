@@ -10,9 +10,7 @@ jobs:
         run: docker network create bb_default
       - name: Create environment file
         run: cp test.env .docker.env
-      - name: Build mock api service
-        run: docker-compose build mock_api
-      - name: Start DB service
+      - name: Start mock api service
         run: docker-compose up -d mock_api
       - name: Build project
         run: docker-compose build server
