@@ -13,6 +13,7 @@ interface AddStoryButtonProps {
     disabled?: boolean;
     width: number;
     height: number;
+    testID?: string;
 }
 
 export default class AddStoryButton extends React.Component<AddStoryButtonProps> {
@@ -35,6 +36,7 @@ export default class AddStoryButton extends React.Component<AddStoryButtonProps>
                 underlayColor="transparent"
                 activeOpacity={1}
                 disabled={disabled}
+                testID={this.props.testID}
             >
                 <View style={[styles.bgImage, { width: width, height: height }]}>
                     <Images.bottomAddNewStory width={55} height={55} />

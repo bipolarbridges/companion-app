@@ -13,6 +13,7 @@ import Images from 'src/constants/images';
 import * as Features from 'common/constants/features';
 
 type Props = {
+    testID?: string,
     active: boolean,
     model: CheckInViewModel,
     onPress: () => void,
@@ -31,7 +32,7 @@ const CheckInCard = (props: Props) => {
     const ClockIcon = Images.clockIcon;
 
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress} testID={props.testID}>
             <View style={[styles.card, active && styles.active]}>
                 {pictureUrl ? (
                     <View style={styles.pictureBg}>

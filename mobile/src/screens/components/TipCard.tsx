@@ -41,14 +41,14 @@ function getIconTitle(item: ITipItem) {
     }
 }
 
-export default function TipItemCard(props: { item: ITipItem, onPress: () => void }) {
+export default function TipItemCard(props: { item: ITipItem, onPress: () => void, testID?: string }) {
     const { onPress, item } = props;
     const { type, title } = item;
 
     const isExternal = (item.type === 'staticTip' || item.type === 'docLinkTip') && !!item.url;
 
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress} testID={props.testID}>
             <View style={[styles.card]}>
                 <Text
                     numberOfLines={2}

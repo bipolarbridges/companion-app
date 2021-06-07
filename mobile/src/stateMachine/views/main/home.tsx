@@ -264,6 +264,7 @@ export class HomeView extends ViewState<{ opacity: Animated.Value }> {
                 >
                     {checkIns.map((s, i) => (
                         <CheckInCard
+                            testID={'CheckInCard' + i}
                             key={s.id}
                             model={s}
                             active={i === 0}

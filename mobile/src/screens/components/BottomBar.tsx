@@ -61,11 +61,11 @@ export default function BottomBar(props: Props) {
 
     return (
         <View style={[BaseStyles.container, styles.container, { backgroundColor: backgroundColor }]}>
-            <TouchableOpacity style={styles.button} onPress={() => GlobalTrigger(GlobalTriggers.Home)}>
+            <TouchableOpacity testID={'BottomBarHome'} style={styles.button} onPress={() => GlobalTrigger(GlobalTriggers.Home)}>
                 <ArchiveIcon width={iconSize} height={iconSize} color={'#000000'} />
             </TouchableOpacity>
             {process.appFeatures.GOALS_ENABLED ?
-                <TouchableOpacity style={styles.button} onPress={() => GlobalTrigger(GlobalTriggers.Goals)}>
+                <TouchableOpacity testID={'BottomBarGoals'} style={styles.button} onPress={() => GlobalTrigger(GlobalTriggers.Goals)}>
                     <GoalsIcon width={iconSize} height={iconSize} />
                 </TouchableOpacity>
             : null}
@@ -73,12 +73,13 @@ export default function BottomBar(props: Props) {
                 width={55}
                 height={55}
                 onPress={() => GlobalTrigger(GlobalTriggers.CreateStory)}
+                testID={'BottomBarAddStory'}
             />
-            <TouchableOpacity style={styles.button} onPress={() => GlobalTrigger(GlobalTriggers.Profile)}>
+            <TouchableOpacity testID={'BottomBarProfile'} style={styles.button} onPress={() => GlobalTrigger(GlobalTriggers.Profile)}>
                 <ProfileIcon width={iconSize} height={iconSize} />
             </TouchableOpacity>
             {process.appFeatures.GOALS_ENABLED ?
-                <TouchableOpacity style={styles.button} onPress={() => GlobalTrigger(GlobalTriggers.Settings)}>
+                <TouchableOpacity testID={'BottomBarSettings'} style={styles.button} onPress={() => GlobalTrigger(GlobalTriggers.Settings)}>
                     <SettingsIcon width={iconSize} height={iconSize} />
                 </TouchableOpacity>
             : null}
