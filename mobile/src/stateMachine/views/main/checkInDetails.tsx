@@ -152,7 +152,7 @@ export class CheckInDetailsView extends ViewState<State, CheckInDetailsParams> {
                 <Container style={styles.topBarWrapWrap}>
                     <PersonaScrollMask />
                     <View style={styles.topBarWrap}>
-                        <Button style={styles.backBtn} underlayColor="transparent" onPress={this._onBackBtnPress}>
+                        <Button testID={'checkInDetailsback'} style={styles.backBtn} underlayColor="transparent" onPress={this._onBackBtnPress}>
                             <Images.backIcon width={28} height={14} />
                         </Button>
                         {Features.Mobile.CheckIns.AllowCheckinDelete &&

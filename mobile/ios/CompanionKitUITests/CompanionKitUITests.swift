@@ -34,35 +34,46 @@ class CompanionKitUITests: XCTestCase {
       app.launch()
       
       // Use waitForExistence as it can take a while for all the elements to appear on launch
-      app.otherElements["email"].waitForExistence(timeout: 30)
+      // If "skipBtn" is not on screen do the sign in flow
+      if !(app.otherElements["skipBtn"].waitForExistence(timeout: 30)) {
+        snapshot("01Launch")
+        
+        app.otherElements["email"].tap()
+        sleep(1)
+        snapshot("enterEmailScreen")
+        
+        let emailTextField = app.textFields["emailtextfield"]
+        emailTextField.tap()
+        emailTextField.setText(text: SIGNIN_EMAIL, application: app)
+        app.keyboards.buttons["done"].tap()
+        sleep(1)
+        snapshot("enterPassword")
+        
+        sleep(1)
 
-      snapshot("01Launch")
-      
-      app.otherElements["email"].tap()
-      sleep(1)
-      snapshot("enterEmailScreen")
-      
-      let emailTextField = app.textFields["emailtextfield"]
-      emailTextField.tap()
-      emailTextField.setText(text: SIGNIN_EMAIL, application: app)
-      app.keyboards.buttons["done"].tap()
-      sleep(1)
-      snapshot("enterPassword")
-      
-      sleep(1)
-
-      // "passwordtextfield" does not show up in app.textFields so using app.descendants(matching: .any) here
-      let passwordTextField = app.descendants(matching: .any)["passwordtextfield"]
-      passwordTextField.tap()
-      passwordTextField.setText(text: SIGNIN_PASSWORD, application: app)
-      app.keyboards.buttons["done"].tap()
-      sleep(1)
-      snapshot("loggedIn")
+        // "passwordtextfield" does not show up in app.textFields so using app.descendants(matching: .any) here
+        let passwordTextField = app.descendants(matching: .any)["passwordtextfield"]
+        passwordTextField.tap()
+        passwordTextField.setText(text: SIGNIN_PASSWORD, application: app)
+        app.keyboards.buttons["done"].tap()
+        sleep(1)
+        snapshot("loggedIn")
+      }
       
       let skipButton = app.descendants(matching: .any)["skipBtn"]
       skipButton.tap()
       sleep(1)
       snapshot("home")
+      
+      let checkInCard = app.descendants(matching: .any)["CheckInCard0"]
+      checkInCard.tap()
+      sleep(1)
+      snapshot("checkIn")
+      
+      let back = app.otherElements["checkInDetailsback"]
+      back.tap()
+      sleep(10)
+      
     }
   
 

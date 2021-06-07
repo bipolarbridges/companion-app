@@ -63,12 +63,12 @@ export default function MasloPageExtended(props: MasloPageExtendedProps) {
         <PageBase style={[BaseStyles.page, style]}>
             {withDots ? <Dots length={dotLength || 0} active={activeDot || 0} /> : null}
             {_onBack ? (
-                <TouchableOpacity style={[BaseStyles.back]} onPress={_onBack}>
+                <TouchableOpacity testID={'back'} style={[BaseStyles.back]} onPress={_onBack}>
                     <Images.backIcon width={28} height={14} />
                 </TouchableOpacity>
             ) : null}
             {_onClose ? (
-                <TouchableOpacity onPress={_onClose} style={BaseStyles.close}>
+                <TouchableOpacity testID={'close'} onPress={_onClose} style={BaseStyles.close}>
                     <Images.closeIcon width={15} height={15} />
                 </TouchableOpacity>
             ) : null}
