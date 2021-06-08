@@ -102,7 +102,7 @@ export default class HomeViewModel {
             })) || EmptyArr;
         }
 
-        this.submitPendingWeeklyIfTimeForMonthly() // MK-TODO: Need clarification on logic of weekly and monthly qol collision
+        this.submitPendingWeeklyIfTimeForMonthly()
         const needsDailyCheckIn = !this.hasCompletedDailyCheckInToday();
         let res: ITipItem[] = [];
 
