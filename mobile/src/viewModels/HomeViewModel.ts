@@ -191,12 +191,15 @@ export default class HomeViewModel {
         let nextMonthlyQol: Date = lastMonthlyQol;
         nextMonthlyQol.setDate(nextMonthlyQol.getDate() + 28);
         const today: Date = new Date();
+        
         if (nextMonthlyQol.getDay() === today.getDay() && nextMonthlyQol.getMonth() === today.getMonth()
         && nextMonthlyQol.getFullYear() === today.getFullYear()) {
             this._settings.updateLastQol({ lastMonthlyQol: Date() }, QolSurveyType.Monthly);
             this._settings.updatePendingQol({ pendingMonthlyQol: true }, QolSurveyType.Monthly);
             return true;
-        } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingMonthlyQol) { return true; }
+        } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingMonthlyQol) { 
+            return true; 
+        }
         return false;
     }
 
@@ -204,16 +207,18 @@ export default class HomeViewModel {
         // return true if there is a pending Weekly QoL
         private isTimeForWeeklyQol(): boolean {
             const lastWeeklyQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastWeeklyQol);
-            console.log(`lastWeeklyQol: ${AppController.Instance.User.localSettings?.current?.qol?.lastWeeklyQol}`);
             let nextWeeklyQol: Date = lastWeeklyQol;
             nextWeeklyQol.setDate(nextWeeklyQol.getDate() + 7);
             const today: Date = new Date();
+
             if (nextWeeklyQol.getDay() === today.getDay() && nextWeeklyQol.getMonth() === today.getMonth()
             && nextWeeklyQol.getFullYear() === today.getFullYear()) {
                 this._settings.updateLastQol({ lastWeeklyQol: Date() }, QolSurveyType.Weekly);
                 this._settings.updatePendingQol({ pendingWeeklyQol: true }, QolSurveyType.Weekly);
                 return true;
-            } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol) { return true; }
+            } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol) { 
+                return true; 
+            }
             return false;
         }
 
