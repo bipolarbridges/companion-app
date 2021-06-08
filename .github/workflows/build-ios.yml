@@ -1,4 +1,7 @@
-build-ios:
+name: build-ios
+on: push
+jobs:
+  all:
     needs: install-and-test
     runs-on: [self-hosted, macos]
     steps: 
