@@ -2,7 +2,7 @@ import { IQoLController } from 'common/abstractions/controlllers/IQoLController'
 import {
     QolSurveyResults,
     PartialQol,
-} from 'common/models/QoL';
+} from '../../mobile/src/constants/QoL';
 import RepoFactory from 'common/controllers/RepoFactory';
 
 export default class QoLControllerBase implements IQoLController {
