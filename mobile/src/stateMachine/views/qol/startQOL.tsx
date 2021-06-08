@@ -7,8 +7,6 @@ import { MasloPage, Container, Button } from 'src/components';
 import { ScenarioTriggers } from '../../abstractions';
 import AppController from 'src/controllers';
 import { QolSurveyType } from 'src/constants/QoL';
-
-import { styles } from 'react-native-markdown-renderer';
 import { PersonaArmState } from 'dependencies/persona/lib';
 
 const minContentHeight = 460;
@@ -33,7 +31,7 @@ export class QolStartView extends ViewState {
             if (this.viewModel.isUnfinished) {
                 await this.viewModel.saveSurveyProgress(null);
             }
-            this.viewModel.qolType = QolType.Monthly;
+            this.viewModel.QolSurveyType = QolSurveyType.Monthly;
         }
     }
 

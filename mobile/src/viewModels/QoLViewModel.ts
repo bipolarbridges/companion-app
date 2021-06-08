@@ -136,7 +136,7 @@ export default class QOLSurveyViewModel {
                 isFirstTimeQol: this.showInterlude,
                 startDate: this.startDate,
                 questionCompletionDates: this.questionCompletionDates,
-                type: this.qolType,
+                surveyType: this.QolSurveyType,
             }
             res = await AppController.Instance.User.backend.sendPartialQol(partialQol);
             this.isUnfinished = true;
@@ -155,15 +155,15 @@ export default class QOLSurveyViewModel {
     }
 
     public updatePendingQol = () => {
-        switch (this.qolType) {
-            case QolType.Monthly:
-                this._settings.updatePendingQol({ pendingMonthlyQol: false }, this.qolType);
+        switch (this.QolSurveyType) {
+            case QolSurveyType.Monthly:
+                this._settings.updatePendingQol({ pendingMonthlyQol: false }, this.QolSurveyType);
                 break;
-            case QolType.Weekly:
-                this._settings.updatePendingQol({ pendingWeeklyQol: false }, this.qolType);
+            case QolSurveyType.Weekly:
+                this._settings.updatePendingQol({ pendingWeeklyQol: false }, this.QolSurveyType);
                 break;
             default:
-                console.log(`QoLViewModel: updatePendingQol ERROR: ${this.qolType} not implemented in switch`)
+                console.log(`QoLViewModel: updatePendingQol ERROR: ${this.QolSurveyType} not implemented in switch`)
                 return;
         }
         

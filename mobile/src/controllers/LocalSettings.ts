@@ -9,7 +9,7 @@ import { ThrottleAction } from 'common/utils/throttle';
 import { IEvent, Event } from 'common/utils/event';
 import { AppVersion } from './AppVersion';
 import logger from 'common/logger';
-import { QolType } from 'common/models/QoL';
+import { QolSurveyType } from 'src/constants/QoL';
 
 const DeviceId = ExpoConstants.installationId;
 
@@ -28,8 +28,8 @@ export interface ILocalSettingsController {
 
     updateNotifications(diff: Partial<NotificationsSettings>): void;
     updateQolOnboarding(diff: Partial<QolSettings>): void;
-    updateLastQol(diff: Partial<QolSettings>, type: QolType): void;
-    updatePendingQol(diff: Partial<QolSettings>, type: QolType): void;
+    updateLastQol(diff: Partial<QolSettings>, type: QolSurveyType): void;
+    updatePendingQol(diff: Partial<QolSettings>, type: QolSurveyType): void;
     updateLastDailyCheckIn(diff: string): void;
 
     flushChanges(): Promise<void>;
@@ -167,14 +167,14 @@ export class LocalSettingsController implements ILocalSettingsController {
         });
     }
 
-    updateLastQol(diff: Partial<QolSettings>, type: QolType) {
+    updateLastQol(diff: Partial<QolSettings>, type: QolSurveyType) {
         const qol = this.current.qol || { };
         let toChange: keyof QolSettings;
         switch (type) {
-            case QolType.Monthly:
+            case QolSurveyType.Monthly:
                 toChange = 'lastMonthlyQol';
                 break;
-            case QolType.Weekly:
+            case QolSurveyType.Weekly:
                 toChange = 'lastWeeklyQol';
                 break;
             default:
@@ -190,14 +190,14 @@ export class LocalSettingsController implements ILocalSettingsController {
         });
     }
 
-    updatePendingQol(diff: Partial<QolSettings>, type: QolType) {
+    updatePendingQol(diff: Partial<QolSettings>, type: QolSurveyType) {
         const qol = this.current.qol || { };
         let toChange: keyof QolSettings;
         switch (type) {
-            case QolType.Monthly:
+            case QolSurveyType.Monthly:
                 toChange = 'pendingMonthlyQol';
                 break;
-            case QolType.Weekly:
+            case QolSurveyType.Weekly:
                 toChange = 'pendingWeeklyQol';
                 break;
             default:

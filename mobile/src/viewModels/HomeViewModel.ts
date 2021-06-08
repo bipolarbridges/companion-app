@@ -12,12 +12,10 @@ import { tryOpenLink } from 'src/constants/links';
 import { Identify, DocumentLinkEntry, DocumentLinkShareStatuses } from 'common/models';
 import { arraySplit } from 'common/utils/mathx';
 import { UserProfileViewModel } from './UserProfileViewModel';
-import { QolSurveyResults } from 'src/constants/QoL';
+import { QolSurveyResults, QolSurveyType } from 'src/constants/QoL';
 import { PersonaDomains } from 'src/stateMachine/persona';
 import { PersonaArmState } from 'dependencies/persona/lib';
 import { ILocalSettingsController } from 'src/controllers/LocalSettings';
-import { QolType } from 'common/models/QoL';
-import logger from 'common/logger';
 
 const EmptyArr: any[] = [];
 
@@ -182,7 +180,7 @@ export default class HomeViewModel {
 
     private submitPendingWeeklyIfTimeForMonthly() {
         if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol && this.isTimeForMonthlyQol()) {
-            this._settings.updatePendingQol({ pendingWeeklyQol: false }, QolType.Weekly);
+            this._settings.updatePendingQol({ pendingWeeklyQol: false }, QolSurveyType.Weekly);
         }
     }
 
@@ -195,8 +193,8 @@ export default class HomeViewModel {
         const today: Date = new Date();
         if (nextMonthlyQol.getDay() === today.getDay() && nextMonthlyQol.getMonth() === today.getMonth()
         && nextMonthlyQol.getFullYear() === today.getFullYear()) {
-            this._settings.updateLastQol({ lastMonthlyQol: Date() }, QolType.Monthly);
-            this._settings.updatePendingQol({ pendingMonthlyQol: true }, QolType.Monthly);
+            this._settings.updateLastQol({ lastMonthlyQol: Date() }, QolSurveyType.Monthly);
+            this._settings.updatePendingQol({ pendingMonthlyQol: true }, QolSurveyType.Monthly);
             return true;
         } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingMonthlyQol) { return true; }
         return false;
@@ -212,8 +210,8 @@ export default class HomeViewModel {
             const today: Date = new Date();
             if (nextWeeklyQol.getDay() === today.getDay() && nextWeeklyQol.getMonth() === today.getMonth()
             && nextWeeklyQol.getFullYear() === today.getFullYear()) {
-                this._settings.updateLastQol({ lastWeeklyQol: Date() }, QolType.Weekly);
-                this._settings.updatePendingQol({ pendingWeeklyQol: true }, QolType.Weekly);
+                this._settings.updateLastQol({ lastWeeklyQol: Date() }, QolSurveyType.Weekly);
+                this._settings.updatePendingQol({ pendingWeeklyQol: true }, QolSurveyType.Weekly);
                 return true;
             } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol) { return true; }
             return false;

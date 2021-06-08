@@ -1,4 +1,4 @@
-import { PartialQol, QolSurveyResults } from '../../../mobile/src/constants/QoL';
+import { QolSurveyResults } from '../../../mobile/src/constants/QoL';
 import GenericUserRepo from './GenericUserRepo';
 import Collections from 'common/database/collections';
 

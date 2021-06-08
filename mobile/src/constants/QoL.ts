@@ -50,6 +50,7 @@ export type PartialQol = {
     isFirstTimeQol: boolean,
     startDate: QoLSurveyTimestamp,
     questionCompletionDates: QoLSurveyTimestamp[],
+    surveyType: QolSurveyType,
 };
 
 export type SurveyState = {
