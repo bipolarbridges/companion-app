@@ -2,7 +2,7 @@ name: build-ios
 on: push
 jobs:
   all:
-    runs-on: [self-hosted, macos]
+    runs-on: macos
     steps: 
       - name: Check out
         uses: actions/checkout@v2
