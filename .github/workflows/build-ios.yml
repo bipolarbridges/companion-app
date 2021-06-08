@@ -1,0 +1,19 @@
+build-ios:
+    needs: install-and-test
+    runs-on: [self-hosted, macos]
+    steps: 
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Create environment file
+        run: cp test.env .env
+      - name: Use correct node version
+        uses: actions/setup-node@v2
+        with:
+          node-version: '10'
+      - name: Initialize project
+        run: ./bin/setup.bash -y -p 0 -f 1 -s 1 && cd mobile/ios
+      - name: Build app
+        run: |       
+          xcodebuild -workspace myapp.xcworkspace -scheme myapp archive -archivePath myapp.xcarchive -allowProvisioningUpdates
+          xcodebuild -exportArchive -archivePath ./myapp.xcarchive -exportPath . -exportOptionsPlist myapp/Info.plist
+          mv myapp.ipa ../myapp.ipa
