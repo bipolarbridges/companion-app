@@ -46,3 +46,13 @@ export type SurveyState = {
     userId: string,
     state: PartialQol,
 };
+
+export type QoLDocument = {
+    userId: string;
+    data: {
+      date: number;
+      questionCompletionDates?: number[];
+      results: QolSurveyResults;
+      startDate: number;
+    };
+  };
