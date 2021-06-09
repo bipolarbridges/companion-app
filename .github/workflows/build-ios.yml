@@ -10,9 +10,10 @@ jobs:
       with:
         node-version: 10.x
     - run: yarn install
+    - name: Install mobile dependencies
+      working-directory: mobile
+      run: yarn install
     - run: xcode-select -p
-    - run: ls
-    - run: sudo npx audit fix
     - run: cd mobile/ios && pod install
       name: Install pod dependencies
     - name: Build iOS (debug)
