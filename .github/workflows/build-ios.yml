@@ -1,23 +1,22 @@
-name: build-iOS
+name: iOS
 on: push
 jobs:
   build:
     runs-on: macos-latest
     steps:
-    - name: Check out
-      uses: actions/checkout@v2
-    - name: Create environment file
-      run: cp test.env .env
-    - name: Use correct node version
-      uses: actions/setup-node@v2
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
       with:
-        node-version: '10'
-    - name: Initialize project
-      run: ./bin/setup.bash -y -p 1 -f 0 -s 1
-    # - run: xcode-select -p
+        node-version: 10.x
+    - run: npm ci
+    - run: xcode-select -p
+    - run: pod install
+      working-directory: ios
+      name: Install pod dependencies
     - name: Build iOS (debug)
       run: "xcodebuild \
-        -workspace mobile/ios/CompanionKit.xcworkspace \
+        -workspace ios/CompanionKit.xcworkspace \
         -scheme CompanionKit \
         clean archive \
         -sdk iphoneos \
