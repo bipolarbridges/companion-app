@@ -25,6 +25,7 @@
     "deploy:firestore:stage": "firebase deploy -P staging --only firestore",
     "deploy:rules:stage": "firebase deploy -P staging --only firestore:rules",
     "logs": "firebase functions:log",
+    "start:mock_api": "cd __tests__/mocks/api && env-cmd nvm use && yarn && yarn build && yarn start",
     "test": "yarn build && env-cmd firebase emulators:exec -P staging 'jest test --config=./jest.config.js'"
   },
   "main": "lib/server/functions/src/index.js",
@@ -38,7 +39,6 @@
     "@google-cloud/speech": "^4.1.1",
     "@google-cloud/vision": "^2.1.1",
     "@sendgrid/mail": "7.2.2",
-    "@types/express": "^4.17.11",
     "@types/fluent-ffmpeg": "^2.1.14",
     "@types/module-alias": "^2.0.0",
     "@types/qs": "^6.9.6",

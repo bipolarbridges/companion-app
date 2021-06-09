@@ -6,7 +6,6 @@ import Collections from 'common/database/collections';
 // import { initializeAsync } from '../../../common/services/firebase';
 // import clientConfig from './mocks/client/config';
 import * as firebase from './util/firebase';
-
 const {test, app} = init('example-test');
 
 describe('Export Functions', () => {

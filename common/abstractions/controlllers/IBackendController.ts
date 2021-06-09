@@ -12,15 +12,12 @@ export interface IBackendClient {
 
 export interface IBackendController {
 
-    logNewAccount(clientID: string, coachID: string)
-    : Promise<RemoteCallResult>;
-
-    logMeasurement(clientID: string, coachID: string, type: string, value: number, date: number)
+    logNewAccount(clientID: string)
     : Promise<RemoteCallResult>;
 
     logSurveyResult(clientID: string, date: number, result: QolSurveyResults)
     : Promise<RemoteCallResult>;
 
-    pingTest()
+    logMeasurement(clientID: string, coachID: string, type: string, value: number, date: number)
     : Promise<RemoteCallResult>;
 }
