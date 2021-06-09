@@ -3,7 +3,8 @@ import {
     IBackendClient,
     IBackendController, RemoteCallResult,
 } from '../abstractions/controlllers/IBackendController';
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios';
+
 export default abstract class BackendControllerBase implements IBackendController {
 
     protected abstract get Client(): IBackendClient;
@@ -31,7 +32,6 @@ export default abstract class BackendControllerBase implements IBackendControlle
             });
     }
 
-    
     public logMeasurement(clientID: string, source: string, subtype: string, value: number, date: number): Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
         const data: PostedLog = {
@@ -42,7 +42,7 @@ export default abstract class BackendControllerBase implements IBackendControlle
                 value,
                 source,
             },
-        }
+        };
         return this.Client.post('/measurement',
             data,
             {
@@ -61,13 +61,13 @@ export default abstract class BackendControllerBase implements IBackendControlle
                         res: err.response,
                         jsoned: err.toJSON(),
                         error: `Error calling service: ${err}`,
-                    }
+                    };
                 } else {
                     return {
                         error: `Error calling service: ${err}`,
                     };
                 }
-                
+
             });
     }
 }
@@ -75,10 +75,10 @@ export default abstract class BackendControllerBase implements IBackendControlle
 export type PostedLog = {
     clientID: string,
     data: SurveyPiece,
-}
+};
 
 export type SurveyPiece = {
-    subtype: string;
+    subtype?: string;
     value: number;
     date: number;
     source: string;

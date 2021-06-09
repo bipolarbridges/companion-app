@@ -4,7 +4,7 @@ export type RemoteCallResult = {
     error?: string,
     msg?: any,
     res?: any,
-    jsoned?: any
+    jsoned?: any,
 };
 
 export interface IBackendClient {

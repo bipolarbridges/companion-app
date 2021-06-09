@@ -119,7 +119,7 @@ describe('Export Functions', () => {
                         sleep: 12,
                         spiritual: 12,
                     },
-                    startDate: 1620854313788
+                    startDate: 1620854313788,
                 },
             };
 

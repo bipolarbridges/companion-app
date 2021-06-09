@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import cors from 'cors';
+import { PostedLog } from '../../../../../common/controllers/BackendController';
 
 const app = express();
 app.use(express.json());
@@ -31,7 +32,7 @@ app.get('/client/:clientId', (req, res) => {
 });
 
 app.post('/measurement', (req, res) => {
-    const data = req.body;
+    const data: PostedLog = req.body;
     if (!data.clientID
         || !data.data
         || !data.data.date || !data.data.source || !data.data.value) {

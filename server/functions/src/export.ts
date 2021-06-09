@@ -120,9 +120,6 @@ fns.measurement = FeatureSettings.ExportToDataServices
             });
         });
 
-
-
-
 fns.qolsurvey = FeatureSettings.ExportToDataServices
     && functions.firestore.document(`/${Collections.SurveyResults}/{id}`)
         .onCreate(async (snap, context): Promise<ExportResult> => {
@@ -138,11 +135,11 @@ fns.qolsurvey = FeatureSettings.ExportToDataServices
                         return Promise.resolve();
                     }
                 });
-            }
-            
+            };
+
             const matchDate = (): SurveyPiece[] => {
-                const entries = Object.entries(data.data.results);   
-                // console.log(entries);         
+                const entries = Object.entries(data.data.results);
+                // console.log(entries);
                 const result = [];
                 if (entries) {
                     for (let i = 0; i < entries.length; i++) {
@@ -151,15 +148,15 @@ fns.qolsurvey = FeatureSettings.ExportToDataServices
                                 subtype: entries[i][0],
                                 value: entries[i][1],
                                 date: data.data.date,
-                                source: 'maslo-qol-survey'
+                                source: 'maslo-qol-survey',
                               });
                         }
-                        
+
                     }
                 }
-                
+
                 return result;
-            }
+            };
 
             return Promise.all(matchDate().map((value) => makeRequest(value)))
                 .then(() => {
