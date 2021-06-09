@@ -1,9 +1,9 @@
-import { QolSurveyResults } from '../models/QoL';
+// import { QolSurveyResults } from '../models/QoL';
 import {
     IBackendClient,
     IBackendController, RemoteCallResult,
 } from '../abstractions/controlllers/IBackendController';
-
+import axios, { AxiosError } from 'axios'
 export default abstract class BackendControllerBase implements IBackendController {
 
     protected abstract get Client(): IBackendClient;
@@ -31,18 +31,20 @@ export default abstract class BackendControllerBase implements IBackendControlle
             });
     }
 
-    public logMeasurement(clientID: string, coachID: string, type: string, value: number, date: number): Promise<RemoteCallResult> {
+    
+    public logMeasurement(clientID: string, source: string, subtype: string, value: number, date: number): Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
-        return this.Client.post('/measurement',
-            {
-                clientID: clientID,
-                coachID: coachID,
-                data: {
-                    date,
-                    dataType: type,
-                    value,
-                },
+        const data: PostedLog = {
+            clientID,
+            data: {
+                date,
+                subtype,
+                value,
+                source,
             },
+        }
+        return this.Client.post('/measurement',
+            data,
             {
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,61 +54,32 @@ export default abstract class BackendControllerBase implements IBackendControlle
             .then((res: any) => {
                 return { error: null } as RemoteCallResult;
             })
-            .catch((err: any) => {
-                return {
-                    msg: err?.message,
-                    error: `Error calling service: ${err}`,
-                };
-            });
-    }
-
-    public logSurveyResult(clientID: string, date: number, result: QolSurveyResults): Promise<RemoteCallResult> {
-        console.log(`Using key: ${this.Authorization}`);
-        const data = {
-            userId: clientID,
-            data: {
-                date,
-                result,
-            },
-        };
-
-        console.log(data);
-        return this.Client.post('/survey',
-        data,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': this.Authorization,
-            },
-        })
-        .then((res: any) => {
-            return { error: null } as RemoteCallResult;
-        })
-        .catch((err: any) => {
-            return {
-                msg: err?.message,
-                error: `Error calling service: ${err}`,
-            };
-        });
-    }
-
-    public pingTest():  Promise<RemoteCallResult> {
-        console.log(`Using key: ${this.Authorization}`);
-        return this.Client._get('/',
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': this.Authorization,
-            },
-        })
-            .then((res: any) => {
-                return { error: null } as RemoteCallResult;
-            })
-            .catch((err: any) => {
-                return {
-                    msg: err?.message,
-                    error: `Error calling service: ${err}`,
-                };
+            .catch((err: (Error | AxiosError)) => {
+                if (axios.isAxiosError(err))  {
+                    return {
+                        msg: err.message,
+                        res: err.response,
+                        jsoned: err.toJSON(),
+                        error: `Error calling service: ${err}`,
+                    }
+                } else {
+                    return {
+                        error: `Error calling service: ${err}`,
+                    };
+                }
+                
             });
     }
 }
+
+export type PostedLog = {
+    clientID: string,
+    data: SurveyPiece,
+}
+
+export type SurveyPiece = {
+    subtype: string;
+    value: number;
+    date: number;
+    source: string;
+};
