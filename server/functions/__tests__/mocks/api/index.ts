@@ -33,8 +33,8 @@ app.get('/client/:clientId', (req, res) => {
 app.post('/measurement', (req, res) => {
     const data = req.body;
     if (!data.clientID
-                || !data.data
-                || !data.data.date || !data.data.dataType || !data.data.value) {
+        || !data.data
+        || !data.data.date || !data.data.source || !data.data.value) {
         res.status(400).send({
             message: 'Missing data fields',
         });
