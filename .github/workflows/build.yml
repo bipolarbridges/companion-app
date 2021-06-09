@@ -25,10 +25,7 @@ jobs:
         run: yarn build:server
       - name: Build dashboard
         run: yarn build:dashboard
-      - name: Install pods
-        run: cd mobile/ios && pod install
-      - name: Build ios
-        run: |       
-          xcodebuild -workspace myapp.xcworkspace -scheme myapp archive -archivePath myapp.xcarchive -allowProvisioningUpdates
-          xcodebuild -exportArchive -archivePath ./myapp.xcarchive -exportPath . -exportOptionsPlist myapp/Info.plist
-          mv myapp.ipa ../myapp.ipa
+      - name: Build android
+        working-directory: android
+        run: ./gradlew assembleDebug -Dorg.gradle.logging.level=info
+        

@@ -1,4 +1,4 @@
-name: iOS
+name: build-iOS
 on: push
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
     - run: xcode-select -p
     - name: Build iOS (debug)
       run: "xcodebuild \
-        -workspace ios/CompanionKit.xcworkspace \
+        -workspace mobile/ios/CompanionKit.xcworkspace \
         -scheme CompanionKit \
         clean archive \
         -sdk iphoneos \
