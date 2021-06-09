@@ -72,7 +72,7 @@ class CompanionKitUITests: XCTestCase {
       
       let back = app.otherElements["checkInDetailsback"]
       back.tap()
-      sleep(10)
+//      sleep(10)
       
     }
   
