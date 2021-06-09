@@ -39,40 +39,38 @@ class CompanionKitUITests: XCTestCase {
         snapshot("01Launch")
         
         app.otherElements["email"].tap()
-        sleep(1)
+        sleep(2)
         snapshot("enterEmailScreen")
         
         let emailTextField = app.textFields["emailtextfield"]
         emailTextField.tap()
         emailTextField.setText(text: SIGNIN_EMAIL, application: app)
         app.keyboards.buttons["done"].tap()
-        sleep(1)
+        sleep(2)
         snapshot("enterPassword")
-        
-        sleep(1)
 
         // "passwordtextfield" does not show up in app.textFields so using app.descendants(matching: .any) here
         let passwordTextField = app.descendants(matching: .any)["passwordtextfield"]
         passwordTextField.tap()
         passwordTextField.setText(text: SIGNIN_PASSWORD, application: app)
         app.keyboards.buttons["done"].tap()
-        sleep(1)
+        sleep(2)
         snapshot("loggedIn")
       }
       
       let skipButton = app.descendants(matching: .any)["skipBtn"]
       skipButton.tap()
-      sleep(1)
+      sleep(2)
       snapshot("home")
       
       let checkInCard = app.descendants(matching: .any)["CheckInCard0"]
       checkInCard.tap()
-      sleep(1)
+      sleep(2)
       snapshot("checkIn")
       
       let back = app.otherElements["checkInDetailsback"]
       back.tap()
-//      sleep(10)
+      sleep(2)
       
     }
   
