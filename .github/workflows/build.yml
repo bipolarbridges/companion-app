@@ -26,5 +26,4 @@ jobs:
       - name: Build dashboard
         run: yarn build:dashboard
       - name: Build android
-        run: npm install react-native-unimodules
-        run: yarn build:android
+        run: npx install react-native-unimodules && yarn build:android
