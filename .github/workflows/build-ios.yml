@@ -1,21 +1,30 @@
-# name: build-ios
-# on: push
-# jobs:
-#   all:
-#     runs-on: macos
-#     steps: 
-#       - name: Check out
-#         uses: actions/checkout@v2
-#       - name: Create environment file
-#         run: cp test.env .env
-#       - name: Use correct node version
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: '10'
-#       - name: Initialize project
-#         run: ./bin/setup.bash -y -p 0 -f 1 -s 1 && cd mobile/ios
-#       - name: Build app
-#         run: |       
-#           xcodebuild -workspace myapp.xcworkspace -scheme myapp archive -archivePath myapp.xcarchive -allowProvisioningUpdates
-#           xcodebuild -exportArchive -archivePath ./myapp.xcarchive -exportPath . -exportOptionsPlist myapp/Info.plist
-#           mv myapp.ipa ../myapp.ipa
+name: iOS
+on: push
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - name: Create environment file
+      run: cp test.env .env
+    - name: Use correct node version
+      uses: actions/setup-node@v2
+        with:
+          node-version: '10'
+    - name: Initialize project
+      run: ./bin/setup.bash -y -p 0 -f 1 -s 1
+    - run: xcode-select -p
+    - run: pod install
+      working-directory: ios
+      name: Install pod dependencies
+    - name: Build iOS (debug)
+      run: "xcodebuild \
+        -workspace ios/CompanionKit.xcworkspace \
+        -scheme CompanionKit \
+        clean archive \
+        -sdk iphoneos \
+        -configuration Debug \
+        -UseModernBuildSystem=NO \
+        -archivePath $PWD/CompanionKit \
+        CODE_SIGNING_ALLOWED=NO"
