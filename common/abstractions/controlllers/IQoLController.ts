@@ -1,5 +1,4 @@
 import { PartialQol, QolSurveyResults } from 'common/models/QoL';
-
 export interface IQoLController {
 
     getSurveyResults(): Promise<QolSurveyResults>;
@@ -13,3 +12,4 @@ export interface IQoLController {
 
     setUser(userId: string): void;
 }
+

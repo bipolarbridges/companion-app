@@ -56,6 +56,7 @@ if [ $submodules == 1 ]; then
 	git clone https://github.com/HeyMaslo/react-native-switch-pro.git
 	cd ../..
 fi
+yarn all
 if [ $functions == 1 ]; then
 	cd server/functions || exit 1
 	yarn

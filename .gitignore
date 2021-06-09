@@ -12,4 +12,6 @@ yarn-error.log
 
 ## Configs
 common/models/ClientCard.ts
+server/google_key.json
+mobile/android/app/GoogleService-Info.plist
 /server/functions/api_key.json

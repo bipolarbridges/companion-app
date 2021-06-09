@@ -33,6 +33,8 @@ namespace Collections {
     export const timeTracking = (coachId: string, clientCardId: string) => `${coachClients(coachId)}/${clientCardId}/timeTracking`;
     export const userPublicInfoDoc = (uid: string) => `${Collections.Users}/${uid}/public/info`;
 
+    export const qolSurveyResult = (surveyId: string) => `${Collections.SurveyResults}/${surveyId}`;
+
     export const configDoc = (projectName: string) => `${Collections.Config}/${projectName}`;
 
     export const promptsLibraryDoc = (coachId: string) => `${Collections.Prompts}/${coachId}`;
