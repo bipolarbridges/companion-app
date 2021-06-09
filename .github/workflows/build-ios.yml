@@ -11,6 +11,7 @@ jobs:
         node-version: 10.x
     - run: yarn install
     - run: xcode-select -p
+    - run: npm audit fix
     - run: cd mobile/ios && pod install
       name: Install pod dependencies
     - name: Build iOS (debug)
