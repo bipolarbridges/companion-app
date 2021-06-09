@@ -26,6 +26,4 @@ jobs:
       - name: Build dashboard
         run: yarn build:dashboard
       - name: Build android
-        working-directory: android
-        run: ./gradlew assembleDebug -Dorg.gradle.logging.level=info
-        
+        run: cd mobile/android && ./gradlew assembleDebug -Dorg.gradle.logging.level=info
