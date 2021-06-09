@@ -26,7 +26,7 @@ fns.newAccount = FeatureSettings.ExportToDataServices
             const client = context.params.clientId;
             const coach = acct.coachId;
             console.log(`New account for client[${client}], coach[${coach}]`);
-            const result: RemoteCallResult = await backend.logNewAccount(client, coach);
+            const result: RemoteCallResult = await backend.logNewAccount(client);
             console.log(result);
             return {
                 error: result.error ? result.error : null,

@@ -9,7 +9,7 @@ export default abstract class BackendControllerBase implements IBackendControlle
     protected abstract get Client(): IBackendClient;
     protected abstract get Authorization(): string;
 
-    public logNewAccount(id: string, coachID: string): Promise<RemoteCallResult> {
+    public logNewAccount(id: string): Promise<RemoteCallResult> {
         console.log(`Using key: ${this.Authorization}`);
         return this.Client.post('/client',
             { id: id },

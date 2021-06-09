@@ -2,7 +2,7 @@ import { QolSurveyResults } from 'common/models/QoL';
 
 export type RemoteCallResult = {
     error?: string,
-    message?: string,
+    message?: any,
 };
 
 export interface IBackendClient {
