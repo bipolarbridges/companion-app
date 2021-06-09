@@ -26,4 +26,5 @@ jobs:
       - name: Build dashboard
         run: yarn build:dashboard
       - name: Build android
-        run: cd mobile/android && ./gradlew assembleDebug -Dorg.gradle.logging.level=info
+        run: npm install react-native-unimodules
+        run: yarn build:android

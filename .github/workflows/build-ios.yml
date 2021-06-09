@@ -13,7 +13,9 @@ jobs:
       with:
         node-version: '10'
     - name: Initialize project
-      run: ./bin/setup.bash -y -p 1 -f 0 -s 1
+      run: ./bin/setup.bash -y -p 0 -f 0 -s 1
+    - run: xcode-select -p
+    - run: cd mobile/ios && pod install
     - name: Build iOS (debug)
       run: "xcodebuild \
         -workspace mobile/ios/CompanionKit.xcworkspace \
