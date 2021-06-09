@@ -2,7 +2,9 @@ import { QolSurveyResults } from 'common/models/QoL';
 
 export type RemoteCallResult = {
     error?: string,
-    message?: any,
+    msg?: any,
+    res?: any,
+    jsoned?: any
 };
 
 export interface IBackendClient {
@@ -15,9 +17,6 @@ export interface IBackendController {
     logNewAccount(clientID: string)
     : Promise<RemoteCallResult>;
 
-    logSurveyResult(clientID: string, date: number, result: QolSurveyResults)
-    : Promise<RemoteCallResult>;
-
-    logMeasurement(clientID: string, coachID: string, type: string, value: number, date: number)
+    logMeasurement(clientID: string, source: string, subtype: string, value: number, date: number)
     : Promise<RemoteCallResult>;
 }
