@@ -2,7 +2,7 @@ import { ViewState } from '../base';
 import React from 'react';
 import ExpoConstants from 'expo-constants';
 import { observer } from 'mobx-react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Platform } from 'react-native';
 import Colors from 'src/constants/colors';
 import { MasloPage, Container, Button, Card, Link } from 'src/components';
 import AppViewModel from 'src/viewModels';
@@ -58,6 +58,10 @@ export class SettingsView extends ViewState {
         this.trigger(ScenarioTriggers.Submit);
     }
 
+    private onHealthChange = () => {
+        this.trigger(ScenarioTriggers.Secondary);
+    }
+
     private onEmailChange = () => {
         // this.trigger(ScenarioTriggers.Primary);
     }
@@ -98,7 +102,8 @@ export class SettingsView extends ViewState {
             : Images.envelopeIcon;
 
         const notificationsEnabled = this.model.notifications.isEnabled && !this.model.notifications.isToggleInProgress && this.model.notifications.schedule;
-
+        const enabled = Platform.OS == 'ios'? this.model.healthAuth.isEnabledOG : this.model.healthAuth.isEnabled;
+        const permissionsEnabled = enabled && !this.model.healthAuth.isToggleInProgress;
         return (
             <MasloPage style={this.baseStyles.page}>
                 <Container style={styles.topBarWrapWrap}>
@@ -140,7 +145,7 @@ export class SettingsView extends ViewState {
                                     onPress={this.onPasswordChange}
                                 >
                                     <Images.arrowRight width={8} height={8} />
-                                </Card>
+                            </Card>
                             )}
                             <Card
                                 title={'Notifications'}
@@ -150,6 +155,15 @@ export class SettingsView extends ViewState {
                             >
                                 <Images.arrowRight width={8} height={8} />
                             </Card>
+                            <Card
+                                    title={'Health Data'}
+                                    description={permissionsEnabled ? 'Authorization On' : 'Authorization Off'}
+                                    Image={Images.archiveIcon}
+                                    onPress={this.onHealthChange}
+                                >
+                                    <Images.arrowRight width={8} height={8} />
+                            </Card>
+
                         </View>
                         <View style={[this.baseStyles.flexCenterBottom, styles.bottomBlock]}>
                             <Button
