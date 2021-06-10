@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import cors from 'cors';
-import { PostedLog } from '../../../../../common/controllers/BackendController';
 
 const app = express();
 app.use(express.json());
@@ -30,6 +29,19 @@ app.get('/client/:clientId', (req, res) => {
         id: req.params.clientId,
     });
 });
+
+
+export type PostedLog = {
+    clientID: string,
+    data: SurveyPiece,
+};
+
+export type SurveyPiece = {
+    subtype?: string;
+    value: number;
+    date: number;
+    source: string;
+};
 
 app.post('/measurement', (req, res) => {
     const data: PostedLog = req.body;
