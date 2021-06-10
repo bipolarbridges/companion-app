@@ -14,18 +14,18 @@ jobs:
           node-version: '10'
       - name: Initialize project
         run: ./bin/setup.bash -y -p 0 -f 1 -s 1
-      # - name: Show firebase dependencies (root)
-      #   run: yarn list | grep firebase
-      # - name: Show firebase dependencies (server)
-      #   working-directory: server/functions
-      #   run: yarn list | grep firebase
-      # - name: Lint functions code
-      #   run: yarn lint:server
-      # - name: Build server
-      #   run: yarn build:server
-      # - name: Build dashboard
-      #   run: yarn build:dashboard
+      - name: Show firebase dependencies (root)
+        run: yarn list | grep firebase
+      - name: Show firebase dependencies (server)
+        working-directory: server/functions
+        run: yarn list | grep firebase
+      - name: Lint functions code
+        run: yarn lint:server
+      - name: Build server
+        run: yarn build:server
+      - name: Build dashboard
+        run: yarn build:dashboard
       - name: Install android
         run: cd mobile && yarn install
       - name: Build android
-        run: ls && yarn build:android
+        run: yarn build:android
