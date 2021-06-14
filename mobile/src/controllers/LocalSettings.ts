@@ -159,7 +159,7 @@ export class LocalSettingsController implements ILocalSettingsController {
     updateQolOnboarding(diff: Partial<QolSettings>) {
         const qol = this.current.qol || { };
         transaction(() => {
-            let changed = transferChangedFields(diff, qol, "seenOnboardingQol", 'lastMonthlyQol');
+            let changed = transferChangedFields(diff, qol, "seenOnboardingQol", 'lastFullQol');
 
             if (changed) {
                 this.update({ qol });
@@ -258,6 +258,5 @@ function getLocalsHash(locals: LocalNotificationsSchedule): string {
     }
 
     const res = prts.join('');
-    // console.log('============= HASH:', res);
     return res;
 }

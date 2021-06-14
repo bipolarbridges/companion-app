@@ -128,14 +128,13 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
         this.trigger(ScenarioTriggers.Quaternary);
     }
 
-    private onMonthlyQol = () => {
-        this.viewQolModel.setQolSurveyType = QolSurveyType.Monthly;
+    private onFullQol = () => {
+        this.viewQolModel.setQolSurveyType = QolSurveyType.Full;
         this.trigger(ScenarioTriggers.Tertiary);
     }
 
     private onWeeklyQol = () => {
         this.viewQolModel.setQolSurveyType = QolSurveyType.Weekly;
-        this.trigger(ScenarioTriggers.Tertiary);
     }
 
     private onStartQOL = () => {
@@ -238,8 +237,8 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
                 return;
             }
 
-            case 'monthly-qol': {
-                this.onMonthlyQol();
+            case 'full-qol': {
+                this.onFullQol();
                 return;
             }
 
@@ -281,7 +280,6 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
                                 onPress={() => this.onTipItemPress(s)}
                             />
                         ))}
-                        {/* add logic to render certain things in check in spot depending on state of partial save*/}
                     </ScrollView>
                 ) : null}
                 <Container style={styles.heading}>

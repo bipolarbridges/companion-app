@@ -20,8 +20,8 @@ export type NotificationsSettings = {
 
 export type QolSettings = {
     seenOnboardingQol?: boolean,
-    lastMonthlyQol?: string,
-    pendingMonthlyQol: boolean,
+    lastFullQol?: string,
+    pendingFullQol: boolean,
     lastWeeklyQol?: string,
     pendingWeeklyQol: boolean,
 };

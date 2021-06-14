@@ -58,18 +58,6 @@ export default class QOLSurveyViewModel {
         });
     }
 
-    getMags(scores: QolSurveyResults): PersonaArmState {
-        let currMags: PersonaArmState = {};
-        for (let domain of PersonaDomains) {
-            let score: number = scores[domain];
-            let mag: number;
-            if (score === 0) { mag = 0.2; }
-            else { mag = 0.4 + (score * 3 / 100); }
-            currMags[domain] = mag;
-        }
-        return currMags;
-    }
-
     async init() {
         return await this.initModel;
     }
@@ -150,14 +138,14 @@ export default class QOLSurveyViewModel {
     }
 
     public updateQolOnboarding = () => {
-        this._settings.updateQolOnboarding({ seenOnboardingQol: true, lastMonthlyQol: Date() })
+        this._settings.updateQolOnboarding({ seenOnboardingQol: true, lastFullQol: Date() })
         this.showInterlude = true;
     }
 
     public updatePendingQol = () => {
         switch (this.QolSurveyType) {
-            case QolSurveyType.Monthly:
-                this._settings.updatePendingQol({ pendingMonthlyQol: false }, this.QolSurveyType);
+            case QolSurveyType.Full:
+                this._settings.updatePendingQol({ pendingFullQol: false }, this.QolSurveyType);
                 break;
             case QolSurveyType.Weekly:
                 this._settings.updatePendingQol({ pendingWeeklyQol: false }, this.QolSurveyType);
@@ -168,5 +156,17 @@ export default class QOLSurveyViewModel {
         }
         
     }
-}
 
+    private getMags(scores: QolSurveyResults): PersonaArmState {
+        let currMags: PersonaArmState = {};
+        for (let domain of PersonaDomains) {
+            let score: number = scores[domain];
+            let mag: number;
+            if (score === 0) { mag = 0.2; }
+            else { mag = 0.4 + (score * 3 / 100); }
+            currMags[domain] = mag;
+        }
+        return currMags;
+    }
+    
+}
