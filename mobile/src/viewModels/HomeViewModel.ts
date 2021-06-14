@@ -191,12 +191,15 @@ export default class HomeViewModel {
         let nextFullQol: Date = lastFullQol;
         nextFullQol.setDate(nextFullQol.getDate() + 28);
         const today: Date = new Date();
+
         if (nextFullQol.getDay() === today.getDay() && nextFullQol.getMonth() === today.getMonth()
         && nextFullQol.getFullYear() === today.getFullYear()) {
             this._settings.updateLastQol({ lastFullQol: Date() }, QolSurveyType.Full);
             this._settings.updatePendingQol({ pendingFullQol: true }, QolSurveyType.Full);
             return true;
-        } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingFullQol) { return true; }
+        } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingFullQol) {
+            return true; 
+        }
         return false;
     }
 
@@ -224,7 +227,7 @@ export default class HomeViewModel {
         const today: Date = new Date();
 
         return (lastDailyCheckIn.getDay() === today.getDay() && lastDailyCheckIn.getMonth() === today.getMonth() && lastDailyCheckIn.getFullYear() === today.getFullYear())
-        }
+    }
 
     public getArmMagnitudes = async () => {
         const lastSurveyScores: QolSurveyResults = await AppController.Instance.User.backend.getSurveyResults();

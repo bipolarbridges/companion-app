@@ -135,9 +135,6 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
 
     private onShortQol = () => {
         this.viewQolModel.setQolSurveyType = QolSurveyType.Short;
-    }
-
-    private onStartQOL = () => {
         this.trigger(ScenarioTriggers.Tertiary);
     }
 
