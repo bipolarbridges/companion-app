@@ -37,7 +37,7 @@ export type QolSurveyResults = {
 
 export enum QolSurveyType {
     Full = 'FULL',
-    Weekly = 'WEEKLY',
+    Short = 'SHORT',
 }
 
 export type QoLSurveyTimestamp = number;

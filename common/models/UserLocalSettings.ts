@@ -22,8 +22,8 @@ export type QolSettings = {
     seenOnboardingQol?: boolean,
     lastFullQol?: string,
     pendingFullQol: boolean,
-    lastWeeklyQol?: string,
-    pendingWeeklyQol: boolean,
+    lastShortQol?: string,
+    pendingShortQol: boolean,
 };
 
 export type LocalNotificationsSchedule = {

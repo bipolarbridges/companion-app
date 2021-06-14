@@ -147,8 +147,8 @@ export default class QOLSurveyViewModel {
             case QolSurveyType.Full:
                 this._settings.updatePendingQol({ pendingFullQol: false }, this.QolSurveyType);
                 break;
-            case QolSurveyType.Weekly:
-                this._settings.updatePendingQol({ pendingWeeklyQol: false }, this.QolSurveyType);
+            case QolSurveyType.Short:
+                this._settings.updatePendingQol({ pendingShortQol: false }, this.QolSurveyType);
                 break;
             default:
                 console.log(`QoLViewModel: updatePendingQol ERROR: ${this.QolSurveyType} not implemented in switch`)

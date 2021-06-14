@@ -133,8 +133,8 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
         this.trigger(ScenarioTriggers.Tertiary);
     }
 
-    private onWeeklyQol = () => {
-        this.viewQolModel.setQolSurveyType = QolSurveyType.Weekly;
+    private onShortQol = () => {
+        this.viewQolModel.setQolSurveyType = QolSurveyType.Short;
     }
 
     private onStartQOL = () => {
@@ -242,8 +242,8 @@ export class HomeView extends ViewState<{ opacity: Animated.Value, isUnfinishedQ
                 return;
             }
 
-            case 'weekly-qol': {
-                this.onWeeklyQol();
+            case 'short-qol': {
+                this.onShortQol();
                 return;
             }
 

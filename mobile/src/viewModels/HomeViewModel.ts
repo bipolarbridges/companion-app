@@ -3,7 +3,7 @@ import CheckInViewModel from './CheckInViewModel';
 import { computed } from 'mobx';
 import NamesHelper from 'common/utils/nameHelper';
 import { months } from 'common/utils/dateHelpers';
-import { ITipItem, IStaticTipItem, ICheckInTipItem, IFinishQolTipItem, IFullQolTipItem, IWeeklyQolTipItem, IAssessmentTipItem, IDocumentLinkTip } from './components/TipItemViewModel';
+import { ITipItem, IStaticTipItem, ICheckInTipItem, IFinishQolTipItem, IFullQolTipItem, IShortQolTipItem, IAssessmentTipItem, IDocumentLinkTip } from './components/TipItemViewModel';
 import AppViewModel from './index';
 import InterventionTipsViewModel from 'src/viewModels/components/InterventionTipsViewModel';
 import Localization from 'src/services/localization';
@@ -102,7 +102,7 @@ export default class HomeViewModel {
             })) || EmptyArr;
         }
 
-        this.submitPendingWeeklyIfTimeForFull()
+        this.submitPendingShortIfTimeForFull()
         const needsDailyCheckIn = !this.hasCompletedDailyCheckInToday();
         let res: ITipItem[] = [];
 
@@ -134,12 +134,12 @@ export default class HomeViewModel {
                 });
         }
 
-        if (this.isTimeForWeeklyQol()) {
+        if (this.isTimeForShortQol()) {
             res.unshift(
-                <IWeeklyQolTipItem>{
-                    id: 'weekly-qol',
-                    type: 'weekly-qol',
-                    title: "It's time for your weekly check-in!",
+                <IShortQolTipItem>{
+                    id: 'Short-qol',
+                    type: 'Short-qol',
+                    title: "It's time for your Short check-in!",
                 });
         }
 
@@ -178,9 +178,9 @@ export default class HomeViewModel {
         ];
     }
 
-    private submitPendingWeeklyIfTimeForFull() {
-        if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol && this.isTimeForFullQol()) {
-            this._settings.updatePendingQol({ pendingWeeklyQol: false }, QolSurveyType.Weekly);
+    private submitPendingShortIfTimeForFull() {
+        if (AppController.Instance.User.localSettings?.current?.qol?.pendingShortQol && this.isTimeForFullQol()) {
+            this._settings.updatePendingQol({ pendingShortQol: false }, QolSurveyType.Short);
         }
     }
 
@@ -200,20 +200,20 @@ export default class HomeViewModel {
         return false;
     }
 
-        // returns true if it has been 7 calendar days since last Weekly QoL
-        // return true if there is a pending Weekly QoL
-        private isTimeForWeeklyQol(): boolean {
-            const lastWeeklyQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastWeeklyQol);
-            let nextWeeklyQol: Date = lastWeeklyQol;
-            nextWeeklyQol.setDate(nextWeeklyQol.getDate() + 7);
+        // returns true if it has been 7 calendar days since last Short QoL
+        // return true if there is a pending Short QoL
+        private isTimeForShortQol(): boolean {
+            const lastShortQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastShortQol);
+            let nextShortQol: Date = lastShortQol;
+            nextShortQol.setDate(nextShortQol.getDate() + 7);
             const today: Date = new Date();
 
-            if (nextWeeklyQol.getDay() === today.getDay() && nextWeeklyQol.getMonth() === today.getMonth()
-            && nextWeeklyQol.getFullYear() === today.getFullYear()) {
-                this._settings.updateLastQol({ lastWeeklyQol: Date() }, QolSurveyType.Weekly);
-                this._settings.updatePendingQol({ pendingWeeklyQol: true }, QolSurveyType.Weekly);
+            if (nextShortQol.getDay() === today.getDay() && nextShortQol.getMonth() === today.getMonth()
+            && nextShortQol.getFullYear() === today.getFullYear()) {
+                this._settings.updateLastQol({ lastShortQol: Date() }, QolSurveyType.Short);
+                this._settings.updatePendingQol({ pendingShortQol: true }, QolSurveyType.Short);
                 return true;
-            } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol) { 
+            } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingShortQol) { 
                 return true; 
             }
             return false;

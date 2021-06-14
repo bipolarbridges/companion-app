@@ -27,8 +27,8 @@ export class QolStartView extends ViewState {
         await this.viewModel.init();
         const currentQolSettings = AppController.Instance.User.localSettings?.current.qol;
 
-        // If there is a weekly qol that is partialy complete submit it
-        if (currentQolSettings.pendingFullQol && currentQolSettings.pendingWeeklyQol) {
+        // If there is a short qol that is partialy complete submit it
+        if (currentQolSettings.pendingFullQol && currentQolSettings.pendingShortQol) {
             await this.viewModel.sendSurveyResults();
 
             if (this.viewModel.isUnfinished) {

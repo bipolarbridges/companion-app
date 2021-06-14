@@ -174,8 +174,8 @@ export class LocalSettingsController implements ILocalSettingsController {
             case QolSurveyType.Full:
                 toChange = 'lastFullQol';
                 break;
-            case QolSurveyType.Weekly:
-                toChange = 'lastWeeklyQol';
+            case QolSurveyType.Short:
+                toChange = 'lastShortQol';
                 break;
             default:
                 console.log(`updateLastQol ERROR: ${type} not implemented in switch`)
@@ -197,8 +197,8 @@ export class LocalSettingsController implements ILocalSettingsController {
             case QolSurveyType.Full:
                 toChange = 'pendingFullQol';
                 break;
-            case QolSurveyType.Weekly:
-                toChange = 'pendingWeeklyQol';
+            case QolSurveyType.Short:
+                toChange = 'pendingShortQol';
                 break;
             default:
                 console.log(`updatePendingQol ERROR: ${type} not implemented in switch`)

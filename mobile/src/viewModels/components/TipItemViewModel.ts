@@ -1,7 +1,7 @@
 import { StaticTipTypes } from 'common/models/StaticTips';
 import { InterventionTipsStatuses } from 'common/models';
 
-export type TipTypes = 'finish-qol' | 'full-qol' | 'weekly-qol' | 'check-in' | 'assessment' | 'staticTip' | 'interventionTip' | 'docLinkTip';
+export type TipTypes = 'finish-qol' | 'full-qol' | 'short-qol' | 'check-in' | 'assessment' | 'staticTip' | 'interventionTip' | 'docLinkTip';
 
 export interface ITipItemBase {
     id: string,
@@ -17,8 +17,8 @@ export interface IFullQolTipItem extends ITipItemBase {
     type: 'full-qol',
 }
 
-export interface IWeeklyQolTipItem extends ITipItemBase {
-    type: 'weekly-qol',
+export interface IShortQolTipItem extends ITipItemBase {
+    type: 'short-qol',
 }
 
 export interface IStaticTipItem extends ITipItemBase {
@@ -54,4 +54,4 @@ export interface IDocumentLinkTip extends ITipItemBase {
     open: () => Promise<void>,
 }
 
-export type ITipItem = IStaticTipItem | ICheckInTipItem | IFinishQolTipItem | IFullQolTipItem | IWeeklyQolTipItem | IAssessmentTipItem | IInterventionTipItem | IDocumentLinkTip;
+export type ITipItem = IStaticTipItem | ICheckInTipItem | IFinishQolTipItem | IFullQolTipItem | IShortQolTipItem | IAssessmentTipItem | IInterventionTipItem | IDocumentLinkTip;
