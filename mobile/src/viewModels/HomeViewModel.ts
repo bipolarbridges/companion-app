@@ -102,7 +102,7 @@ export default class HomeViewModel {
             })) || EmptyArr;
         }
 
-        this.submitPendingWeeklyIfTimeForMonthly()
+        this.submitPendingWeeklyIfTimeForFull()
         const needsDailyCheckIn = !this.hasCompletedDailyCheckInToday();
         let res: ITipItem[] = [];
 
@@ -178,28 +178,25 @@ export default class HomeViewModel {
         ];
     }
 
-    private submitPendingWeeklyIfTimeForMonthly() {
+    private submitPendingWeeklyIfTimeForFull() {
         if (AppController.Instance.User.localSettings?.current?.qol?.pendingWeeklyQol && this.isTimeForFullQol()) {
             this._settings.updatePendingQol({ pendingWeeklyQol: false }, QolSurveyType.Weekly);
         }
     }
 
-    // returns true if it has been 28 calendar days since last Monthly QoL
-    // return true if there is a pending Monthly QoL
+    // returns true if it has been 28 calendar days since last Full QoL
+    // return true if there is a pending Full QoL
     private isTimeForFullQol(): boolean {
-        const lastMonthlyQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastFullQol);
-        let nextMonthlyQol: Date = lastMonthlyQol;
-        nextMonthlyQol.setDate(nextMonthlyQol.getDate() + 28);
+        const lastFullQol: Date = new Date(AppController.Instance.User.localSettings?.current?.qol?.lastFullQol);
+        let nextFullQol: Date = lastFullQol;
+        nextFullQol.setDate(nextFullQol.getDate() + 28);
         const today: Date = new Date();
-        
-        if (nextMonthlyQol.getDay() === today.getDay() && nextMonthlyQol.getMonth() === today.getMonth()
-        && nextMonthlyQol.getFullYear() === today.getFullYear()) {
+        if (nextFullQol.getDay() === today.getDay() && nextFullQol.getMonth() === today.getMonth()
+        && nextFullQol.getFullYear() === today.getFullYear()) {
             this._settings.updateLastQol({ lastFullQol: Date() }, QolSurveyType.Full);
             this._settings.updatePendingQol({ pendingFullQol: true }, QolSurveyType.Full);
             return true;
-        } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingFullQol) { 
-            return true; 
-        }
+        } else if (AppController.Instance.User.localSettings?.current?.qol?.pendingFullQol) { return true; }
         return false;
     }
 

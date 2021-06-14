@@ -171,8 +171,8 @@ export class LocalSettingsController implements ILocalSettingsController {
         const qol = this.current.qol || { };
         let toChange: keyof QolSettings;
         switch (type) {
-            case QolSurveyType.Monthly:
-                toChange = 'lastMonthlyQol';
+            case QolSurveyType.Full:
+                toChange = 'lastFullQol';
                 break;
             case QolSurveyType.Weekly:
                 toChange = 'lastWeeklyQol';
@@ -194,8 +194,8 @@ export class LocalSettingsController implements ILocalSettingsController {
         const qol = this.current.qol || { };
         let toChange: keyof QolSettings;
         switch (type) {
-            case QolSurveyType.Monthly:
-                toChange = 'pendingMonthlyQol';
+            case QolSurveyType.Full:
+                toChange = 'pendingFullQol';
                 break;
             case QolSurveyType.Weekly:
                 toChange = 'pendingWeeklyQol';
