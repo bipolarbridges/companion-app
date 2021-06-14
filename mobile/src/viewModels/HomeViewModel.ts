@@ -137,9 +137,9 @@ export default class HomeViewModel {
         if (this.isTimeForShortQol()) {
             res.unshift(
                 <IShortQolTipItem>{
-                    id: 'Short-qol',
-                    type: 'Short-qol',
-                    title: "It's time for your Short check-in!",
+                    id: 'short-qol',
+                    type: 'short-qol',
+                    title: "It's time for your weekly check-in!",
                 });
         }
 
