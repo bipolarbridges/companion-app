@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import AppleHealthKit from 'rn-apple-healthkit';
 
-const PERMS = AppleHealthKit.Constants.Permissions;
+// const PERMS = AppleHealthKit.Constants.Permissions;
 
 const getHealthKitData = () => {
   const [data, setData] = useState({
@@ -15,25 +15,25 @@ const getHealthKitData = () => {
       });
   };
 
-  const options = {
-    permissions: {
-      read: [PERMS.BiologicalSex],
-    },
-  };
+  // const options = {
+  //   permissions: {
+  //     read: [PERMS.BiologicalSex],
+  //   },
+  // };
 
-  AppleHealthKit.initHealthKit(options, (err, results) => {
-    if (err) {
-        console.log('error initializing Healthkit: ', err);
-        return;
-    }
-});
+//   AppleHealthKit.initHealthKit(options, (err, results) => {
+//     if (err) {
+//         console.log('error initializing Healthkit: ', err);
+//         return;
+//     }
+// });
 
-  AppleHealthKit.getBiologicalSex(null, (err, results) => {
-    if (err) {
-      console.log(`Error returning sex`, err);
-    }
-    updateData('gender', results);
-});
+//   AppleHealthKit.getBiologicalSex(null, (err, results) => {
+//     if (err) {
+//       console.log(`Error returning sex`, err);
+//     }
+//     updateData('gender', results);
+// });
 
   return data;
 };
