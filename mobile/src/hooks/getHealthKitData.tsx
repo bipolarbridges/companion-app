@@ -1,17 +1,17 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import AppleHealthKit from 'rn-apple-healthkit';
 
 const PERMS = AppleHealthKit.Constants.Permissions;
 
 const getHealthKitData = () => {
   const [data, setData] = useState({
-    gender: null
+    gender: null,
   });
 
-  const updateData = (field,value) => {
+  const updateData = (field, value) => {
       setData({
         ...data,
-        [field]: value
+        [field]: value,
       });
   };
 
@@ -23,7 +23,7 @@ const getHealthKitData = () => {
 
   AppleHealthKit.initHealthKit(options, (err, results) => {
     if (err) {
-        console.log("error initializing Healthkit: ", err);
+        console.log('error initializing Healthkit: ', err);
         return;
     }
 });
@@ -31,8 +31,8 @@ const getHealthKitData = () => {
   AppleHealthKit.getBiologicalSex(null, (err, results) => {
     if (err) {
       console.log(`Error returning sex`, err);
-    } 
-    updateData("gender",results);
+    }
+    updateData('gender', results);
 });
 
   return data;
