@@ -25,6 +25,8 @@ jobs:
         run: yarn build:server
       - name: Build dashboard
         run: yarn build:dashboard
+      - name: TSC mobile
+        run: cd mobile && yarn tsc
       - name: Install android
         run: cd mobile && yarn install
       - name: Build android
