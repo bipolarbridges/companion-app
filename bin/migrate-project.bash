@@ -25,14 +25,23 @@ __fail__() {
 	echo "migration failed. There may be leftover files" && exit 1 
 }
 
-read -r -p "Will copy files from $old - Continue? [Y/n] " confirm
+read -r -p "Will copy files from $old to $new - Continue? (You will be able to choose files to copy) [Y/n] " confirm
 __check_confirm__
 
-cp "$old/mobile/configs/app/google-services.json" "$new/mobile/configs/app/google-services.json" || __fail__
-cp "$old/mobile/configs/app/GoogleService-Info.plist" "$new/mobile/configs/app/GoogleService-Info.plist" || __fail__
-cp "$new/mobile/configs/app/google-services.json" "$new/mobile/android/app" || __fail__
-cp "$old/.env" "$new/.env" || __fail__
-cp "$old/server/functions/.env" "$new/server/functions/.env" || __fail__
+__copy__() {
+	read -r -p "Copy $1 ? [Y/n]" confirm
+	if [[ ! $confirm =~ ^[Yy] ]]; then
+		echo "skipping"
+	else
+		cp "$old/$1" "$new/$1" || __fail__
+	fi
+}
+
+__copy__ "mobile/configs/app/google-services.json"
+__copy__ "mobile/configs/app/GoogleService-Info.plist"
+__copy__ "mobile/android/app/google-services.json"
+__copy__ ".env"
+__copy__ "server/functions/.env"
 
 echo "done copying."
 
