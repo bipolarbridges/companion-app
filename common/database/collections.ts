@@ -10,6 +10,11 @@ enum Collections {
     Tips = 'tips',
     LocalSettings = 'localSettings',
     ServiceJobs = 'serviceJobs',
+    Generic = 'generic',
+    SurveyState = 'surveyState',
+    SurveyResults = 'surveyResults',
+    Domains = 'domains',
+    Questions = 'questions',
 }
 
 namespace Collections {
@@ -27,6 +32,8 @@ namespace Collections {
     export const documents = (coachId: string, clientCardId: string) => `${coachClients(coachId)}/${clientCardId}/documents`;
     export const timeTracking = (coachId: string, clientCardId: string) => `${coachClients(coachId)}/${clientCardId}/timeTracking`;
     export const userPublicInfoDoc = (uid: string) => `${Collections.Users}/${uid}/public/info`;
+
+    export const qolSurveyResult = (surveyId: string) => `${Collections.SurveyResults}/${surveyId}`;
 
     export const configDoc = (projectName: string) => `${Collections.Config}/${projectName}`;
 

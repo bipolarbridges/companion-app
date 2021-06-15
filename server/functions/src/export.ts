@@ -1,11 +1,14 @@
 import { FeatureSettings } from './services/config';
 import * as functions from 'firebase-functions';
-import { SentimentAnalysis, SentimentValue } from '../../../common/models/Sentiment';
+import { SentimentAnalysis } from '../../../common/models/Sentiment';
 import { EnergyValue, RecordData } from '../../../common/models/RecordData';
 import { FunctionBackendController } from '../src/services/backend';
 import {
     RemoteCallResult,
 } from '../../../common/abstractions/controlllers/IBackendController';
+import Collections from 'common/database/collections';
+import { QoLDocument } from 'common/models/QoL';
+import { SurveyPiece } from 'common/controllers/BackendController';
 
 const fns: any = {};
 
@@ -13,6 +16,7 @@ const fns: any = {};
 
 type ExportResult = {
     error?: any,
+    msg?: any,
 };
 
 fns.newAccount = FeatureSettings.ExportToDataServices
@@ -24,10 +28,10 @@ fns.newAccount = FeatureSettings.ExportToDataServices
             const coach = acct.coachId;
             console.log(`New account for client[${client}], coach[${coach}]`);
             const result: RemoteCallResult = await backend.logNewAccount(client);
-            console.log(result);
+            // console.log(result);
             return {
                 error: result.error ? result.error : null,
-                msg: result.message ? result.message : null,
+                msg: result.msg ? result.msg : null,
             };
         });
 
@@ -85,11 +89,12 @@ fns.measurement = FeatureSettings.ExportToDataServices
         .onCreate(async (snap, context): Promise<ExportResult> => {
             const data: RecordData = snap.data() as RecordData;
             const backend = new FunctionBackendController();
+
             const makeRequest = async (ex: RecordExport) =>
-                backend.logMeasurement(data.clientUid, data.coachUid, ex.typeId, ex.value, data.date)
+                backend.logMeasurement(data.clientUid, 'maslo-measurement', ex.typeId, ex.value, data.date)
                 .then((res: RemoteCallResult) => {
                     if (res.error) {
-                        return Promise.reject(res.error);
+                        return Promise.reject(res);
                     } else {
                         return Promise.resolve();
                     }
@@ -110,8 +115,57 @@ fns.measurement = FeatureSettings.ExportToDataServices
                 return { error: null };
             })
             .catch((e) => {
+                console.log(e);
                 return { error: e };
             });
+        });
+
+fns.qolsurvey = FeatureSettings.ExportToDataServices
+    && functions.firestore.document(`/${Collections.SurveyResults}/{id}`)
+        .onCreate(async (snap, context): Promise<ExportResult> => {
+            const data: QoLDocument = snap.data() as QoLDocument;
+            const backend = new FunctionBackendController();
+
+            const makeRequest = async (exp: SurveyPiece) => {
+                backend.logMeasurement(data.userId, exp.source, exp.subtype, exp.value, exp.date)
+                .then((res: RemoteCallResult) => {
+                    if (res.error) {
+                        return Promise.reject(res);
+                    } else {
+                        return Promise.resolve();
+                    }
+                });
+            };
+
+            const matchDate = (): SurveyPiece[] => {
+                const entries = Object.entries(data.data.results);
+                // console.log(entries);
+                const result = [];
+                if (entries) {
+                    for (let i = 0; i < entries.length; i++) {
+                        if (entries[i].length > 0) {
+                            result.push({
+                                subtype: entries[i][0],
+                                value: entries[i][1],
+                                date: data.data.date,
+                                source: 'maslo-qol-survey',
+                              });
+                        }
+
+                    }
+                }
+
+                return result;
+            };
+
+            return Promise.all(matchDate().map((value) => makeRequest(value)))
+                .then(() => {
+                return { error: null };
+                })
+                .catch((e) => {
+                console.log(e);
+                return { error: e };
+                });
         });
 
 export const ExportFunctions = FeatureSettings.ExportToDataServices && fns;

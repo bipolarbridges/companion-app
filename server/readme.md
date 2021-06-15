@@ -122,3 +122,30 @@ API is exposed via Firebase Cloud Functions. Function can be an API endpoint, Sc
 Each endpoint might handle few types of requests to make amount of Functions deployed as less as possible. These requests types are group into endpoints by features, logic and services.
 
 Every request type for every endpoint in the system has clear and [straightforward declaration](../common/abstractions/functions.ts), grouped by namespaces. A declaration allows all calls to be consistent across platforms.
+
+
+## Testing
+For testing the server functions, we are relying on a mock-backend to be able to test the server functions in isolation.
+There are 2 ways to set up, but both require Dockerized mock-backend due to it requiring node version 12 or higher. 
+> Be sure to have the necessary environment set up for companion-app as a whole. (GOOGLE_APPLICATION_CREDENTIALS set in .env, and an api key JSON file in the folder.)
+
+### Fully Dockerized
+1. In the root folder, there should be a docker-compose file. Run 
+```
+  docker-compose up
+```
+2. Run the tests. 
+```
+  docker-compose run --rm server yarn test
+```
+
+### Local Env
+Before running through these, install [Firebase CLI](https://firebase.google.com/docs/cli).
+1. Run 
+```
+  docker-compose up mock_api
+```
+2. Assuming you are in the `/server/functions` directory, run 
+```
+  yarn test
+```
