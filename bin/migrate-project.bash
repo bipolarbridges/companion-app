@@ -6,7 +6,11 @@
 
 # Usage
 
-# ./bin/migrate-project.bash old_dir new_dir
+# bash bin/migrate-project.bash <old_dir> <new_dir>
+
+# OR
+# ./bin/migrate-project.bash <old_dir> <new_dir>
+
 
 old=$1
 new=$2
