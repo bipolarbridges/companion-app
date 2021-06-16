@@ -85,13 +85,18 @@ export default class ChooseDomainViewModel {
 
     public clearSelectedDomains() {
         this._selectedDomains = [];
-        AppViewModel.Instance.ChooseStrategy.setSelectedDomains(this._selectedDomains);
+    }
+
+    public resetDomains() {
+        this._availableDomains = [];
+        this._selectedDomains = [];
+        this.domainCount = 0;
     }
 
     public getDomainByName(name: string): DomainIded {
         let dom: DomainIded = null;
         this._availableDomains.forEach(d => {
-            if (d.name === name) {
+            if (d.name.toLowerCase() === name.toLowerCase()) {
                 dom = d;
             }
         });

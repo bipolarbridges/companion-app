@@ -59,7 +59,7 @@ export class FocusStrategiesView extends ViewState {
     }
 
     renderListItem = ({ item }) => (
-      <StrategyCard item={item} onSelectStrategy={(()=>(null))} onLearnMorePress={this.onLearnMorePress} hideCheckbox={true}/>
+      <StrategyCard item={item} onSelectStrategy={(()=>(null))} onLearnMorePress={this.onLearnMorePress} showCheckbox={false}/>
     );
 
     renderContent() {

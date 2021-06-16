@@ -11,6 +11,7 @@ import AppViewModel from 'src/viewModels';
 import { ScenarioTriggers } from '../../abstractions';
 import { ViewState } from '../base';
 import { AlertExitWithoutSave } from 'src/constants/alerts';
+import { DomainIded } from 'src/constants/QoL';
 
 const { width } = Dimensions.get('window');
 const date = new Date();
@@ -103,17 +104,25 @@ export class ChooseDomainView extends ViewState {
         let hasTwoSelected = this.viewModel.selectedDomains.length == 2;
         let hasThreeSelected = this.viewModel.selectedDomains.length == 3;
 
+
+
         if (hasThreeSelected) {
             Alert.alert(
                 'Too Many',
                 'Looks like you have already selected three domains.',
                 [
-                    { text: 'Deselct all', onPress: this.clearDomains, style: 'destructive'},
+                    { text: 'Deselct all', onPress: this.clearSelectedDomains, style: 'destructive'},
                     { text: 'OK' },
                 ]);
-        } else if ((hasTwoSelected || hasThreeSelected) && !this.viewModel.selectDomain(this.viewModel.getDomainByName(n))) {
+            return;
+        }
+
+        const chosenDomain: DomainIded = this.viewModel.getDomainByName(n);
+        const canSelectDomain: Boolean = this.viewModel.selectDomain(chosenDomain);
+
+        if ((hasTwoSelected || hasThreeSelected) && !canSelectDomain) {
             this.trigger(ScenarioTriggers.Tertiary);
-        } else if (this.viewModel.selectDomain(this.viewModel.getDomainByName(n))) {
+        } else if (canSelectDomain) {
             AppController.Instance.User.backend.setUserStateProperty('focusDomains', this.viewModel.selectedDomains.map(d => d.id));
             hasTwoSelected ? this.trigger(ScenarioTriggers.Next) : this.trigger(ScenarioTriggers.Tertiary);
         } else {
@@ -126,8 +135,9 @@ export class ChooseDomainView extends ViewState {
         }
     }
 
-    private clearDomains = () => {
+    private clearSelectedDomains = () => {
         this.viewModel.clearSelectedDomains();
+        AppViewModel.Instance.ChooseStrategy.resetStrategies();
     }
 
     renderContent() {

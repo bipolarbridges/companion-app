@@ -20,7 +20,6 @@ export default class ChooseStrategyViewModel {
   }
 
   constructor() {
-
       this._selectedDomains, this._allStrategies, this.availableStrategies, this.selectedStrategies = [];
   }
 
@@ -74,5 +73,9 @@ export default class ChooseStrategyViewModel {
       });
       return strat;
   }
+
+  public resetStrategies() {
+    this._selectedDomains, this._allStrategies, this.availableStrategies, this.selectedStrategies = [];
+}
 
 }

@@ -91,7 +91,7 @@ export class ChooseStrategiesView extends ViewState {
     );
 
     renderListItem = ({ item }) => (
-      <StrategyCard item={item} onSelectStrategy={this.onSelectStrategy} onLearnMorePress={this.onLearnMorePress}/>
+      <StrategyCard item={item} showCheckbox={true} onSelectStrategy={this.onSelectStrategy} onLearnMorePress={this.onLearnMorePress}/>
     );
 
     renderContent() {

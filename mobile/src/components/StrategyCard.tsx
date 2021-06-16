@@ -10,8 +10,8 @@ const { width } = Dimensions.get('window');
 interface IStrategyCardProps {
     item: DisplayStrategyIded,
     onLearnMorePress: ((strategyId) => void),
-    onSelectStrategy: ((strategyId) => void),
-    hideCheckbox?: boolean,
+    onSelectStrategy?: ((strategyId) => void),
+    showCheckbox?: boolean,
 }
 
 export default class StrategyCard extends React.Component<IStrategyCardProps> {
@@ -35,11 +35,11 @@ private iconForDomain(d: string): JSX.Element {
 
 render() {
     return(
-      <Pressable onPress={()=>this.props.onSelectStrategy(this.props.item.id)} disabled={this.props.hideCheckbox}>
-        <View style={styles.listItem}>
+      <Pressable onPress={()=>this.props.onSelectStrategy(this.props.item.id)} disabled={!this.props.showCheckbox || this.props.onSelectStrategy == null}>
+        <View style={[styles.listItem, this.props.item.isChecked && {borderColor: '3E3C43'}]}>
         <View style={{flexDirection: "row", justifyContent: 'space-between', alignItems: 'center'}}>
           <Text style={[TextStyles.p1, {display: 'flex', maxWidth: width - size - 70}]}>{this.props.item.title}</Text>
-          {!this.props.hideCheckbox && 
+          {this.props.showCheckbox && 
             <View style={[styles.checkbox, this.props.item.isChecked && styles.checkboxChecked, {display: 'flex'}]}>
               {this.props.item.isChecked && <Images.radioChecked width={8} height={6} />}
             </View>}
