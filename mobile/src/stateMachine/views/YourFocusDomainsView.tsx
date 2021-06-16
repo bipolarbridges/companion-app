@@ -23,9 +23,8 @@ export class YourFocusDomainsView extends ViewState {
     constructor(props) {
         super(props);
         this._contentHeight = this.persona.setupContainerHeightForceScrollDown({ transition: { duration: 0} });
-        this.hidePersona();
-        this.domains = this.viewModel.selectedDomains || []; // MK-TODO persist selected domains in viewmodel
 
+        this.domains = this.viewModel.selectedDomains || [];
         this.onLearnMorePress = this.onLearnMorePress.bind(this);
     }
 
