@@ -111,7 +111,7 @@ fns.measurement = FeatureSettings.ExportToDataServices
                 return { error: null };
             })
             .catch((e) => {
-                console.error('records all ERROR', e)
+                console.error('records all ERROR', e);
                 return { error: e };
             });
         });
