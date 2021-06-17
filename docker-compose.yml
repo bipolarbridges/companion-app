@@ -1,6 +1,6 @@
 version: '3'
 services:
-  mock_api:
+  api:
     build: server/functions/__tests__/mocks/api
     ports:
       - 8888:8888
