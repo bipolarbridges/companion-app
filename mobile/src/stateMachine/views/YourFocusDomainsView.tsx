@@ -9,11 +9,40 @@ import AppViewModel from 'src/viewModels';
 import Colors from '../../constants/colors/Colors';
 import { ScenarioTriggers } from '../abstractions';
 import { ViewState } from './base';
-import { AlertExitWithoutSave } from 'src/constants/alerts';
 import { months } from 'common/utils/dateHelpers';
+import Layout from 'src/constants/Layout';
 
 const date = new Date();
 const today = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+
+const styles = StyleSheet.create({ 
+  title: {
+    textAlign: 'center',
+  },
+  list: {
+    // marginTop: 30,
+    marginBottom: 25,
+  },
+  listItem: {
+    borderWidth: 1,
+    borderRadius: 7,
+    borderColor: '#CBC8CD',
+    padding: 10,
+    marginBottom: 30,
+  },
+  date: {
+    textTransform: 'uppercase',
+    marginBottom: 30,
+},
+labelLarge: {
+  marginBottom: 15,
+},
+
+});
+
+const minContentHeight = Layout.window.height;
+let personaYPos = 0;
+let domainsTitle = '';
 
 @observer
 export class YourFocusDomainsView extends ViewState {
@@ -22,10 +51,22 @@ export class YourFocusDomainsView extends ViewState {
 
     constructor(props) {
         super(props);
-        this._contentHeight = this.persona.setupContainerHeightForceScrollDown({ transition: { duration: 0} });
-
         this.domains = this.viewModel.selectedDomains || [];
         this.onLearnMorePress = this.onLearnMorePress.bind(this);
+
+        this._contentHeight = this.persona.setupContainerHeight(minContentHeight) + 20;
+        personaYPos = this._contentHeight * 0.5 - (TextStyles.labelMedium.lineHeight + styles.date.marginBottom + TextStyles.labelLarge.lineHeight + styles.labelLarge.marginBottom);
+        domainsTitle = this.getDomainsTitle();
+        personaYPos -= domainsTitle.length > 22 ? TextStyles.h2.lineHeight * 2 : TextStyles.h2.lineHeight;
+        this.persona.view = { ...this.persona.view, position: { x: this.persona.view.position.x, y: personaYPos }, scale: 0.8 };
+        console.log('--------------------------------------------')
+        console.log('minContentHeight', minContentHeight)
+        console.log('this._contentHeight', this._contentHeight)
+        console.log('personaYPos', personaYPos)
+        console.log('personaAnchor', this.persona.view.anchorPoint)
+        console.log('personaPosition', this.persona.view.position)
+        console.log('Layout.window.height ', Layout.window.height)
+        console.log('--------------------------------------------')
     }
 
     public get viewModel() {
@@ -73,10 +114,10 @@ export class YourFocusDomainsView extends ViewState {
                 <Container style={[{height: this._contentHeight, paddingBottom: 10}]}>
 
                     {/* Title */}
-                    <View style={{alignItems: 'center', flexDirection: 'column', marginBottom: 20}}>
-                      <Text style={[TextStyles.labelMedium, styles.date, {marginBottom: 30}]}>{today}</Text>
-                      <Text style={[TextStyles.labelLarge, {marginBottom: 15}]}>{'Your Focus Domain'}{this.domains.length == 1 ? ':' : 's:'}</Text>
-                      <Text style={[TextStyles.h2, styles.title]}>{this.getDomainsTitle()}</Text>
+                    <View style={{alignItems: 'center', flexDirection: 'column', marginBottom: personaYPos - 10}}>
+                      <Text style={[TextStyles.labelMedium, styles.date]}>{today}</Text>
+                      <Text style={[TextStyles.labelLarge, styles.labelLarge]}>{'Your Focus Domain'}{this.domains.length == 1 ? ':' : 's:'}</Text>
+                      <Text style={[TextStyles.h2, styles.title]}>{domainsTitle}</Text>
                     </View>
 
                     {/* List of Strategies */}
@@ -89,25 +130,3 @@ export class YourFocusDomainsView extends ViewState {
         );
     }
 }
-
-
-const styles = StyleSheet.create({ 
-  title: {
-    textAlign: 'center',
-  },
-  list: {
-    marginTop: 30,
-    marginBottom: 25,
-  },
-  listItem: {
-    borderWidth: 1,
-    borderRadius: 7,
-    borderColor: '#CBC8CD',
-    padding: 10,
-    marginBottom: 30,
-  },
-  date: {
-    textTransform: 'uppercase',
-},
-
-});
