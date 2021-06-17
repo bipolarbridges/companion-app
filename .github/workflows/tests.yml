@@ -11,7 +11,7 @@ jobs:
       - name: Create environment file
         run: cp test.env .docker.env
       - name: Start mock api service
-        run: docker-compose up -d mock_api
+        run: docker-compose up -d api
       - name: Build project
         run: docker-compose build server
       - name: Perform Tests
