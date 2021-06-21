@@ -75,8 +75,10 @@ describe('Authentication', () => {
             email: u.email,
         };
         const res = await validateToken(args); // await validate.execute(args);
-        // TODO: currently fails due to an inconsistency with tokens in the emulator
-        // environment (I think) - should figure out a way to fix this
+        // This test has a tendency to fail when running locally (I think) due to an inconsistency
+	// with tokens in the emulator environment. Strangely enough, it passes consistently
+	// in CI. That being said, if it works for you, please open a pull-request in the
+	// repository explaining how to get it to pass!
         assert.isTrue(res.result);
     });
     it('Should not validate a valid token if the provided email is incorrect', async () => {
