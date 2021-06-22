@@ -58,7 +58,7 @@ describe('Authentication', () => {
 // function to the commented one below. Please be advised that this can result in
 // a strange error 'internal' to appear and the test to fail. The method unit test
 // is used for the time being.
-        //const validate = await Firebase.Instance.getFunction(UsersFunctions.ValidateToken);
+        // const validate = await Firebase.Instance.getFunction(UsersFunctions.ValidateToken);
         const args: any = {
             type: 'validateToken',
             token: 'notavalidtoken',
