@@ -50,16 +50,20 @@ describe('Authentication', () => {
     it('Should not validate an invalid token', async () => {
         const u = userData.getUser();
         await auth.signInWithEmailPassword(u.email, u.password);
-        // const validate = await Firebase.Instance.getFunction(UsersFunctions.ValidateToken);
+// Note: would like to invoke the function using the wrapper below but experiencing
+// issues in the emulation environment despite curl requests to the emulator going through.
+// Perhaps a problem with Firebase versions?
+// In order to test the function more abstractly (using the function factory
+// mechanism) uncomment the following lines the change the call to the validate
+// function to the commented one below. Please be advised that this can result in
+// a strange error 'internal' to appear and the test to fail. The method unit test
+// is used for the time being.
+        //const validate = await Firebase.Instance.getFunction(UsersFunctions.ValidateToken);
         const args: any = {
             type: 'validateToken',
             token: 'notavalidtoken',
             email: u.email,
         };
-        // TODO: would like to invoke the function using the wrapper above
-        // currently experiencing issues in the emulation environment despite
-        // curl requests to the emulator going through. Perhaps a problem with
-        // Firebase versions?
         const res = await validateToken(args); // await validate.execute(args);
         assert.isFalse(res.result);
     });
