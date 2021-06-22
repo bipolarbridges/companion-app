@@ -96,3 +96,7 @@ All tests are currently in the `server/functions` directory. To run tests, navig
 yarn test
 ```
 This same command is used by the CI workflow to guarantee correctness on commits.
+
+### Additional Information
+For more details regarding the project structure, practices, and other components, please
+refer to the [original Companion Kit README](https://github.com/HeyMaslo/companion-kit/blob/master/README.md). Note that this is not maintained by our team, and some info may be out of date or improperly reflect our fork of the project.
