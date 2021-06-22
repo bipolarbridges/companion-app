@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: bipolarbridges/data-services
-          ref: qol-survey
+          ref: master
           path: data-services
       - name: Create shared network
         run: docker network create bb_default
