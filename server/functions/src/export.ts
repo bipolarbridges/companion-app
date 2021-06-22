@@ -86,7 +86,7 @@ fns.measurement = FeatureSettings.ExportToDataServices
             const data: RecordData = snap.data() as RecordData;
             const backend = new FunctionBackendController();
             const makeRequest = async (ex: RecordExport) =>
-                backend.logMeasurement(data.clientUid, 'malso-measurement', ex.typeId, ex.value, data.date)
+                backend.logMeasurement(data.clientUid, 'maslo-measurement', ex.typeId, ex.value, data.date)
                 .then((res: RemoteCallResult) => {
                     if (res.error) {
                         return Promise.reject(res.error);
