@@ -18,6 +18,9 @@ module.exports = {
         '^server/(.*)': '<rootDir>/src/$1',
 		// add mappings if needed
 	},
+	moduleDirectories: [
+		'<rootDir>/src',
+	],
 	modulePaths: [
 		'<rootDir>/node_modules',
 		'<rootDir/../../dashboard/node_modules>',
