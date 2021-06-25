@@ -85,6 +85,10 @@ export class NotificationsSettingsView extends ViewState {
         return `${hours}:${minutes} ${ampm}`;
     }
 
+    private onCustomizedChange = () => {
+        this.trigger(ScenarioTriggers.Primary);
+    }
+
     renderContent() {
         const selectedTime = this.model.schedule;
         const { showDatePicker } = this.state;
@@ -122,6 +126,13 @@ export class NotificationsSettingsView extends ViewState {
                                 style={styles.switchStyles}
                                 circleStyle={{ width: 18, height: 18 }}
                             />
+                        </Card>
+                        <Card
+                                title={'Notification Preferences'}
+                                description={notificationsEnabled ? this.model.scheduleTimeString : 'Off'}
+                                onPress={this.onCustomizedChange}
+                            >
+                                <Images.bellIcon width={8} height={8} />
                         </Card>
                         {notificationsEnabled && (
                             <>

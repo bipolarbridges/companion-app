@@ -50,6 +50,9 @@ import GoalsActiveSVG from 'src/assets/images/app/goals-icon-active.svg';
 import GoalsIndicatorSVG from 'src/assets/images/app/goals-icon-indicator.svg';
 import GoalsIndicatorActiveSVG from 'src/assets/images/app/goals-icon-indicator-active.svg';
 import SettingsIconActiveSVG from 'src/assets/images/app/settings-icon-active.svg';
+import NotificationScreen1 from 'src/assets/images/app/Notification-Instructions-1.png';
+import NotificationScreen2 from 'src/assets/images/app/Notification-Instructions-2.png';
+import NotificationScreen3 from 'src/assets/images/app/Notification-Instructions-3.png';
 
 export default {
     signInWithGoogle: GoogleIconPng,
@@ -108,4 +111,8 @@ export default {
     pinIcon: PinIconSVG,
     homeIcon: HomeIconSVG,
     busIcon: BusIconSVG,
+    // notification
+    notificationScreen1: NotificationScreen1,
+    notificationScreen2: NotificationScreen2,
+    notificationScreen3: NotificationScreen3,
 };

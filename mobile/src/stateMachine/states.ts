@@ -51,11 +51,15 @@ export enum States {
     NewRewardsView,
     OnboardingExit,
 
-    // Settings block
+    // Settings Block
     Goals,
     Profile,
     Settings,
     EmailSettings,
     ChangePassword,
+
+    // Notifications Block
     NotificationsSettings,
+    NotificationsPreferences,
+    PreferencesInstructions,
 }
