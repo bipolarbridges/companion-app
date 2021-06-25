@@ -26,6 +26,7 @@ import {
 import { getRandomUniqMessages, getMessagesForExactTime } from 'src/constants/notificationMessages';
 import { GlobalTrigger, GlobalTriggers } from 'src/stateMachine/globalTriggers';
 import Localization from 'src/services/localization';
+import { getAffirmationForDomains } from 'src/constants/affirmationMessages';
 
 const logger = createLogger('[Notifications]');
 
@@ -129,6 +130,14 @@ export class NotificationsService {
         }
 
         return null;
+    }
+
+    private async scheduleAffirmationNotifications(time: number, domains: string[]) {
+        const settings = { name: this.user.firstName };
+        const result: NotificationResult[] = [];
+
+        const messages = getAffirmationForDomains(domains, 1, settings);
+        
     }
 
     private async scheduleRetentionNotifications(time: NotificationTime, startDateMS: number) {

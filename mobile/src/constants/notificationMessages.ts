@@ -1,6 +1,7 @@
 import { NotificationTime } from 'src/helpers/notifications';
 import logger from 'common/logger';
 import { replace } from 'common/utils/stringFormatting';
+import { Affirmation } from './QoL';
 
 const morning = [
     "I'd love to hear what's on your mind.",
@@ -42,7 +43,12 @@ const texts = {
     [NotificationTime.Evening]: evening,
 };
 
-function spliceRandomMessage(messages: string[], settings?: {[x: string]: string}) {
+
+function isAffirmation(content: string | Affirmation): content is Affirmation {
+    return (content as Affirmation).text !== undefined;
+}
+
+export function spliceRandomMessage(messages: string[] | Affirmation[], settings?: {[x: string]: string}) {
     if (!messages) {
         logger.warn('[get notificatin message error: Invalid parameter time');
         return '';
@@ -61,7 +67,11 @@ function spliceRandomMessage(messages: string[], settings?: {[x: string]: string
         keys.forEach(key => {
             const search = `[${key}]`;
             const replacement = settings[key];
-            message = replace(message, search, replacement);
+            if (isAffirmation(message)) {
+                message = replace(message.text, search, replacement);
+            } else {
+                message = replace(message, search, replacement);
+            }
         });
     }
 
@@ -88,7 +98,7 @@ export function getMessagesForExactTime(dateMS: number, count: number, settings?
     }
 
     for (let i = 0; i < count; i++) {
-        const message = spliceRandomMessage(messagesCopy, settings);
+        const message = spliceRandomMessage(messagesCopy, settings) as string;
         res.push(message);
     }
 
@@ -102,7 +112,7 @@ export function getRandomUniqMessages(time: NotificationTime, count: number, set
         : [...(texts[time] || [])];
 
     for (let i = 0; i < count; i++) {
-        const message = spliceRandomMessage(messagesCopy, settings);
+        const message = spliceRandomMessage(messagesCopy, settings) as string;
         res.push(message);
     }
 

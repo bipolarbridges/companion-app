@@ -38,6 +38,13 @@ export type DisplayStrategyIded = StrategyIded & {
     isChecked: boolean,
 };
 
+// AFFIRMATIONS
+export type Affirmation = {
+    keywords: string[],
+    domains: string[],
+    text: string,
+}
+
 // QUESTION
 
 export type Question = {
