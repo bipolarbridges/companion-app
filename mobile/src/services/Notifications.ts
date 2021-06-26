@@ -230,13 +230,14 @@ export class NotificationsService {
         for (let i = 0; i < messages.length; i++) {
             let msg: string | Affirmation = messages[i];
             if (affirmationTime && isAffirmation(msg)) {
-                if (isAffirmation(msg))
+                if (isAffirmation(msg)) {
                     result.push(
                         await this.scheduleAffirmationMessage(
                             msg,
                             affirmationTime,
                         ),
                     );
+                }
             } else {
                 msg = messages[i] as string;
                 result.push(await this.scheduleMessage(msg, startDateMS, i));
@@ -273,8 +274,7 @@ export class NotificationsService {
                           SCHEDULE_DAYS_COUNT,
                           settings,
                       ),
-                };
-
+                  };
 
         result.push(
             ...(await this.scheduleMessages(

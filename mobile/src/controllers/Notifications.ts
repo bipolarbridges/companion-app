@@ -74,7 +74,7 @@ export class NotificationsController implements IDisposable {
     public get domains() {
         return this._domains;
     }
-    
+
     public set domains(domains: string[]) {
         this._domains = domains;
     }
