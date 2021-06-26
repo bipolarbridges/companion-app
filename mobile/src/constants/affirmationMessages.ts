@@ -30,7 +30,7 @@ const testAffirmations: Affirmation[] = [
     }
 ];
 
-export function getAffirmationForDomains(domains: string[], countPerDomain: number, settings?: {[x: string]: string}) {
+export function getAffirmationForDomains(domains: string[] = [], countPerDomain: number, settings?: {[x: string]: string}) {
     const res: Affirmation[] = [];
     const affirmationByDomain = {};
 

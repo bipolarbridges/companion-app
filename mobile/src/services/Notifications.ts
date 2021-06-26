@@ -23,10 +23,11 @@ import {
     timeToString,
     correctExactDate,
 } from 'src/helpers/notifications';
-import { getRandomUniqMessages, getMessagesForExactTime } from 'src/constants/notificationMessages';
+import { getRandomUniqMessages, getMessagesForExactTime, isAffirmation } from 'src/constants/notificationMessages';
 import { GlobalTrigger, GlobalTriggers } from 'src/stateMachine/globalTriggers';
 import Localization from 'src/services/localization';
 import { getAffirmationForDomains } from 'src/constants/affirmationMessages';
+import { Affirmation } from 'src/constants/QoL';
 
 const logger = createLogger('[Notifications]');
 
@@ -132,52 +133,88 @@ export class NotificationsService {
         return null;
     }
 
-    private async scheduleAffirmationNotifications(time: number, domains: string[]) {
-        const settings = { name: this.user.firstName };
-        const result: NotificationResult[] = [];
+    private async scheduleMessage(msg: string, startDateMS: number, index: number) {
+        const date = addDaysToDate(startDateMS, index);
+        const schedulingOptions: NotificationSchedulingOptions = { time: date };
+        const data = {
+            type: NotificationTypes.Retention,
+        };
 
-        const messages = getAffirmationForDomains(domains, 1, settings);
-        
+        const notification: LocalNotification = {
+            title: Localization.Current.MobileProject.projectName,
+            data,
+            body: msg,
+            ios: { sound: true },
+            android: Platform.OS === 'android' ? { channelId: AndroidChannels.Default } : null,
+        };
+
+        await Notifications.scheduleLocalNotificationAsync(notification, schedulingOptions);
+        logger.log('scheduleNotifications with message:', notification.body, '| notification time is:', schedulingOptions.time);
+        const dateStr = new Date(schedulingOptions.time).toUTCString();
+        return { body: notification.body, date: dateStr };
     }
 
-    private async scheduleRetentionNotifications(time: NotificationTime, startDateMS: number) {
+    private async scheduleAffirmationMessage(msg: Affirmation, affirmationTime: number) {
+        const schedulingOptions: NotificationSchedulingOptions = { 
+            time: (new Date(affirmationTime).getTime()),
+            repeat: 'day',
+        };
+        const data = {
+            type: NotificationTypes.Affirmation,
+        };
+        const body = msg.text;
+        const notification: LocalNotification = {
+            title: Localization.Current.MobileProject.projectName,
+            data,
+            body,
+            ios: { sound: true },
+            android: Platform.OS === 'android' ? { channelId: AndroidChannels.Default } : null,
+        };
+
+        await Notifications.scheduleLocalNotificationAsync(notification, schedulingOptions);
+        logger.log('scheduleNotifications with message:', notification.body, '| notification time is:', schedulingOptions.time);
+        const dateStr = new Date(schedulingOptions.time).toUTCString();
+        return { body: notification.body, date: dateStr };
+    }
+
+    private async scheduleMessages(messages: string[] | Affirmation[], startDateMS: number, affirmationTime? : number) {
+        const result: NotificationResult[] = [];
+        for (let i = 0; i < messages.length; i++) {
+            let msg: string | Affirmation = messages[i];
+            if (affirmationTime && isAffirmation(msg)) {
+                if (isAffirmation(msg)) result.push((await this.scheduleAffirmationMessage(msg, affirmationTime)));
+            } else {
+                msg = messages[i] as string;
+                result.push((await this.scheduleMessage(msg, startDateMS, i)));
+            }
+        }
+        return result;
+    }
+
+    private async scheduleNotifications(time: NotificationTime, startDateMS: number, domains?: string[], affirmationTime?: number) {
         const settings = { name: this.user.firstName };
         const result: NotificationResult[] = [];
-
         const messages = time === NotificationTime.ExactTime
-            ? getMessagesForExactTime(startDateMS, SCHEDULE_DAYS_COUNT, settings)
-            : getRandomUniqMessages(time, SCHEDULE_DAYS_COUNT, settings);
-
-        for (let i = 0; i < messages.length; i++) {
-            const m = messages[i];
-            const date = addDaysToDate(startDateMS, i);
-            const schedulingOptions: NotificationSchedulingOptions = { time: date };
-
-            const data = {
-                type: NotificationTypes.Retention,
+            ? {
+                [NotificationTypes.Retention]: getMessagesForExactTime(startDateMS, SCHEDULE_DAYS_COUNT, settings),
+                [NotificationTypes.Affirmation]: getAffirmationForDomains(domains, 1, settings)
+            }
+            : {
+                [NotificationTypes.Retention]: getRandomUniqMessages(time, SCHEDULE_DAYS_COUNT, settings)
             };
-
-            const notification: LocalNotification = {
-                title: Localization.Current.MobileProject.projectName,
-                data,
-                body: m,
-                ios: { sound: true },
-                android: Platform.OS === 'android' ? { channelId: AndroidChannels.Default } : null,
-            };
-
-            await Notifications.scheduleLocalNotificationAsync(notification, schedulingOptions);
-            logger.log('scheduleNotifications with message:', m, '| notification time is:', date);
-
-            const dateStr = new Date(schedulingOptions.time).toUTCString();
-            result.push({ body: notification.body, date: dateStr });
+        
+        
+        result.push(...(await this.scheduleMessages(messages[NotificationTypes.Retention], startDateMS)));
+        if (messages[NotificationTypes.Affirmation]) {
+            result.push(...(await this.scheduleMessages(messages[NotificationTypes.Affirmation], startDateMS, affirmationTime)));
         }
 
         return result;
     }
 
-    public rescheduleNotifications = async (schedule: Schedule) => {
+    public async rescheduleNotifications(schedule: Schedule, domains?: string[], affirmationTime?: number) {
         await this.resetSchedule();
-
+        
         if (Platform.OS === 'android') {
             await this.createAndroidChannel();
         }
@@ -203,7 +240,7 @@ export class NotificationsService {
                 continue;
             }
 
-            const res = await this.scheduleRetentionNotifications(time, startDateMS);
+            const res = await this.scheduleNotifications(time, startDateMS, domains, affirmationTime);
             scheduleData[time] = res;
         }
 

@@ -7,6 +7,7 @@ export enum AndroidChannels {
 }
 
 export enum NotificationTypes {
+    Affirmation = 'affirmation',
     Retention = 'retention',
     CustomPrompt = 'prompt',
     Assessment = 'assessment',

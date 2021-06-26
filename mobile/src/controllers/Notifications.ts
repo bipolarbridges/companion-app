@@ -26,6 +26,9 @@ export class NotificationsController implements IDisposable {
 
     private readonly _syncThrottle = new ThrottleAction<Promise<void>>(1000);
 
+    private _affirmationTime: any;
+    private _domains: string[];
+
     constructor(private readonly settings: ILocalSettingsController, name: IUserNameProvider) {
         this._service = new NotificationsService(name);
     }
@@ -39,6 +42,14 @@ export class NotificationsController implements IDisposable {
     public get permissionsGranted() { return this._service.hasPermission === true; }
 
     public get permissionsAsked() { return this._enabledByUser != null; }
+
+    public get affirmationTime() { return this._affirmationTime; }
+
+    public set affirmationTime(time: number) { this._affirmationTime = time; };
+
+    public get domains() { return this._domains };
+    
+    public set domains(domains: string[]) { this._domains = domains; }
 
     // Should be OK to call multiple times
     async initAsync() {
@@ -102,8 +113,15 @@ export class NotificationsController implements IDisposable {
 
     toggleTime(time: NotificationTime.Morning | NotificationTime.Midday | NotificationTime.Evening): Promise<void>;
     toggleTime(time: NotificationTime.ExactTime, value: number): Promise<void>;
+    toggleTime(time: NotificationTime.ExactTime, value: number, domains: string[], affirmationTime: number): Promise<void>;
 
-    public async toggleTime(time: NotificationTime, value?: number) {
+    public async toggleTime(time: NotificationTime, value?: number, domains?: string[], affirmationTime?: number) {
+        if (domains) {
+            this.domains = domains;
+        }
+        if (affirmationTime) {
+            this.affirmationTime = affirmationTime;
+        }
         if (time === NotificationTime.ExactTime) {
             const timeobj = this.schedule[time] || { active: false, value: null };
 
@@ -121,7 +139,7 @@ export class NotificationsController implements IDisposable {
         let scheduleResult: ScheduleResult | void;
         if (!onlyToken) {
             scheduleResult = this.enabled
-                ? await this._service.rescheduleNotifications(this.schedule)
+                ? await this._service.rescheduleNotifications(this.schedule, this.domains, this.affirmationTime)
                 : await this._service.resetSchedule();
         }
 

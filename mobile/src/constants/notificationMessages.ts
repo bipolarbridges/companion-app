@@ -44,7 +44,7 @@ const texts = {
 };
 
 
-function isAffirmation(content: string | Affirmation): content is Affirmation {
+export function isAffirmation(content: string | Affirmation): content is Affirmation {
     return (content as Affirmation).text !== undefined;
 }
 
