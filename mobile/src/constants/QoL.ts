@@ -1,4 +1,3 @@
-
 /*
     Types definitions for QoL (Quality of Life)
     survey data.
@@ -15,11 +14,11 @@ export enum DomainScope {
 }
 
 export type Domain = {
-    scope:      DomainScope,
-    position:   number,
-    name:       string,
-    slug:       string,
-    importance: string,     // description of why the domain is important
+    scope: DomainScope;
+    position: number;
+    name: string;
+    slug: string;
+    importance: string; // description of why the domain is important
 };
 
 export type DomainIded = Identify<Domain>;
@@ -27,30 +26,30 @@ export type DomainIded = Identify<Domain>;
 // STRATEGIES
 
 export type Strategy = {
-    title:                    string,
-    details:                  string,
-    associatedDomainNames:    string[],
+    title: string;
+    details: string;
+    associatedDomainNames: string[];
 };
 
 export type StrategyIded = Identify<Strategy>;
 
 export type DisplayStrategyIded = StrategyIded & {
-    isChecked: boolean,
+    isChecked: boolean;
 };
 
 // AFFIRMATIONS
 export type Affirmation = {
-    keywords: string[],
-    domains: string[],
-    text: string,
-}
+    keywords: string[];
+    domains: string[];
+    text: string;
+};
 
 // QUESTION
 
 export type Question = {
-    domainId: string, // reference to single domain
-    text: string,
-    position: number,
+    domainId: string; // reference to single domain
+    text: string;
+    position: number;
 };
 
 export type QuestionIded = Identify<Question>;
@@ -58,7 +57,7 @@ export type QuestionIded = Identify<Question>;
 // SURVEY STATE DATA
 
 export type QolSurveyResults = {
-    [dom: string]: number,
+    [dom: string]: number;
 };
 
 export enum QolSurveyType {
@@ -68,10 +67,10 @@ export enum QolSurveyType {
 export type QoLSurveyTimestamp = number;
 
 export type PartialQol = {
-    questionNum: number,
-    domainNum: number,
-    scores: QolSurveyResults,
-    isFirstTimeQol: boolean,
-    startDate: QoLSurveyTimestamp,
-    questionCompletionDates: QoLSurveyTimestamp[],
+    questionNum: number;
+    domainNum: number;
+    scores: QolSurveyResults;
+    isFirstTimeQol: boolean;
+    startDate: QoLSurveyTimestamp;
+    questionCompletionDates: QoLSurveyTimestamp[];
 };

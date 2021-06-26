@@ -1,6 +1,5 @@
-import { spliceRandomMessage } from "./notificationMessages";
-import { Affirmation } from "./QoL";
-
+import { spliceRandomMessage } from './notificationMessages';
+import { Affirmation } from './QoL';
 
 const testAffirmations: Affirmation[] = [
     {
@@ -27,10 +26,14 @@ const testAffirmations: Affirmation[] = [
         text: 'Affirmation 5',
         keywords: [],
         domains: ['domain2', 'domain5', 'domain6'],
-    }
+    },
 ];
 
-export function getAffirmationForDomains(domains: string[] = [], countPerDomain: number, settings?: {[x: string]: string}) {
+export function getAffirmationForDomains(
+    domains: string[] = [],
+    countPerDomain: number,
+    settings?: { [x: string]: string },
+) {
     const res: Affirmation[] = [];
     const affirmationByDomain = {};
 
@@ -48,10 +51,13 @@ export function getAffirmationForDomains(domains: string[] = [], countPerDomain:
 
     for (const domain of domains) {
         for (let i = 0; i < countPerDomain; i++) {
-            const message = spliceRandomMessage(affirmationByDomain[domain], settings) as Affirmation;
+            const message = spliceRandomMessage(
+                affirmationByDomain[domain],
+                settings,
+            ) as Affirmation;
             res.push(message);
         }
     }
-    
+
     return res;
 }

@@ -1,7 +1,14 @@
 import AsyncStorage from 'src/services/StorageAsync';
 import { observable, toJS } from 'mobx';
-import { NotificationsService, IUserNameProvider } from 'src/services/Notifications';
-import { NotificationTime, Schedule, getDefaultSchedule } from 'src/helpers/notifications';
+import {
+    NotificationsService,
+    IUserNameProvider,
+} from 'src/services/Notifications';
+import {
+    NotificationTime,
+    Schedule,
+    getDefaultSchedule,
+} from 'src/helpers/notifications';
 import { createLogger } from 'common/logger';
 import { ILocalSettingsController } from './LocalSettings';
 import { ScheduleResult } from 'common/models/Notifications';
@@ -29,36 +36,58 @@ export class NotificationsController implements IDisposable {
     private _affirmationTime: any;
     private _domains: string[];
 
-    constructor(private readonly settings: ILocalSettingsController, name: IUserNameProvider) {
+    constructor(
+        private readonly settings: ILocalSettingsController,
+        name: IUserNameProvider,
+    ) {
         this._service = new NotificationsService(name);
     }
 
-    public get schedule(): Readonly<Schedule> { return this._schedule; }
+    public get schedule(): Readonly<Schedule> {
+        return this._schedule;
+    }
 
-    public get openedNotification() { return this._service.openedNotification; }
+    public get openedNotification() {
+        return this._service.openedNotification;
+    }
 
-    public get enabled() { return this._enabledByUser && this._service.hasPermission; }
+    public get enabled() {
+        return this._enabledByUser && this._service.hasPermission;
+    }
 
-    public get permissionsGranted() { return this._service.hasPermission === true; }
+    public get permissionsGranted() {
+        return this._service.hasPermission === true;
+    }
 
-    public get permissionsAsked() { return this._enabledByUser != null; }
+    public get permissionsAsked() {
+        return this._enabledByUser != null;
+    }
 
-    public get affirmationTime() { return this._affirmationTime; }
+    public get affirmationTime() {
+        return this._affirmationTime;
+    }
 
-    public set affirmationTime(time: number) { this._affirmationTime = time; };
+    public set affirmationTime(time: number) {
+        this._affirmationTime = time;
+    }
 
-    public get domains() { return this._domains };
+    public get domains() {
+        return this._domains;
+    }
     
-    public set domains(domains: string[]) { this._domains = domains; }
+    public set domains(domains: string[]) {
+        this._domains = domains;
+    }
 
     // Should be OK to call multiple times
     async initAsync() {
-
         await this._service.checkPermissions();
 
         // backward compatibility for 'enabled'
         if (this.settings.current.notifications?.enabled == null) {
-            const allowedByUser = await AsyncStorage.getValue(AllowanceStorageKey);
+            const allowedByUser = await AsyncStorage.getValue(
+                AllowanceStorageKey,
+            );
             this.settings.updateNotifications({
                 enabled: allowedByUser ? allowedByUser === 'true' : null,
             });
@@ -66,11 +95,16 @@ export class NotificationsController implements IDisposable {
 
         // backward compatibility for 'schedule'
         if (this.settings.current.notifications?.locals == null) {
-            const scheduleSerialized = await AsyncStorage.getValue(TimeStorageKey);
-            this._schedule = (scheduleSerialized && JSON.parse(scheduleSerialized) as Schedule)
-                || getDefaultSchedule();
+            const scheduleSerialized = await AsyncStorage.getValue(
+                TimeStorageKey,
+            );
+            this._schedule =
+                (scheduleSerialized &&
+                    (JSON.parse(scheduleSerialized) as Schedule)) ||
+                getDefaultSchedule();
         } else {
-            this._schedule = this.settings.current.notifications.locals.schedule as Schedule;
+            this._schedule = this.settings.current.notifications.locals
+                .schedule as Schedule;
         }
 
         this._enabledByUser = this.settings.current.notifications?.enabled;
@@ -86,11 +120,11 @@ export class NotificationsController implements IDisposable {
         await this._service.askPermission();
         await this.sync(true);
         return this.permissionsGranted;
-    }
+    };
 
     public resetOpenedNotification = () => {
         this._service.resetOpenedNotification();
-    }
+    };
 
     public enableNotifications = async () => {
         if (!this.permissionsGranted) {
@@ -104,18 +138,33 @@ export class NotificationsController implements IDisposable {
         this._enabledByUser = true;
         this._syncThrottle.tryRun(this.sync);
         return true;
-    }
+    };
 
     public disableNotifications = async () => {
         this._enabledByUser = false;
         this._syncThrottle.tryRun(this.sync);
-    }
+    };
 
-    toggleTime(time: NotificationTime.Morning | NotificationTime.Midday | NotificationTime.Evening): Promise<void>;
+    toggleTime(
+        time:
+            | NotificationTime.Morning
+            | NotificationTime.Midday
+            | NotificationTime.Evening,
+    ): Promise<void>;
     toggleTime(time: NotificationTime.ExactTime, value: number): Promise<void>;
-    toggleTime(time: NotificationTime.ExactTime, value: number, domains: string[], affirmationTime: number): Promise<void>;
+    toggleTime(
+        time: NotificationTime.ExactTime,
+        value: number,
+        domains: string[],
+        affirmationTime: number,
+    ): Promise<void>;
 
-    public async toggleTime(time: NotificationTime, value?: number, domains?: string[], affirmationTime?: number) {
+    public async toggleTime(
+        time: NotificationTime,
+        value?: number,
+        domains?: string[],
+        affirmationTime?: number,
+    ) {
         if (domains) {
             this.domains = domains;
         }
@@ -123,7 +172,10 @@ export class NotificationsController implements IDisposable {
             this.affirmationTime = affirmationTime;
         }
         if (time === NotificationTime.ExactTime) {
-            const timeobj = this.schedule[time] || { active: false, value: null };
+            const timeobj = this.schedule[time] || {
+                active: false,
+                value: null,
+            };
 
             timeobj.active = !timeobj.active;
             timeobj.value = value;
@@ -139,23 +191,27 @@ export class NotificationsController implements IDisposable {
         let scheduleResult: ScheduleResult | void;
         if (!onlyToken) {
             scheduleResult = this.enabled
-                ? await this._service.rescheduleNotifications(this.schedule, this.domains, this.affirmationTime)
+                ? await this._service.rescheduleNotifications(
+                      this.schedule,
+                      this.domains,
+                      this.affirmationTime,
+                  )
                 : await this._service.resetSchedule();
         }
 
-        const token = this.enabled
-            ? await this._service.getToken()
-            : null;
+        const token = this.enabled ? await this._service.getToken() : null;
 
         this.settings.updateNotifications({
-            locals: scheduleResult ? {
-                current: scheduleResult,
-                schedule: toJS(this.schedule),
-            } : undefined,
+            locals: scheduleResult
+                ? {
+                      current: scheduleResult,
+                      schedule: toJS(this.schedule),
+                  }
+                : undefined,
             enabled: this._enabledByUser,
             token,
         });
-    }
+    };
 
     public invalidateToken = async () => {
         if (!this.settings.current?.notifications?.token) {
@@ -163,7 +219,7 @@ export class NotificationsController implements IDisposable {
         }
 
         this.settings.updateNotifications({ token: null });
-    }
+    };
 
     dispose() {
         this._service.dispose();
