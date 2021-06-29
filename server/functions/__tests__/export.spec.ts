@@ -9,6 +9,7 @@ const {test, app} = init('example-test');
 describe('Export Functions', () => {
     afterEach(async () => {
         await firebase.clear();
+        test.cleanup();
         console.log('finished all');
     });
 
