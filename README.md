@@ -13,9 +13,9 @@ Clone the respository and ensure you have the requirements below:
  * React Native CLI development environment for both iOS and Android (Needed for running mobile apps. Xcode and Android studio must be installed in order to run iOS and android apps, respectively.)  
  Instructions: [https://reactnative.dev/docs/environment-setup](https://reactnative.dev/docs/environment-setup)
 
- * Node.js 10 ([`nvm`](https://github.com/nvm-sh/nvm) is preferable)  
- To install:  ```nvm install 10```	
- To switch to version 10:  ```nvm use 10```
+ * Node.js 10 and 12 ([`nvm`](https://github.com/nvm-sh/nvm) is preferable)
+ The project contains `.nvmrc` files that indicate the correct node version to use (10 for the server and dashboard, 12 for the mobile application)
+ To switch to the correct version using `nvm`, run ```nvm use``` in a given directory.
  
  * Expo CLI  
  To install: ```npm i -g expo-cli```
@@ -27,7 +27,6 @@ Clone the respository and ensure you have the requirements below:
  To install: ```npm i -g react-native-cli```
 
 ### 2. Configure the Development Environment
-
 1. Download the `GoogleService-Info.plist` file from the ios app on firebase. Place this file in `./mobile/configs/app`.
 2. Download the `google-services.json` file from the android app on firebase. Place this file in `./mobile/configs/app` and in `./mobile/android/app`.
 3. Copy the `.env-starter` file to `.env` in the root directory, and fill in each variable with the correct values. Alternatively, obtain an environment file from another developer on the team.
@@ -97,3 +96,7 @@ All tests are currently in the `server/functions` directory. To run tests, navig
 yarn test
 ```
 This same command is used by the CI workflow to guarantee correctness on commits.
+
+### Additional Information
+For more details regarding the project structure, practices, and other components, please
+refer to the [original Companion Kit README](https://github.com/HeyMaslo/companion-kit/blob/master/README.md). Note that this is not maintained by our team, and some info may be out of date or improperly reflect our fork of the project.

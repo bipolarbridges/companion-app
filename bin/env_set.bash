@@ -21,6 +21,7 @@ _set_ server/functions/src/services/config/app-template.ts          server/funct
 _set_ server/functions/.runtimeconfig-template.json                 server/functions/.runtimeconfig.json
 _set_ server/.firebaserc-template                                   server/.firebaserc
 _set_ common/models/ClientCard.ts.template                          common/models/ClientCard.ts
-_set_ server/firebase-template.json                          		server/firebase.json
+_set_ server/firebase-template.json                          	    server/firebase.json
+_set_ config/example_app.js                                         config/app.js
 
 echo "Done."

@@ -17,12 +17,14 @@
     "deploy:prod": "firebase deploy -P production --only functions,firestore",
     "deploy:functions:stage": "firebase deploy -P staging --only functions",
     "deploy:functions:prod": "firebase deploy -P production --only functions",
+    "deploy:hosting:dashboard": "firebase deploy -P staging --only hosting",
     "deploy:hosting:dashboard:stage": "firebase deploy -P staging --only hosting:dashboard-staging",
     "deploy:hosting:dashboard:prod": "firebase deploy -P production --only hosting:dashboard-prod",
     "deploy:hosting:web:stage": "firebase deploy -P staging --only hosting:web-staging",
     "deploy:hosting:web:prod": "firebase deploy -P production --only hosting:web-prod",
     "logs": "firebase functions:log",
-    "test": "yarn build && env-cmd firebase emulators:exec -P staging 'jest test --config=./jest.config.js'"
+    "test": "yarn build && env-cmd firebase emulators:exec -P staging 'jest test --config=./jest.config.js'",
+    "logs": "firebase functions:log"
   },
   "main": "lib/server/functions/src/index.js",
   "engines": {

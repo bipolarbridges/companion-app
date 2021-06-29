@@ -63,7 +63,6 @@ buck-out/
 /ios/Pods/
 
 # Other
-dependencies
 configs
 android/app/google-services.json
 app.json
@@ -72,3 +71,6 @@ ios/CompanionKit.xcodeproj/project.pbxproj
 ios/CompanionKit/CompanionKit.entitlements
 ios/sentry.properties
 android/sentry.properties
+configs/app/google-services.json
+config/app/GoogleService-Info.plist
+app.json

@@ -94,8 +94,8 @@ const BuildConfigs = {
     production: {
         hostname: env.production.firebase.hostingConfig,
         mobile: {
-            releaseChannel: '...', // expo release channel
-            configName: '...', // bundle id
+            releaseChannel: '${EXPO_RELEASE_CHANNEL}', // expo release channel
+            configName: '${APP_BUNDLE_ID}', // bundle id
         },
     },
     get development() { return BuildConfigs.production; },

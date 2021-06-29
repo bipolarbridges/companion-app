@@ -16,6 +16,8 @@ export namespace Dashboard {
 
     export const RequireOrganizationOnSignUp = false;
 
+    export const UseGPT3Suggestions: any = true;
+
     export const UseMobileNumber: any = false;
 
     // if you want to enable mobile phone validatio just uncomment
