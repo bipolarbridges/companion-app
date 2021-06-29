@@ -74,6 +74,7 @@ export class HomeView extends ViewState<{
     }
     get viewQolModel() {
         return AppViewModel.Instance.QOL;
+    }
 
 
     async start() {
