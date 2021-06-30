@@ -80,5 +80,6 @@ export enum States {
     // Notifications Block
     NotificationsPreferences,
     PreferencesInstructions,
-    NotificationsCustomize
+    NotificationsCustomize,
+    NotificationsAfterDomain
 }
