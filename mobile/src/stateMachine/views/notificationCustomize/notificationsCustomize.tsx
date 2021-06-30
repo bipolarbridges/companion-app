@@ -17,7 +17,7 @@ import { NotificationCustomizeViewModel } from 'src/viewModels/NotificationsCust
 const colorScheme = Appearance.getColorScheme();
 
 @observer
-export class NotificationCustmizeView extends ViewState {
+export class NotificationsCustmizeView extends ViewState {
     constructor(props) {
         super(props);
         this._contentHeight = this.persona.setupContainerHeightForceScroll();
@@ -46,7 +46,7 @@ export class NotificationCustmizeView extends ViewState {
 
     renderContent() {
         const notificationsEnabled = this.model.isEnabled && !this.model.isToggleInProgress;
-        const titleText = 'Customize your notifications below';
+        const titleText = 'Customize your notifications below:';
 
         return (
             <MasloPage style={this.baseStyles.page}>
@@ -65,6 +65,7 @@ export class NotificationCustmizeView extends ViewState {
                             title="Physical Domain"
                             description={notificationsEnabled ? 'On' : 'Off'}
                             style={{ marginBottom: 20 }}
+                            Image={Images.bellIcon}
                         >
                             <Switch
                                 value={this.model.isEnabled}
@@ -77,6 +78,7 @@ export class NotificationCustmizeView extends ViewState {
                             title="Leisure Domain"
                             description={notificationsEnabled ? 'On' : 'Off'}
                             style={{ marginBottom: 20 }}
+                            Image={Images.bellIcon}
                         >
                             <Switch
                                 value={this.model.isEnabled}
@@ -89,6 +91,7 @@ export class NotificationCustmizeView extends ViewState {
                             title="Sleep Domain"
                             description={notificationsEnabled ? 'On' : 'Off'}
                             style={{ marginBottom: 20 }}
+                            Image={Images.bellIcon}
                         >
                             <Switch
                                 value={this.model.isEnabled}
@@ -97,9 +100,10 @@ export class NotificationCustmizeView extends ViewState {
                             />
                         </Card>
                         <Card
-                            title="Include notifications that mention bipolar diagnosis"
+                            title="Include notifications that  mention bipolar diagnosis"
                             description={notificationsEnabled ? 'On' : 'Off'}
-                            style={{ marginBottom: 20 }}
+                            style={{ marginBottom: 20, height: 100 }}
+                            Image={Images.bellIcon}
                         >
                             <Switch
                                 value={this.model.isEnabled}
@@ -107,10 +111,9 @@ export class NotificationCustmizeView extends ViewState {
                                 style={styles.switchStyles}
                             />
                         </Card>
-
                         <View style={styles.buttonView}>
                         <Button
-                            title="How Do I change preferences?"
+                            title="SAVE"
                             style={[styles.insturctionsButton, this.textStyles.h2]}
                             titleStyles={styles.insturctionsButtonTitle}
                             onPress={this.onNext}
@@ -175,9 +178,9 @@ const styles = StyleSheet.create({
     insturctionsButton: {
         width: 320,
         height: 50,
-        borderColor: 'white',
+        borderColor: 'grey',
         borderWidth: 0.25,
-        backgroundColor: '#f3f3f3',
+        backgroundColor: 'white',
         padding: 5
     },
     insturctionsButtonTitle: {

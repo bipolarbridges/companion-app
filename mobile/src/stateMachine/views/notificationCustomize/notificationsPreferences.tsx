@@ -76,14 +76,6 @@ export class NotificationsPreferencesView extends ViewState {
                 <ScrollView style={[{ zIndex: 0, elevation: 0 }]}>
                     <Container style={[this.baseStyles.container, styles.container]}>
                         <Text style={[this.textStyles.h1, styles.title]}>{titleText}</Text>
-                        <View style={styles.cardsWrap}>
-                            <Card
-                                title={'Customize Notifications'}
-                                description={'Domain & Diagnosis'}
-                                onPress={this.onCustomizeChange}>
-                                {<Images.arrowRight width={8} height={8} />}
-                            </Card>
-                    </View>
                         <Text style={[this.textStyles.h3, styles.exactCard]}>{subtitleText1}</Text>
                         <Card
                             title="Physical Domain"
@@ -201,9 +193,5 @@ const styles = StyleSheet.create({
         borderLeftWidth: 20,
         marginTop: 15,
         marginBottom: 30,
-    },
-    cardsWrap: {
-        width: '100%',
-        marginBottom: 10,
     },
 });

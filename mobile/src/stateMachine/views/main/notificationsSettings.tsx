@@ -128,8 +128,8 @@ export class NotificationsSettingsView extends ViewState {
                             />
                         </Card>
                         <Card
-                                title={'Notification Preferences'}
-                                description={notificationsEnabled ? this.model.scheduleTimeString : 'Off'}
+                                title={'Customize Notifications'}
+                                description={'Domain & Diagnosis'}
                                 onPress={this.onCustomizedChange}
                             >
                                 <Images.bellIcon width={8} height={8} />
