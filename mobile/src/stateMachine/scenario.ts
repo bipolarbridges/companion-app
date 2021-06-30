@@ -57,6 +57,8 @@ import Triggers = ScenarioTriggers;
 import { VerificationCodeView } from './views/login/verificationCode';
 import { NoInvitationView } from './views/login/noInvitation';
 import { ResetPasswordView } from './views/password/resetPassword';
+import { NotificationsPreferencesView } from './views/notificationCustomize/notificationsPreferences';
+import { PreferencesInstructionsView } from './views/notificationCustomize/preferencesInstructions';
 
 const CreateJournalCancelTransition: StateTransition<States> = {
     target: States.Home,
@@ -492,5 +494,29 @@ export const MasloScenario: GlobalScenario<States> = {
     [States.EndQol]: {
         view: QolEndView,
         exit: [{ target: States.Home, trigger: [Triggers.Cancel] }],
+    },
+
+    [States.NotificationsSettings]: {
+        view: NotificationsSettingsView,
+        enter: { trigger: GlobalTriggers.NotifictaionSettings },
+        exit: [
+            { target: States.Settings, trigger: [Triggers.Back] },
+            { target: States.NotificationsPreferences, trigger: Triggers.Primary },
+        ],
+    },
+
+    [States.NotificationsPreferences]: {
+        view: NotificationsPreferencesView,
+        exit: [
+            { target: States.NotificationsSettings, trigger: Triggers.Back },
+            { target: States.PreferencesInstructions, trigger: Triggers.Primary },
+        ],
+    },
+
+    [States.PreferencesInstructions]: {
+        view: PreferencesInstructionsView,
+        exit: [
+            { target: States.NotificationsPreferences, trigger: Triggers.Back },
+        ],
     },
 };

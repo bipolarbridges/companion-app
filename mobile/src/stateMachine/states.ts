@@ -77,4 +77,8 @@ export enum States {
     StartQol,
     QolQuestion,
     EndQol,
+
+    // Notifications Block
+    NotificationsPreferences,
+    PreferencesInstructions,
 }
