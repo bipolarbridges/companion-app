@@ -1,3 +1,4 @@
+/* eslint-disable no-dupe-class-members */
 import AsyncStorage from 'src/services/StorageAsync';
 import { observable, toJS } from 'mobx';
 import {
@@ -14,7 +15,10 @@ import { ILocalSettingsController } from './LocalSettings';
 import { ScheduleResult } from 'common/models/Notifications';
 import { ThrottleAction } from 'common/utils/throttle';
 import { IDisposable } from 'common/utils/unsubscriber';
+import RepoFactory from 'common/controllers/RepoFactory';
+import { Affirmation } from 'src/constants/QoL';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const logger = createLogger('[NotificationsController]');
 
 const AllowanceStorageKey = 'notificationsAllowedByUser';
@@ -35,6 +39,7 @@ export class NotificationsController implements IDisposable {
 
     private _affirmationTime: any;
     private _domains: string[];
+    private _keywordFilter: string[];
 
     constructor(
         private readonly settings: ILocalSettingsController,
@@ -77,6 +82,14 @@ export class NotificationsController implements IDisposable {
 
     public set domains(domains: string[]) {
         this._domains = domains;
+    }
+
+    public get keywordFilter() {
+        return this._keywordFilter;
+    }
+
+    public set keywordFilter(filter: string[]) {
+        this._keywordFilter = filter;
     }
 
     // Should be OK to call multiple times
@@ -164,13 +177,12 @@ export class NotificationsController implements IDisposable {
         value?: number,
         domains?: string[],
         affirmationTime?: number,
+        keywordFilter?: string[],
     ) {
-        if (domains) {
-            this.domains = domains;
-        }
-        if (affirmationTime) {
-            this.affirmationTime = affirmationTime;
-        }
+        this.domains = domains;
+        this.keywordFilter = keywordFilter;
+        this.affirmationTime = affirmationTime;
+
         if (time === NotificationTime.ExactTime) {
             const timeobj = this.schedule[time] || {
                 active: false,
@@ -188,12 +200,18 @@ export class NotificationsController implements IDisposable {
     }
 
     private sync = async (onlyToken = false) => {
+        const affirmations: Affirmation[] = await RepoFactory.Instance.affirmations.getByDomain(
+            this.domains,
+            this.keywordFilter,
+        );
+
         let scheduleResult: ScheduleResult | void;
         if (!onlyToken) {
             scheduleResult = this.enabled
                 ? await this._service.rescheduleNotifications(
                       this.schedule,
                       this.domains,
+                      affirmations,
                       this.affirmationTime,
                   )
                 : await this._service.resetSchedule();

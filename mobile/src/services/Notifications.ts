@@ -23,7 +23,6 @@ import {
     addDaysToDate,
     Schedule,
     NotificationTime,
-    timeToString,
     correctExactDate,
 } from 'src/helpers/notifications';
 import {
@@ -55,6 +54,25 @@ export class NotificationsService {
     private _notificationsSubscription: EventSubscription = null;
 
     private _tokenCached: string = null;
+
+    private _domains: string[];
+    private _affirmations: Affirmation[];
+
+    public get domains() {
+        return this._domains;
+    }
+
+    public set domains(domains: string[]) {
+        this._domains = domains;
+    }
+
+    public get affirmations() {
+        return this._affirmations;
+    }
+
+    public set affirmations(affirmations: Affirmation[]) {
+        this._affirmations = affirmations;
+    }
 
     constructor(private readonly user: IUserNameProvider) {
         if (!user) {
@@ -192,14 +210,12 @@ export class NotificationsService {
             time: new Date(affirmationTime).getTime(),
             repeat: 'day',
         };
-        const data = {
-            type: NotificationTypes.Affirmation,
-        };
-        const body = msg.text;
         const notification: LocalNotification = {
             title: Localization.Current.MobileProject.projectName,
-            data,
-            body,
+            data: {
+                type: NotificationTypes.Affirmation,
+            },
+            body: msg.text,
             ios: { sound: true },
             android:
                 Platform.OS === 'android'
@@ -230,14 +246,9 @@ export class NotificationsService {
         for (let i = 0; i < messages.length; i++) {
             let msg: string | Affirmation = messages[i];
             if (affirmationTime && isAffirmation(msg)) {
-                if (isAffirmation(msg)) {
-                    result.push(
-                        await this.scheduleAffirmationMessage(
-                            msg,
-                            affirmationTime,
-                        ),
-                    );
-                }
+                result.push(
+                    await this.scheduleAffirmationMessage(msg, affirmationTime),
+                );
             } else {
                 msg = messages[i] as string;
                 result.push(await this.scheduleMessage(msg, startDateMS, i));
@@ -249,7 +260,6 @@ export class NotificationsService {
     private async scheduleNotifications(
         time: NotificationTime,
         startDateMS: number,
-        domains?: string[],
         affirmationTime?: number,
     ) {
         const settings = { name: this.user.firstName };
@@ -262,8 +272,11 @@ export class NotificationsService {
                           SCHEDULE_DAYS_COUNT,
                           settings,
                       ),
-                      [NotificationTypes.Affirmation]: getAffirmationForDomains(
-                          domains,
+                      [NotificationTypes.Affirmation]: this.affirmations
+                          ? this.affirmations
+                          : null,
+                      [NotificationTypes.TestAffirmation]: getAffirmationForDomains(
+                          this.domains,
                           1,
                           settings,
                       ),
@@ -282,6 +295,7 @@ export class NotificationsService {
                 startDateMS,
             )),
         );
+        // check for null, it is of type null when undefined or empty array is given
         if (messages[NotificationTypes.Affirmation]) {
             result.push(
                 ...(await this.scheduleMessages(
@@ -291,19 +305,34 @@ export class NotificationsService {
                 )),
             );
         }
+        result.push(
+            ...(await this.scheduleMessages(
+                messages[NotificationTypes.TestAffirmation],
+                startDateMS,
+                affirmationTime,
+            )),
+        );
 
         return result;
     }
 
     public async rescheduleNotifications(
         schedule: Schedule,
-        domains?: string[],
+        domains: string[],
+        affirmations: Affirmation[],
         affirmationTime?: number,
     ) {
         await this.resetSchedule();
 
         if (Platform.OS === 'android') {
             await this.createAndroidChannel();
+        }
+
+        this.domains = domains;
+        if (!affirmations || (affirmations && affirmations.length > 0)) {
+            this.affirmations = affirmations;
+        } else {
+            this.affirmations = null;
         }
 
         const scheduleData: ScheduleResult = {};
@@ -332,7 +361,6 @@ export class NotificationsService {
             const res = await this.scheduleNotifications(
                 time,
                 startDateMS,
-                domains,
                 affirmationTime,
             );
             scheduleData[time] = res;
