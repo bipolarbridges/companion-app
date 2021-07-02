@@ -25,6 +25,7 @@ const RepoFactory = {
     Questions: createLazy(() => new Repositories.GenericRepo<Question>(db.value,
         Collections.Questions)),
     Strategies: createLazy(() => new Repositories.StrategyRepo(db.value)),
+    Affirmations: createLazy(() => new Repositories.AffirmationRepo(db.value)),
 };
 
 export const Repo = {
@@ -38,6 +39,7 @@ export const Repo = {
     get Domains() { return RepoFactory.Domains.value; },
     get strategies() { return RepoFactory.Strategies.value; },
     get Questions() { return RepoFactory.Questions.value; },
+    get Affirmations() { return RepoFactory.Affirmations.value; },
 };
 
 export {
