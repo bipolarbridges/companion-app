@@ -361,37 +361,22 @@ export class ChooseDomainView extends ViewState {
                             />
                         </View>
                     </View>
-                    <View
-                        style={{
-                            justifyContent: 'center',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            marginTop: 50,
-                            marginBottom: 50,
-                        }}>
-                        <Button
-                            title={
-                                this.viewModel.selectedDomains
-                                    .map((s) => s.name)
-                                    .includes(domain) &&
-                                this.viewModel.selectedDomains.length > 1
-                                    ? 'Chosoe Strategies'
-                                    : 'Select Focus Domain'
-                            }
-                            style={styles.domain}
-                            titleStyles={styles.selectDomain}
-                            onPress={() => this.onSelectDomain(domain)}
-                            isTransparent
-                        />
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            marginBottom: 50,
-                        }}>
-                        <TouchableOpacity
-                            onPress={() => this.viewModel.getNextDomain(-1)}>
+                    <View style={{justifyContent: 'center', marginLeft: 'auto', marginRight: 'auto', marginTop: 50, marginBottom: 50}}>
+                                <Button
+                                    title={this.viewModel.selectedDomains.map((s) => s.name).includes(domain) && this.viewModel.selectedDomains.length > 1 ? 'Choose Strategies' : 'Select Focus Domain'}
+                                    style={styles.domain}
+                                    titleStyles={styles.selectDomain}
+                                    onPress={() => this.onSelectDomain(domain)}
+                                    isTransparent
+                                />
+                     </View>
+                    <View 
+                     style={{
+                         flexDirection: 'row', 
+                         justifyContent: 'space-between', 
+                         marginBottom: 50,
+                         }}>
+                         <TouchableOpacity onPress = {() => this.viewModel.getNextDomain(-1)}>
                             <Images.backIcon width={20} height={20} />
                         </TouchableOpacity>
                         <Text
