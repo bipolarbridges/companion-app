@@ -2,7 +2,7 @@ import Collections from 'common/database/collections';
 import { DocumentSnapshot, Query } from './dbProvider';
 import { GenericRepo } from '.';
 import { Affirmation } from '../../../mobile/src/constants/QoL';
-import { Maybe } from 'abstractions/structures/monads';
+import { Maybe } from 'common/abstractions/structures/monads';
 
 export default class AffirmationRepo extends GenericRepo<Affirmation> {
 
