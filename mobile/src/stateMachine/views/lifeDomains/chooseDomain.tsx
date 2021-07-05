@@ -289,8 +289,7 @@ export class ChooseDomainView extends ViewState {
                                         {
                                             translateX: translateXTabOne,
                                         },
-
-                                }}
+                                    ]}}
                                 onLayout={(event) =>
                                     this.setState({
                                         translateY:

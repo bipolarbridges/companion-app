@@ -55,6 +55,9 @@ import MoneyIconSVG from 'src/assets/images/app/money.svg';
 import PhysicalIconSVG from 'src/assets/images/app/physical.svg';
 import SelfEsteemIconSVG from 'src/assets/images/app/selfesteem.svg';
 import SleepIconSVG from 'src/assets/images/app/sleep.svg';
+import NotificationScreen1 from 'src/assets/images/app/Notification-Instructions-1.png';
+import NotificationScreen2 from 'src/assets/images/app/Notification-Instructions-2.png';
+import NotificationScreen3 from 'src/assets/images/app/Notification-Instructions-3.png';
 
 export default {
     signInWithGoogle: GoogleIconPng,
@@ -119,4 +122,8 @@ export default {
     physicalIcon: PhysicalIconSVG,
     selfEsteemIcon: SelfEsteemIconSVG,
     sleepIcon: SleepIconSVG,
+    // notification
+    notificationScreen1: NotificationScreen1,
+    notificationScreen2: NotificationScreen2,
+    notificationScreen3: NotificationScreen3,
 };

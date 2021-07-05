@@ -57,6 +57,10 @@ import Triggers = ScenarioTriggers;
 import { VerificationCodeView } from './views/login/verificationCode';
 import { NoInvitationView } from './views/login/noInvitation';
 import { ResetPasswordView } from './views/password/resetPassword';
+import { NotificationsPreferencesView } from './views/notificationCustomize/notificationsPreferences';
+import { NotificationsCustmizeView } from './views/notificationCustomize/notificationsCustomize';
+import { NotificationsAfterDomainView } from './views/notificationCustomize/notificationsAfterDomain';
+import { PreferencesInstructionsView } from './views/notificationCustomize/preferencesInstructions';
 
 const CreateJournalCancelTransition: StateTransition<States> = {
     target: States.Home,
@@ -405,7 +409,10 @@ export const MasloScenario: GlobalScenario<States> = {
     [States.NotificationsSettings]: {
         view: NotificationsSettingsView,
         enter: { trigger: GlobalTriggers.NotifictaionSettings },
-        exit: [{ target: States.Settings, trigger: [Triggers.Back] }],
+        exit: [
+            { target: States.Settings, trigger: [Triggers.Back] },
+            { target: States.NotificationsCustomize, trigger: Triggers.Primary }
+        ],
     },
     [States.Choose_Domain]: {
         view: ChooseDomainView,
@@ -413,7 +420,7 @@ export const MasloScenario: GlobalScenario<States> = {
             { target: States.Home, trigger: [Triggers.Cancel] },
             { target: States.Domain_Details, trigger: [Triggers.Submit] },
             { target: States.Select_Domain, trigger: [Triggers.Tertiary] },
-            { target: States.Choose_end, trigger: [Triggers.Next] },
+            { target: States.NotificationsAfterDomain, trigger: [Triggers.Next] },
         ],
     },
     [States.Domain_Details]: {
@@ -425,16 +432,17 @@ export const MasloScenario: GlobalScenario<States> = {
         exit: [
             { target: States.Choose_Domain, trigger: [Triggers.Cancel] },
             { target: States.Three_Selected, trigger: [Triggers.Submit] },
-            { target: States.Choose_end, trigger: [Triggers.Next] },
+            { target: States.NotificationsAfterDomain, trigger: [Triggers.Next] },
         ],
     },
     [States.Three_Selected]: {
         view: ThreeDomainView,
         exit: [
             { target: States.Choose_Domain, trigger: [Triggers.Cancel] },
-            { target: States.Choose_end, trigger: [Triggers.Submit] },
+            { target: States.NotificationsAfterDomain, trigger: [Triggers.Submit] },
         ],
     },
+
     [States.Choose_end]: {
         view: ChooseDomainEndView,
         exit: [
@@ -492,5 +500,36 @@ export const MasloScenario: GlobalScenario<States> = {
     [States.EndQol]: {
         view: QolEndView,
         exit: [{ target: States.Home, trigger: [Triggers.Cancel] }],
+    },
+
+    [States.NotificationsCustomize]: {
+        view: NotificationsCustmizeView,
+        exit: [
+            { target: States.NotificationsSettings, trigger: Triggers.Back },
+            { target: States.NotificationsPreferences, trigger: Triggers.Primary }
+        ],
+    },
+
+    [States.NotificationsPreferences]: {
+        view: NotificationsPreferencesView,
+        exit: [
+            { target: States.NotificationsSettings, trigger: Triggers.Back },
+            { target: States.PreferencesInstructions, trigger: Triggers.Primary },
+        ],
+    },
+
+    [States.PreferencesInstructions]: {
+        view: PreferencesInstructionsView,
+        exit: [
+            { target: States.NotificationsPreferences, trigger: Triggers.Back },
+        ],
+    },
+
+    [States.NotificationsAfterDomain]: {
+        view: NotificationsAfterDomainView,
+        exit: [
+            { target: States.Choose_end, trigger: Triggers.Back },
+            { target: States.NotificationsPreferences, trigger: Triggers.Primary }
+        ],
     },
 };
