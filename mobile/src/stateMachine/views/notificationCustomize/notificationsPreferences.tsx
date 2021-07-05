@@ -26,8 +26,6 @@ export class NotificationsPreferencesView extends ViewState {
 
     private readonly model = new NotificationsPreferencesViewModel();
 
-    protected get unbreakable() { return false; }
-
     async start() {
         this.resetPersona(PersonaStates.Question, PersonaViewPresets.TopHalfOut);
         this.model.settingsSynced.on(this.onScheduleSynced);

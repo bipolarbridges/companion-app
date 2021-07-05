@@ -53,7 +53,7 @@ export class NotificationsCustmizeView extends ViewState {
                 <Container style={styles.topBarWrapWrap}>
                     <PersonaScrollMask />
                     <View style={styles.topBarWrap}>
-                        <Button style={styles.backBtn} underlayColor="transparent" onPress={() => this.trigger(ScenarioTriggers.Back)}>
+                        <Button style={styles.backBtn} underlayColor='transparent' onPress={() => this.trigger(ScenarioTriggers.Back)}>
                             <Images.backIcon width={28} height={14} />
                         </Button>
                     </View>
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         padding: 5
      },
     insturctionsButton: {
-        width: 320,
+        width: '80%',
         height: 50,
         borderColor: 'grey',
         borderWidth: 0.25,

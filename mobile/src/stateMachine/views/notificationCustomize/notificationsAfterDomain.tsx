@@ -24,7 +24,7 @@ export class NotificationsAfterDomainView extends ViewState {
         this._contentHeight = this.persona.setupContainerHeightForceScroll();
     }
 
-    private readonly model = new NotificationCustomizeViewModel();
+    private model = new NotificationCustomizeViewModel();
 
     protected get unbreakable() { return false; }
 
@@ -33,7 +33,7 @@ export class NotificationsAfterDomainView extends ViewState {
         this.model.settingsSynced.on(this.onScheduleSynced);
     }
     
-    onClickEnabled = true;
+    private onClickEnabled = true;
 
     componentWillUnmount() {
         this.model.settingsSynced.off(this.onScheduleSynced);
@@ -52,8 +52,8 @@ export class NotificationsAfterDomainView extends ViewState {
     renderContent() {
         const notificationsEnabled = this.model.isEnabled && !this.model.isToggleInProgress;
         const titleText = 'You can customize what notifications you receive below:';
-        const description1 = 'You may choose to receive or turn off notifications for certain focus domains'
-        const description2 = 'Polarus understands that you may not want to receive notifications about your bipolar diagnosis for privacy reasons'
+        const descriptionPrivacyDomainDescription = 'You may choose to receive or turn off notifications for certain focus domains'
+        const descriptionPrivacyAppDescription = 'Polarus understands that you may not want to receive notifications about your bipolar diagnosis for privacy reasons'
 
         return (
             <MasloPage style={this.baseStyles.page}>
@@ -106,7 +106,7 @@ export class NotificationsAfterDomainView extends ViewState {
                                 style={styles.switchStyles}
                             />
                         </Card>
-                        <Text style={[this.textStyles.p1, styles.description]}>{description1}</Text>
+                        <Text style={[this.textStyles.p1, styles.description]}>{descriptionPrivacyDomainDescription}</Text>
                         <View style={styles.buttonView}>
                         <Button
                             title="CONTINUE"
@@ -132,7 +132,7 @@ export class NotificationsAfterDomainView extends ViewState {
                                 style={styles.switchStyles}
                             />
                         </Card>
-                        <Text style={[this.textStyles.p1, styles.description]}>{description2}</Text>
+                        <Text style={[this.textStyles.p1, styles.description]}>{descriptionPrivacyAppDescription}</Text>
                         <View style={styles.buttonView}>
                         <Button
                             title="SAVE"
