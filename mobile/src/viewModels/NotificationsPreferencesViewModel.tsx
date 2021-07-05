@@ -98,11 +98,30 @@ export class NotificationsPreferencesViewModel {
         }
     }
 
-    toggleTime = (time: NotificationTime, value?: number) => {
-        return time === NotificationTime.ExactTime
-            ? AppController.Instance.User.notifications.toggleTime(time, value)
-            : AppController.Instance.User.notifications.toggleTime(time);
-    }
+    toggleTime = (
+        time: NotificationTime,
+        value?: number,
+        domains?: string[],
+        affirmationTime?: number,
+    ) => {
+        if (time === NotificationTime.ExactTime) {
+            if (affirmationTime && domains) {
+                return AppController.Instance.User.notifications.toggleTime(
+                    time,
+                    value,
+                    domains,
+                    affirmationTime,
+                );
+            } else {
+                AppController.Instance.User.notifications.toggleTime(
+                    time,
+                    value,
+                );
+            }
+        } else {
+            AppController.Instance.User.notifications.toggleTime(time);
+        }
+    };
 
     init() {
         this.updateEnabledState();
