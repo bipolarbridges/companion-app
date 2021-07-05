@@ -7,12 +7,8 @@ import * as clients from './clients';
 import * as coaches from './coaches';
 import * as ai from './ai';
 import * as billing from './billing';
-import {
-    ScheduledFunctionCrontab,
-    ExportFunctionCrontab,
-    BQExportFunctionCrontab,
-    ImportFunctionCrontab } from './cron';
-import { ExportFunctions } from './export';
+import * as qol from './qol';
+import { ScheduledFunctionCrontab, ExportFunctionCrontab, ImportFunctionCrontab } from './cron';
 
 import { StatsCallFunctions } from './adminStats';
 
@@ -25,6 +21,7 @@ const exp: any = {
     [FunctionDefinitions.Coaches.Namespace]: coaches.Functions,
     [FunctionDefinitions.AI.Namespace]: ai.Functions,
     [FunctionDefinitions.Billing.Namespace]: billing.Functions,
+    [FunctionDefinitions.QoL.Namespace]: qol.Functions,
     events: {},
 };
 
@@ -35,13 +32,8 @@ if (ScheduledFunctionCrontab) {
 }
 
 if (ExportFunctionCrontab) {
-    // exp.events.export = ExportFunctionCrontab; // CRON export
-    exp.events.bqExport = BQExportFunctionCrontab;
+    exp.events.export = ExportFunctionCrontab;
     exp.events.import = ImportFunctionCrontab;
-}
-
-if (ExportFunctions) {
-    exp.events.export = ExportFunctions;        // DB event export
 }
 
 module.exports = exp;
