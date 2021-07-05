@@ -58,6 +58,7 @@ export class NotificationsCustmizeView extends ViewState {
                         </Button>
                     </View>
                 </Container>
+                <ScrollView style={[{ zIndex: 0, elevation: 0 }]}>
                     <Container style={[this.baseStyles.container, styles.container]}>
                         <Text style={[this.textStyles.h1, styles.title]}>{titleText}</Text>
                         <Card
@@ -120,6 +121,7 @@ export class NotificationsCustmizeView extends ViewState {
                             />
                         </View>
                     </Container>
+                </ScrollView>
             </MasloPage>
         );
     }
