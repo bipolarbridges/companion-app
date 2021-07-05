@@ -42,6 +42,8 @@ import {
 import { RewardsController } from './Rewards';
 import { IDocumentsController, DocumentsController } from './Documents';
 import QoLController from 'common/controllers/QoLController';
+import DomainController from 'common/controllers/DomainController';
+import StrategyController from 'common/controllers/StrategyController';
 
 type ClientUser = Identify<UserProfile> & { client?: ClientProfileFull };
 
@@ -70,7 +72,9 @@ export interface IUserController extends IUserControllerBase {
     readonly onboardingDayIndex: number | null;
     readonly rewards?: RewardsController;
 
-    readonly backend: QoLController;
+    readonly qol: QoLController;
+    readonly domain: DomainController;
+    readonly strategy: StrategyController;
 
     readonly hasSeenOnboarding: boolean;
     onboardingSeen(): void;
@@ -147,12 +151,22 @@ export class UserController
 
     private _documents: DocumentsController;
 
-    private readonly _backend = new Lazy(() => {
+    private readonly _qol = new Lazy(() => {
         const bk = new QoLController();
         if (this.user && this.activeAccount) {
             bk.setUser(this.user.id);
         }
         return bk;
+    });
+
+    private readonly _domain = new Lazy(() => {
+        const dc = new DomainController();
+        return dc;
+    });
+
+    private readonly _strategy = new Lazy(() => {
+        const sc = new StrategyController();
+        return sc;
     });
 
     public readonly notifications: NotificationsController;
@@ -179,19 +193,13 @@ export class UserController
             'onPreProcessAuthUser',
         );
 
-        // TODO: Make prettier
-        this.disposer.add(
-            autorun(() => {
-                const userId = this.user?.id;
-                const acccountId =
-                    (this._activeAccount && this._activeAccount.id) || null;
-                const coachId =
-                    (this._activeAccount && this._activeAccount.coachId) ||
-                    null;
+        this.disposer.add(autorun(() => {
+            const userId = this.user?.id;
+            const acccountId = (this._activeAccount && this._activeAccount.id) || null;
+            const coachId = (this._activeAccount && this._activeAccount.coachId) || null;
 
-                this._journal.setAccount(userId, acccountId, coachId);
-            }),
-        );
+            this._journal.setAccount(userId, acccountId, coachId);
+        }));
     }
 
     get initializing() {
@@ -244,9 +252,9 @@ export class UserController
         return this._documents;
     }
 
-    get backend() {
-        return this._backend.value;
-    }
+    get qol() { return this._qol.value; };
+    get domain() { return this._domain.value; };
+    get strategy() { return this._strategy.value; };
 
     get firstName() {
         return this.user?.firstName;
@@ -340,15 +348,9 @@ export class UserController
 
     protected async onUserChanged(user: FullUser, isUpdating?: boolean) {
         if (!isUpdating && user) {
-            this._records.weakValue?.setClient(
-                this.activeAccount.coachId,
-                this.user.id,
-                this.user.displayName,
-            );
-            this._recordsLastWeek.weakValue?.setLoggerName(
-                `${this.user.displayName || '??'}:week`,
-            );
-            this._backend.weakValue?.setUser(this.user.id);
+            this._records.weakValue?.setClient(this.activeAccount.coachId, this.user.id, this.user.displayName);
+            this._recordsLastWeek.weakValue?.setLoggerName(`${this.user.displayName || '??'}:week`);
+            this._qol.weakValue?.setUser(this.user.id);
 
             this._onboardingSeen = false;
 
@@ -400,12 +402,7 @@ export class UserController
 
             this._assessments?.initialize(this._activeAccount, userUid);
 
-            this._documents?.setAccount(
-                this._activeAccount.coachId,
-                this._activeAccount.id,
-            );
-
-            // logger.log(' ===================== \r\n\r\n ASSESSMENT STATUS', this._activeAccount.assessments);
+            this._documents?.setAccount(this._activeAccount.coachId, this._activeAccount.id);
         } else {
             id = 'null';
         }

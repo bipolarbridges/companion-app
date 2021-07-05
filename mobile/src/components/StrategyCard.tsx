@@ -1,4 +1,4 @@
-import { DisplayStrategyIded } from '../../../mobile/src/constants/QoL';
+import { DisplayStrategyIded } from '../../../mobile/src/constants/Strategy';
 import React from 'react';
 import {
     Dimensions,

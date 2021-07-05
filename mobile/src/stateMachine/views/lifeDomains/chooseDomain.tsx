@@ -93,7 +93,7 @@ export class ChooseDomainView extends ViewState {
     };
 
     async start() {
-        let possibleDomains = await AppController.Instance.User.backend.getPossibleDomains();
+        let possibleDomains = await AppController.Instance.User.domain.getPossibleDomains();
         this.viewModel.setAvailableDomains(possibleDomains);
         this.forceUpdate();
     }
@@ -143,16 +143,9 @@ export class ChooseDomainView extends ViewState {
             !this.viewModel.selectDomain(this.viewModel.getDomainByName(n))
         ) {
             this.trigger(ScenarioTriggers.Tertiary);
-        } else if (
-            this.viewModel.selectDomain(this.viewModel.getDomainByName(n))
-        ) {
-            AppController.Instance.User.backend.setUserStateProperty(
-                'focusDomains',
-                this.viewModel.selectedDomains.map((d) => d.id),
-            );
-            hasTwoSelected
-                ? this.trigger(ScenarioTriggers.Next)
-                : this.trigger(ScenarioTriggers.Tertiary);
+        } else if (this.viewModel.selectDomain(this.viewModel.getDomainByName(n))) {
+            AppController.Instance.User.qol.setUserStateProperty('focusDomains', this.viewModel.selectedDomains.map(d => d.id));
+            hasTwoSelected ? this.trigger(ScenarioTriggers.Next) : this.trigger(ScenarioTriggers.Tertiary);
         } else {
             Alert.alert(
                 'Oops',

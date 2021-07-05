@@ -34,35 +34,24 @@ export default class QOLSurveyViewModel {
         AppController.Instance.User.localSettings;
 
     constructor() {
-        this.initModel = AppController.Instance.User.backend
-            .getPartialQol()
-            .then((partialQolState: PartialQol) => {
-                if (partialQolState !== null) {
-                    this._questionNum = partialQolState.questionNum;
-                    this._domainNum = partialQolState.domainNum;
-                    this._surveyResponses = partialQolState.scores;
-                    this.startDate = partialQolState.startDate;
-                    this.questionCompletionDates =
-                        partialQolState.questionCompletionDates;
-                    this._armMagnitudes = this.getArmMagnitudes(
-                        partialQolState.scores,
-                    );
-                    this.isUnfinished = true;
-                    this.showInterlude = partialQolState.isFirstTimeQol;
-                    return;
-                } else {
-                    this.startDate = new Date().getTime();
-                    this._questionNum = 0;
-                    this._domainNum = 0;
-                    const surveyResponses = {};
-                    for (let domain of PersonaDomains) {
-                        surveyResponses[domain] = 0;
-                    }
-                    this._surveyResponses = surveyResponses;
-                    this.questionCompletionDates = [];
-                    this._armMagnitudes = PersonaArmState.createEmptyArmState();
-                    this.isUnfinished = false;
-                    return;
+        this.initModel = AppController.Instance.User.qol.getPartialQol().then((partialQolState: PartialQol) => {
+            if (partialQolState !== null) {
+                this._questionNum = partialQolState.questionNum;
+                this._domainNum = partialQolState.domainNum;
+                this._surveyResponses = partialQolState.scores;
+                this.startDate = partialQolState.startDate;
+                this.questionCompletionDates = partialQolState.questionCompletionDates;
+                this._armMagnitudes = this.getArmMagnitudes(partialQolState.scores);
+                this.isUnfinished = true;
+                this.showInterlude = partialQolState.isFirstTimeQol;
+                return;
+            } else {
+                this.startDate = new Date().getTime();
+                this._questionNum = 0;
+                this._domainNum = 0;
+                const surveyResponses = {};
+                for (let domain of PersonaDomains) {
+                    surveyResponses[domain] = 0;
                 }
             });
     }
@@ -122,9 +111,7 @@ export default class QOLSurveyViewModel {
         this._armMagnitudes = qolArmMagnitudes;
         let res: boolean;
         if (qolArmMagnitudes === null) {
-            res = await AppController.Instance.User.backend.sendPartialQol(
-                null,
-            );
+            res = await AppController.Instance.User.qol.sendPartialQol(null);
             this.isUnfinished = false;
         } else {
             const now = new Date().getTime();
@@ -142,29 +129,20 @@ export default class QOLSurveyViewModel {
                 isFirstTimeQol: this.showInterlude,
                 startDate: this.startDate,
                 questionCompletionDates: this.questionCompletionDates,
-            };
-            res = await AppController.Instance.User.backend.sendPartialQol(
-                partialQol,
-            );
+            }
+            res = await AppController.Instance.User.qol.sendPartialQol(partialQol);
             this.isUnfinished = true;
         }
         return res;
     };
 
     public sendSurveyResults = async () => {
-        const res: boolean = await AppController.Instance.User.backend.sendSurveyResults(
-            this._surveyResponses,
-            this.startDate,
-            this.questionCompletionDates,
-        );
+        const res: boolean = await AppController.Instance.User.qol.sendSurveyResults(this._surveyResponses, this.startDate, this.questionCompletionDates);
         return res;
     };
 
     public updateQolOnboarding = () => {
-        this._settings.updateQolOnboarding({
-            seenOnboardingQol: true,
-            lastFullQol: Date(),
-        });
+        this._settings.updateQolOnboarding({ seenQolOnboarding: true, lastFullQol: Date() })
         this.showInterlude = true;
     };
 
