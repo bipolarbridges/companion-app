@@ -1,4 +1,4 @@
-import { DomainScope, Domain } from '../../../mobile/src/constants/QoL';
+import { DomainScope, Domain } from '../../../mobile/src/constants/Domain';
 import { Repo } from './services/db';
 import { Identify } from 'common/models';
 import { QoL as QoLFunctions } from 'common/abstractions/functions';
@@ -41,6 +41,7 @@ export async function createDomain(args: CreateDomainRequest)
             position:   args.position,
             name:       args.name,
             slug:       args.slug,
+            importance: args.importance,
         });
         return {
             error: null,
