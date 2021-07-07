@@ -1,25 +1,46 @@
 name: build
 on: push
+defaults:
+  runs-on: ubuntu-latest
 jobs:
-  all:
-    runs-on: ubuntu-latest
+  lint-server:
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Use correct node version
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: '10'
-      - name: Setup
-        uses: ./.github/actions/setup
-      - name: Lint functions code
-        run: yarn lint:server
-      - name: Build server
-        run: yarn build:server
-      - name: Build dashboard
-        run: yarn build:dashboard
-      - name: Compile mobile with tsc
-        working-directory: mobile
-        run: yarn run tsc
-      - name: Build android
-        run: yarn build:android
+      - uses: ./.github/actions/setup
+      - run: yarn lint:server
+  build-server:
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '10'
+      - uses: ./.github/actions/setup
+      - run: yarn build:server
+  build-dashboard: 
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '10'
+      - uses: ./.github/actions/setup
+      - run: yarn build:dashboard
+  tsc-mobile:
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '10'
+      - uses: ./.github/actions/setup
+      - working-directory: mobile
+      - run: yarn run tsc
+  build-android:
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '10'
+      - uses: ./.github/actions/setup
+      - run: yarn build:android
