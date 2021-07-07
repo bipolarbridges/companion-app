@@ -114,7 +114,7 @@ export default class App extends React.Component<IAppProps> {
     // async updateShortcutList() {
     //     try {
     //       const shortcuts = await getShortcuts();
-    
+
     //       this.setState({
     //         shortcuts,
     //       });
