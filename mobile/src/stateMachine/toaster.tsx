@@ -7,14 +7,14 @@ import CheckIcon from 'src/assets/images/checkmark-white.svg';
 import { Event } from 'common/utils/event';
 
 export type ToastMessage = {
-    text: string,
+    text: string;
 };
 
 const Queue = [] as ToastMessage[];
 const Enqueued = new Event();
 
 export function PushToast(message: ToastMessage) {
-    if (!message || Queue.find(qi => qi.text === message.text)) {
+    if (!message || Queue.find((qi) => qi.text === message.text)) {
         return;
     }
 
@@ -47,7 +47,7 @@ export function ToasterView() {
                     delay: 2000,
                     useNativeDriver: true,
                 }),
-            ]).start((res) =>  {
+            ]).start((res) => {
                 Queue.shift();
                 if (res.finished) {
                     requestAnimationFrame(() => {
@@ -62,14 +62,22 @@ export function ToasterView() {
         setCurrentMessage(toastText);
     }, [currentMessageRef]);
 
-    React.useEffect(() => Enqueued.on(() => {
-        if (!currentMessageRef.current) {
-            processNext();
-        }
-    }), [processNext, currentMessageRef]);
+    React.useEffect(
+        () =>
+            Enqueued.on(() => {
+                if (!currentMessageRef.current) {
+                    processNext();
+                }
+            }),
+        [processNext, currentMessageRef],
+    );
 
     return currentMessage ? (
-        <Animated.View style={[styles.popupMessage, { transform: [{ translateY: position}] }]}>
+        <Animated.View
+            style={[
+                styles.popupMessage,
+                { transform: [{ translateY: position }] },
+            ]}>
             <CheckIcon width={8} height={6} />
             <Text style={[TextStyles.labelSmall, styles.popupMessageText]}>
                 {currentMessage}

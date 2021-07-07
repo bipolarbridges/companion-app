@@ -14,7 +14,7 @@ const Colors: ProjectColorsSchema = {
         '#3F3C44',
     ],
 
-// ========== TYPOGRAPHY ==============
+    // ========== TYPOGRAPHY ==============
 
     typography: {
         h1: '#3F3C44',
@@ -300,7 +300,6 @@ const Colors: ProjectColorsSchema = {
         nextPromptText: '#3F3C44',
         nextPromptBg: '#F5F5FA',
     },
-
 };
 
 export default Colors;
