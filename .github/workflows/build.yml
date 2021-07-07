@@ -34,8 +34,8 @@ jobs:
         with:
           node-version: '10'
       - uses: ./.github/actions/setup
-      - working-directory: mobile
       - run: yarn run tsc
+        working-directory: mobile
   build-android:
     steps:
       - uses: actions/checkout@v2
