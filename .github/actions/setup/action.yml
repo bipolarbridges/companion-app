@@ -1,5 +1,7 @@
 name: 'Setup'
 description: 'Set up the project'
+defaults:
+  shell: bash
 runs:
   using: "composite"
   steps:
