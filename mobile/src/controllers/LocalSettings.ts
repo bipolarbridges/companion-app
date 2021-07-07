@@ -2,7 +2,12 @@ import { Platform } from 'react-native';
 import ExpoConstants, { AppOwnership } from 'expo-constants';
 import * as Device from 'expo-device';
 import { observable, toJS, transaction } from 'mobx';
-import { UserLocalSettings, NotificationsSettings, DeviceInfo, LocalNotificationsSchedule } from 'common/models';
+import {
+    UserLocalSettings,
+    NotificationsSettings,
+    DeviceInfo,
+    LocalNotificationsSchedule,
+} from 'common/models';
 import RepoFactory from 'common/controllers/RepoFactory';
 import { transferChangedFields } from 'common/utils/fields';
 import { ThrottleAction } from 'common/utils/throttle';
@@ -14,11 +19,14 @@ const DeviceId = ExpoConstants.installationId;
 
 const Info: DeviceInfo = {
     platform: Platform.OS,
-    platformVersion: ExpoConstants.appOwnership === AppOwnership.Standalone
-        ? Platform.Version
-        : ('Expo Client ' + ExpoConstants.expoVersion),
+    platformVersion:
+        ExpoConstants.appOwnership === AppOwnership.Standalone
+            ? Platform.Version
+            : 'Expo Client ' + ExpoConstants.expoVersion,
     modelName: Device.modelName,
-    isStandaloneDevice: ExpoConstants.appOwnership === AppOwnership.Standalone && Device.isDevice,
+    isStandaloneDevice:
+        ExpoConstants.appOwnership === AppOwnership.Standalone &&
+        Device.isDevice,
 };
 
 export interface ILocalSettingsController {
@@ -31,7 +39,6 @@ export interface ILocalSettingsController {
 }
 
 export class LocalSettingsController implements ILocalSettingsController {
-
     @observable
     private _sameDevice: UserLocalSettings = null;
 
@@ -43,18 +50,24 @@ export class LocalSettingsController implements ILocalSettingsController {
 
     private readonly _synced = new Event();
 
-    public get current(): Readonly<UserLocalSettings> { return this._current; }
-    public get synced(): IEvent { return this._synced; }
+    public get current(): Readonly<UserLocalSettings> {
+        return this._current;
+    }
+    public get synced(): IEvent {
+        return this._synced;
+    }
 
     async load(uid: string) {
         if (this._uid === uid) {
             return;
         }
 
-        const settings = await RepoFactory.Instance.users.getAllLocalSettings(uid);
+        const settings = await RepoFactory.Instance.users.getAllLocalSettings(
+            uid,
+        );
 
         this._uid = uid;
-        this._current = settings.find(s => s.deviceId === DeviceId);
+        this._current = settings.find((s) => s.deviceId === DeviceId);
 
         let updateDiff: Partial<UserLocalSettings> = null;
         if (!this._current) {
@@ -65,10 +78,13 @@ export class LocalSettingsController implements ILocalSettingsController {
             };
             updateDiff = this._current;
 
-            this._sameDevice = settings.find(s => s.deviceInfo?.modelName === Info.modelName);
-        } else if (this._current.appVersion !== AppVersion.FullVersion
-            || this._current.deviceInfo?.platformVersion !== Info.platformVersion) {
-
+            this._sameDevice = settings.find(
+                (s) => s.deviceInfo?.modelName === Info.modelName,
+            );
+        } else if (
+            this._current.appVersion !== AppVersion.FullVersion ||
+            this._current.deviceInfo?.platformVersion !== Info.platformVersion
+        ) {
             updateDiff = {
                 appVersion: AppVersion.FullVersion,
                 deviceInfo: Info,
@@ -76,7 +92,11 @@ export class LocalSettingsController implements ILocalSettingsController {
         }
 
         if (updateDiff) {
-            await RepoFactory.Instance.users.updateLocalSettings(this._uid, DeviceId, updateDiff);
+            await RepoFactory.Instance.users.updateLocalSettings(
+                this._uid,
+                DeviceId,
+                updateDiff,
+            );
         }
     }
 
@@ -89,7 +109,12 @@ export class LocalSettingsController implements ILocalSettingsController {
             await RepoFactory.Instance.users.updateLocalSettings(
                 this._uid,
                 this._sameDevice.deviceId,
-                { notifications: { ...this._sameDevice.notifications, token: null } },
+                {
+                    notifications: {
+                        ...this._sameDevice.notifications,
+                        token: null,
+                    },
+                },
             );
         }
 
@@ -100,7 +125,7 @@ export class LocalSettingsController implements ILocalSettingsController {
             diff,
         );
         await this._synced.triggerAsync();
-    }
+    };
 
     private update(diff: Partial<UserLocalSettings>) {
         if (!this._current) {
@@ -116,11 +141,20 @@ export class LocalSettingsController implements ILocalSettingsController {
     }
 
     updateNotifications(diff: Partial<NotificationsSettings>) {
-        const notifications = this.current.notifications || { };
+        const notifications = this.current.notifications || {};
         transaction(() => {
-            let changed = transferChangedFields(diff, notifications, 'enabled', 'token');
+            let changed = transferChangedFields(
+                diff,
+                notifications,
+                'enabled',
+                'token',
+            );
 
-            if (diff.locals && getLocalsHash(diff.locals) !== getLocalsHash(notifications.locals)) {
+            if (
+                diff.locals &&
+                getLocalsHash(diff.locals) !==
+                    getLocalsHash(notifications.locals)
+            ) {
                 notifications.locals = diff.locals;
                 changed = true;
             }
@@ -142,24 +176,18 @@ function getLocalsHash(locals: LocalNotificationsSchedule): string {
 
     if (locals.current) {
         prts.push('[C]:');
-        Object.keys(locals.current).forEach(k => {
+        Object.keys(locals.current).forEach((k) => {
             const v = locals.current[k];
-            const vv = v?.length
-                ? v.map(n => `${n.date}`).join('|')
-                : '';
+            const vv = v?.length ? v.map((n) => `${n.date}`).join('|') : '';
             prts.push(`${k}+${vv};`);
         });
     }
 
     if (locals.schedule) {
         prts.push('[S]:');
-        Object.keys(locals.schedule).forEach(k => {
+        Object.keys(locals.schedule).forEach((k) => {
             const v = locals.schedule[k];
-            const vv = !v
-                ? ''
-                : (v === true
-                    ? 'true' : `${v.active}_${v.value}`
-                );
+            const vv = !v ? '' : v === true ? 'true' : `${v.active}_${v.value}`;
             prts.push(`${k}_${vv};`);
         });
     }

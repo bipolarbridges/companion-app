@@ -2,9 +2,7 @@ import { IPersonaContext, PersonaStates, PersonaViewState } from './persona';
 import { Conditions } from './conditions';
 import { ScreenRect } from 'react-native';
 
-export {
-    PersonaStates,
-};
+export { PersonaStates };
 
 export enum ScenarioTriggers {
     Back = 1,
@@ -19,10 +17,15 @@ export enum NavigationStates {
 }
 
 export interface IPersonaViewContext extends IPersonaContext {
-    getContainerHeight(minHeight: number): { height: number, view: PersonaViewState };
-    getScrollContainerHeight(): { height: number, view: PersonaViewState };
+    getContainerHeight(
+        minHeight: number,
+    ): { height: number; view: PersonaViewState };
+    getScrollContainerHeight(): { height: number; view: PersonaViewState };
 
-    setupContainerHeight(minHeight: number, view?: Partial<PersonaViewState>): number;
+    setupContainerHeight(
+        minHeight: number,
+        view?: Partial<PersonaViewState>,
+    ): number;
     setupContainerHeightForceScroll(view?: Partial<PersonaViewState>): number;
 }
 
@@ -38,9 +41,9 @@ export interface IStateViewContext extends IStateContext {
 }
 
 export type ViewStateProps<TParams = any> = {
-    context: IStateViewContext,
-    triggerCalback: (trigger: ScenarioTriggers, params?: any) => void,
-    params?: TParams,
+    context: IStateViewContext;
+    triggerCalback: (trigger: ScenarioTriggers, params?: any) => void;
+    params?: TParams;
 };
 
 export interface IStateView extends React.Component<ViewStateProps> {
@@ -51,36 +54,39 @@ type ConditionWithParams = Conditions.General & { params?: any };
 
 export type StateItem<T extends number> = {
     /** Component class that should render this state */
-    view: { new (props: ViewStateProps, context?: any): IStateView },
+    view: { new (props: ViewStateProps, context?: any): IStateView };
 
     /** Exit transitions to another states */
-    exit?: StateTransition<T>[],
+    exit?: StateTransition<T>[];
 
     /** Conditions for force transitioning to this state */
-    enter?: ConditionWithParams | ConditionWithParams[],
+    enter?: ConditionWithParams | ConditionWithParams[];
 
     /** Enables logging inside Condition Observers */
-    log?: boolean,
+    log?: boolean;
 };
 
 export type StateTransition<T extends number> = ConditionWithParams & {
-    target: T | NavigationStates,
-    priority?: number,
+    target: T | NavigationStates;
+    priority?: number;
 };
 
-export type GlobalScenario<TState extends number> = Partial<Record<TState, StateItem<TState>>> & {
-    startState: TState,
+export type GlobalScenario<TState extends number> = Partial<
+    Record<TState, StateItem<TState>>
+> & {
+    startState: TState;
 };
 
 export namespace GlobalScenario {
-    export function getAllStates<T extends number>(scenario: GlobalScenario<T>) {
-        return Object.keys(scenario)
-            .map(k => {
-                const state = k as unknown as T;
-                return {
-                    state,
-                    ...scenario[state],
-                };
-            });
+    export function getAllStates<T extends number>(
+        scenario: GlobalScenario<T>,
+    ) {
+        return Object.keys(scenario).map((k) => {
+            const state = (k as unknown) as T;
+            return {
+                state,
+                ...scenario[state],
+            };
+        });
     }
 }
