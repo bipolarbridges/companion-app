@@ -1,16 +1,11 @@
 name: 'Setup'
 description: 'Set up the project'
-defaults:
-  shell: bash
 runs:
   using: "composite"
   steps:
       - name: Create environment file
         run: cp test.env .env
+        shell: bash
       - name: Initialize project
         run: ./bin/setup.bash -y -p 0 -f 1 -s 1
-      - name: Show firebase dependencies (root)
-        run: yarn list | grep firebase
-      - name: Show firebase dependencies (server)
-        working-directory: server/functions
-        run: yarn list | grep firebase
+        shell: bash
