@@ -2,6 +2,8 @@ name: build
 on: push
 defaults:
   runs-on: ubuntu-latest
+  run:
+    shell: bash
 jobs:
   lint-server:
     steps:
