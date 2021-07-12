@@ -3,7 +3,10 @@ import * as Permissions from 'expo-permissions';
 import { Platform } from 'react-native';
 import { EventSubscription } from 'fbemitter';
 import { observable, transaction } from 'mobx';
-import { Notification, LocalNotification } from 'expo/build/Notifications/Notifications.types';
+import {
+    Notification,
+    LocalNotification,
+} from 'expo/build/Notifications/Notifications.types';
 import ExpoConstants from 'expo-constants';
 
 import { createLogger } from 'common/logger';
@@ -20,12 +23,17 @@ import {
     addDaysToDate,
     Schedule,
     NotificationTime,
-    timeToString,
     correctExactDate,
 } from 'src/helpers/notifications';
-import { getRandomUniqMessages, getMessagesForExactTime } from 'src/constants/notificationMessages';
+import {
+    getRandomUniqMessages,
+    getMessagesForExactTime,
+    isAffirmation,
+} from 'src/constants/notificationMessages';
 import { GlobalTrigger, GlobalTriggers } from 'src/stateMachine/globalTriggers';
 import Localization from 'src/services/localization';
+import { getAffirmationForDomains } from 'src/constants/affirmationMessages';
+import { Affirmation } from 'src/constants/QoL';
 
 const logger = createLogger('[Notifications]');
 
@@ -37,22 +45,42 @@ export interface IUserNameProvider {
 const SCHEDULE_DAYS_COUNT = 7;
 
 export class NotificationsService {
-
     @observable
     private _currentStatus: Permissions.PermissionStatus;
 
     @observable.ref
     private _openedNotification: NotificationData;
 
-    private _notificationsSubscription: EventSubscription  = null;
+    private _notificationsSubscription: EventSubscription = null;
 
     private _tokenCached: string = null;
+
+    private _domains: string[];
+    private _affirmations: Affirmation[];
+
+    public get domains() {
+        return this._domains;
+    }
+
+    public set domains(domains: string[]) {
+        this._domains = domains;
+    }
+
+    public get affirmations() {
+        return this._affirmations;
+    }
+
+    public set affirmations(affirmations: Affirmation[]) {
+        this._affirmations = affirmations;
+    }
 
     constructor(private readonly user: IUserNameProvider) {
         if (!user) {
             throw new Error('IUserController is required');
         }
-        this._notificationsSubscription = Notifications.addListener(this._onNotificationReceived);
+        this._notificationsSubscription = Notifications.addListener(
+            this._onNotificationReceived,
+        );
 
         // TEST
         // setTimeout(() => {
@@ -76,7 +104,9 @@ export class NotificationsService {
         // }, 7000);
     }
 
-    public get openedNotification() { return this._openedNotification; }
+    public get openedNotification() {
+        return this._openedNotification;
+    }
 
     public get hasPermission() {
         switch (this._currentStatus) {
@@ -102,7 +132,9 @@ export class NotificationsService {
 
     async askPermission() {
         if (this.hasPermission === null) {
-            const result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            const result = await Permissions.askAsync(
+                Permissions.NOTIFICATIONS,
+            );
             this._currentStatus = result.status;
             logger.log('got new permission:', this.hasPermission);
         }
@@ -117,7 +149,10 @@ export class NotificationsService {
             try {
                 const token = await Notifications.getExpoPushTokenAsync();
                 if (!token) {
-                    logger.error('Notifications.getExpoPushTokenAsync() returned `null` while `this._currentStatus` =', this._currentStatus);
+                    logger.error(
+                        'Notifications.getExpoPushTokenAsync() returned `null` while `this._currentStatus` =',
+                        this._currentStatus,
+                    );
                 } else {
                     this._tokenCached = token;
                 }
@@ -131,70 +166,203 @@ export class NotificationsService {
         return null;
     }
 
-    private async scheduleRetentionNotifications(time: NotificationTime, startDateMS: number) {
+    private async scheduleMessage(
+        msg: string,
+        startDateMS: number,
+        index: number,
+    ) {
+        const date = addDaysToDate(startDateMS, index);
+        const schedulingOptions: NotificationSchedulingOptions = { time: date };
+        const data = {
+            type: NotificationTypes.Retention,
+        };
+
+        const notification: LocalNotification = {
+            title: Localization.Current.MobileProject.projectName,
+            data,
+            body: msg,
+            ios: { sound: true },
+            android:
+                Platform.OS === 'android'
+                    ? { channelId: AndroidChannels.Default }
+                    : null,
+        };
+
+        await Notifications.scheduleLocalNotificationAsync(
+            notification,
+            schedulingOptions,
+        );
+        logger.log(
+            'scheduleNotifications with message:',
+            notification.body,
+            '| notification time is:',
+            schedulingOptions.time,
+        );
+        const dateStr = new Date(schedulingOptions.time).toUTCString();
+        return { body: notification.body, date: dateStr };
+    }
+
+    private async scheduleAffirmationMessage(
+        msg: Affirmation,
+        affirmationTime: number,
+    ) {
+        const schedulingOptions: NotificationSchedulingOptions = {
+            time: new Date(affirmationTime).getTime(),
+            repeat: 'day',
+        };
+        const notification: LocalNotification = {
+            title: Localization.Current.MobileProject.projectName,
+            data: {
+                type: NotificationTypes.Affirmation,
+            },
+            body: msg.text,
+            ios: { sound: true },
+            android:
+                Platform.OS === 'android'
+                    ? { channelId: AndroidChannels.Default }
+                    : null,
+        };
+
+        await Notifications.scheduleLocalNotificationAsync(
+            notification,
+            schedulingOptions,
+        );
+        logger.log(
+            'scheduleNotifications with message:',
+            notification.body,
+            '| notification time is:',
+            schedulingOptions.time,
+        );
+        const dateStr = new Date(schedulingOptions.time).toUTCString();
+        return { body: notification.body, date: dateStr };
+    }
+
+    private async scheduleMessages(
+        messages: string[] | Affirmation[],
+        startDateMS: number,
+        affirmationTime?: number,
+    ) {
+        const result: NotificationResult[] = [];
+        for (let i = 0; i < messages.length; i++) {
+            let msg: string | Affirmation = messages[i];
+            if (affirmationTime && isAffirmation(msg)) {
+                result.push(
+                    await this.scheduleAffirmationMessage(msg, affirmationTime),
+                );
+            } else {
+                msg = messages[i] as string;
+                result.push(await this.scheduleMessage(msg, startDateMS, i));
+            }
+        }
+        return result;
+    }
+
+    private async scheduleNotifications(
+        time: NotificationTime,
+        startDateMS: number,
+        affirmationTime?: number,
+    ) {
         const settings = { name: this.user.firstName };
         const result: NotificationResult[] = [];
+        const messages =
+            time === NotificationTime.ExactTime
+                ? {
+                      [NotificationTypes.Retention]: getMessagesForExactTime(
+                          startDateMS,
+                          SCHEDULE_DAYS_COUNT,
+                          settings,
+                      ),
+                      [NotificationTypes.Affirmation]: this.affirmations
+                          ? this.affirmations
+                          : null,
+                      [NotificationTypes.TestAffirmation]: getAffirmationForDomains(
+                          this.domains,
+                          1,
+                          settings,
+                      ),
+                  }
+                : {
+                      [NotificationTypes.Retention]: getRandomUniqMessages(
+                          time,
+                          SCHEDULE_DAYS_COUNT,
+                          settings,
+                      ),
+                  };
 
-        const messages = time === NotificationTime.ExactTime
-            ? getMessagesForExactTime(startDateMS, SCHEDULE_DAYS_COUNT, settings)
-            : getRandomUniqMessages(time, SCHEDULE_DAYS_COUNT, settings);
-
-        for (let i = 0; i < messages.length; i++) {
-            const m = messages[i];
-            const date = addDaysToDate(startDateMS, i);
-            const schedulingOptions: NotificationSchedulingOptions = { time: date };
-
-            const data = {
-                type: NotificationTypes.Retention,
-            };
-
-            const notification: LocalNotification = {
-                title: Localization.Current.MobileProject.projectName,
-                data,
-                body: m,
-                ios: { sound: true },
-                android: Platform.OS === 'android' ? { channelId: AndroidChannels.Default } : null,
-            };
-
-            await Notifications.scheduleLocalNotificationAsync(notification, schedulingOptions);
-            logger.log('scheduleNotifications with message:', m, '| notification time is:', date);
-
-            const dateStr = new Date(schedulingOptions.time).toUTCString();
-            result.push({ body: notification.body, date: dateStr });
+        result.push(
+            ...(await this.scheduleMessages(
+                messages[NotificationTypes.Retention],
+                startDateMS,
+            )),
+        );
+        // check for null, it is of type null when undefined or empty array is given
+        if (messages[NotificationTypes.Affirmation]) {
+            result.push(
+                ...(await this.scheduleMessages(
+                    messages[NotificationTypes.Affirmation],
+                    startDateMS,
+                    affirmationTime,
+                )),
+            );
         }
+        result.push(
+            ...(await this.scheduleMessages(
+                messages[NotificationTypes.TestAffirmation],
+                startDateMS,
+                affirmationTime,
+            )),
+        );
 
         return result;
     }
 
-    public rescheduleNotifications = async (schedule: Schedule) => {
+    public async rescheduleNotifications(
+        schedule: Schedule,
+        domains: string[],
+        affirmations: Affirmation[],
+        affirmationTime?: number,
+    ) {
         await this.resetSchedule();
 
         if (Platform.OS === 'android') {
             await this.createAndroidChannel();
         }
 
-        const scheduleData: ScheduleResult = { };
+        this.domains = domains;
+        if (!affirmations || (affirmations && affirmations.length > 0)) {
+            this.affirmations = affirmations;
+        } else {
+            this.affirmations = null;
+        }
+
+        const scheduleData: ScheduleResult = {};
         const keys = Object.keys(schedule);
 
         for (let i = 0; i < keys.length; i++) {
             const time = keys[i] as NotificationTime;
-            const active = time === NotificationTime.ExactTime
-                ? schedule[time] && schedule[time].active
-                : schedule[time];
+            const active =
+                time === NotificationTime.ExactTime
+                    ? schedule[time] && schedule[time].active
+                    : schedule[time];
 
             if (!active) {
                 continue;
             }
 
-            const startDateMS = time === NotificationTime.ExactTime
-                ? correctExactDate(schedule[time] && schedule[time].value)
-                : getNotificationTimeMS(time);
+            const startDateMS =
+                time === NotificationTime.ExactTime
+                    ? correctExactDate(schedule[time] && schedule[time].value)
+                    : getNotificationTimeMS(time);
 
             if (!startDateMS) {
                 continue;
             }
 
-            const res = await this.scheduleRetentionNotifications(time, startDateMS);
+            const res = await this.scheduleNotifications(
+                time,
+                startDateMS,
+                affirmationTime,
+            );
             scheduleData[time] = res;
         }
 
@@ -207,15 +375,15 @@ export class NotificationsService {
         if (Platform.OS === 'android') {
             await this.deleteAndroidChannel();
         }
-    }
+    };
 
     public resetOpenedNotification = () => {
         this._openedNotification = null;
-    }
+    };
 
     async createAndroidChannel() {
         await Notifications.createChannelAndroidAsync(AndroidChannels.Default, {
-            name:  Localization.Current.MobileProject.projectName,
+            name: Localization.Current.MobileProject.projectName,
             sound: true,
             vibrate: true,
         });
@@ -236,7 +404,7 @@ export class NotificationsService {
 
             GlobalTrigger(GlobalTriggers.NotificationReceived);
         }
-    }
+    };
 
     dispose() {
         this._notificationsSubscription.remove();

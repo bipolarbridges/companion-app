@@ -16,6 +16,7 @@ enum Collections {
     Questions = 'questions',
     UserState = 'userState',
     Strategies = 'strategies',
+    Affirmations = 'affirmations',
 }
 
 namespace Collections {
