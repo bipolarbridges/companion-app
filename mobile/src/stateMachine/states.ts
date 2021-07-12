@@ -65,12 +65,19 @@ export enum States {
     Select_Domain,
     Three_Selected,
     Choose_end,
+    View_Domains,
+    Domain_Details_after_ViewDomains,
 
     // Strategies block
     Choose_Strategies,
     Focus_Strategies,
     Strategy_Details,
     Strategy_Details2,
+    Strategy_Details3,
+
+    Past_Strategies,
+
+    Focus_Domains,
 
     // QoL Block
     qol_Question,

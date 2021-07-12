@@ -39,10 +39,13 @@ import { DomainDetailsView } from './views/lifeDomains/domainDetails';
 import { SelectDomainView } from './views/lifeDomains/selectDomain';
 import { ThreeDomainView } from './views/lifeDomains/threeDomains';
 import { ChooseDomainEndView } from './views/lifeDomains/chooseDomainEnd';
+import { ViewDomainsView } from './views/lifeDomains/viewDomains';
 
 import { ChooseStrategiesView } from './views/strategies/ChooseStrategiesView';
 import { FocusStrategiesView } from './views/strategies/FocusStrategiesView';
 import { StrategyDetailsView } from './views/strategies/StrategyDetailsView';
+
+import { YourFocusDomainsView } from './views/YourFocusDomainsView';
 
 import { QolStartView } from './views/qol/startQOL';
 import { QolEndView } from './views/qol/endQOL';
@@ -52,6 +55,7 @@ import Triggers = ScenarioTriggers;
 import { VerificationCodeView } from './views/login/verificationCode';
 import { NoInvitationView } from './views/login/noInvitation';
 import { ResetPasswordView } from './views/password/resetPassword';
+import { PastWeekStrategiesView } from './views/strategies/PastWeekStrategies';
 
 const CreateJournalCancelTransition: StateTransition<States> = {
     target: States.Home,
@@ -200,7 +204,11 @@ export const MasloScenario: GlobalScenario<States> = {
             { target: States.StartQol, trigger: Triggers.Tertiary },
             { target: States.Journal_SelectMood, trigger: Triggers.Submit },
             { target: States.QolQuestion, trigger: Triggers.Quaternary },
-            { target: States.Choose_Domain, trigger: Triggers.Next },
+            // MK-TODO temp testing
+            { target: States.Focus_Domains, trigger: Triggers.Next },
+            { target: States.Past_Strategies, trigger: Triggers._TESTING_ },
+            //
+            { target: States.Choose_Domain, trigger: Triggers.Back },
         ],
     },
 
@@ -392,6 +400,12 @@ export const MasloScenario: GlobalScenario<States> = {
             { target: States.Choose_Domain, trigger: [Triggers.Cancel] },
         ]
     },
+    [States.Domain_Details_after_ViewDomains]: {
+        view: DomainDetailsView,
+        exit: [
+            { target: States.View_Domains, trigger: [Triggers.Cancel] },
+        ]
+    },
     [States.Select_Domain]: {
         view: SelectDomainView,
         exit: [
@@ -404,6 +418,7 @@ export const MasloScenario: GlobalScenario<States> = {
         view: ThreeDomainView,
         exit: [
             { target: States.Choose_Domain, trigger: [Triggers.Cancel] },
+            { target: States.Select_Domain, trigger: [Triggers.Back] },
             { target: States.Choose_end, trigger: [Triggers.Submit] },
         ]
     },
@@ -411,6 +426,7 @@ export const MasloScenario: GlobalScenario<States> = {
         view: ChooseDomainEndView,
         exit: [
             { target: States.Choose_Domain, trigger: [Triggers.Cancel] },
+            { target: States.Select_Domain, trigger: [Triggers.Back] },
             { target: States.Choose_Strategies, trigger: [Triggers.Submit] },
         ]
     },
@@ -446,6 +462,38 @@ export const MasloScenario: GlobalScenario<States> = {
         view: StrategyDetailsView,
         exit: [
             { target: States.Focus_Strategies, trigger: [Triggers.Back] },
+        ]
+    },
+
+    [States.Strategy_Details3]: {
+        view: StrategyDetailsView,
+        exit: [
+            { target: States.Focus_Domains, trigger: [Triggers.Back] },
+        ]
+    },
+
+    [States.Past_Strategies]: {
+        view: PastWeekStrategiesView,
+        exit: [
+            { target: States.Home, trigger: [Triggers.Cancel] },
+        ]
+    },
+
+    [States.Focus_Domains]: {
+        view: YourFocusDomainsView,
+        exit: [
+            { target: States.Home, trigger: [Triggers.Cancel] },
+            { target: States.Strategy_Details3, trigger: [Triggers.Tertiary] },
+            { target: States.View_Domains, trigger: [Triggers.Next] },
+        ]
+    },
+
+    [States.View_Domains]: {
+        view: ViewDomainsView,
+        exit: [
+            { target: States.Home, trigger: [Triggers.Cancel] },
+            { target: States.Focus_Domains, trigger: [Triggers.Back] },
+            { target: States.Domain_Details_after_ViewDomains, trigger: [Triggers.Tertiary] },
         ]
     },
 

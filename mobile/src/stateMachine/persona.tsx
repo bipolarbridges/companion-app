@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { reaction } from 'mobx';
 import {
     MasloPersonaExpo,
@@ -51,7 +51,13 @@ export const PersonaViewPresets: { [name: string]: PersonaViewState } = {
     },
 };
 
-const PersonaScale = 0.5 * 2 / 3;
+export const PersonaScale = 1 / 3;
+
+const { height, width } = Dimensions.get('window');
+
+export function getPersonaRadius(scale?: number): number {
+    return ((scale || PersonaScale) * Math.min(width, height) / 2) / (devicePixelRatio +1);
+} 
 
 type Props = {
     context: IPersonaViewContext,
@@ -80,7 +86,7 @@ export function PersonaView(this: void, props: Props) {
     }, { fireImmediately: true }));
 
     return (
-        <View style={styles.personaWrapper} pointerEvents="none">
+        <View key='111' style={styles.personaWrapper} pointerEvents={'none'}>
             <MasloPersonaExpo
                 context={props.context}
                 disabled={props.disabled}
@@ -102,4 +108,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: 100,
     },
+    // personaWrapper: {
+    //     width: Layout.window.width,
+    //     height: Layout.window.height,
+    //     zIndex: 100,
+    //     marginTop: -Layout.window.height,
+    // },
 });
